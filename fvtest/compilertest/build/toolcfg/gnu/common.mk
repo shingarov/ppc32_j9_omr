@@ -411,7 +411,7 @@ ifeq ($(HOST_BITS),64)
 endif
 
 ifeq ($(HOST_ARCH),p)
-    SOLINK_FLAGS+=-fpic
+    SOLINK_FLAGS+=-fPIC
 endif
 
 ifeq ($(HOST_ARCH),z)

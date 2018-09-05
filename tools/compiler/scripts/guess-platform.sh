@@ -20,7 +20,7 @@
 # SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
 ###############################################################################
 
-thirty_two_bit=0
+thirty_two_bit=1
 
 usage() {
     echo "usage: guess-platform.sh [--32|--64]" >&2
@@ -88,6 +88,9 @@ case $system in
                 chooseplatform "amd64-linux-gcc" "amd64-linux64-gcc"
                 ;;
             ppc64)
+                chooseplatform "ppc-linux-gcc" "ppc64-linux64-gcc"
+                ;;
+            ppc)
                 chooseplatform "ppc-linux-gcc" "ppc64-linux64-gcc"
                 ;;
             ppc64le)

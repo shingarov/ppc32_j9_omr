@@ -77,13 +77,13 @@ endif
 ifeq (gcc,$(OMR_TOOLCHAIN))
     ifeq (ppc,$(OMR_HOST_ARCH))
         # Used for GOT's under 4k, should we just go -fPIC for everyone?
-        GLOBAL_CFLAGS+=-fpic
-        GLOBAL_CXXFLAGS+=-fpic
+        GLOBAL_CFLAGS+=-fPIC
+        GLOBAL_CXXFLAGS+=-fPIC
     else
         ifeq (x86,$(OMR_HOST_ARCH))
             ifeq (1,$(OMR_ENV_DATA64))
-                GLOBAL_CFLAGS+=-fPIC
-                GLOBAL_CXXFLAGS+=-fPIC
+                GLOBAL_CFLAGS+=-mcpu=8548 -mabi=spe -mspe -mfloat-gprs=double -fPIC --sysroot=/
+                GLOBAL_CXXFLAGS+=-mcpu=8548 -mabi=spe -mspe -mfloat-gprs=double -fPIC --sysroot=/
             else
                 GLOBAL_CFLAGS+=-fpic
                 GLOBAL_CXXFLAGS+=-fpic
@@ -110,7 +110,7 @@ ifeq (ppc,$(OMR_HOST_ARCH))
         ifeq (1,$(OMR_ENV_DATA64))
           GLOBAL_ASFLAGS+=-a64 -mppc64
         else
-          GLOBAL_ASFLAGS+=-a32 -mppc64
+          GLOBAL_ASFLAGS+=-a32 -mppc32
         endif
     else
         GLOBAL_ASFLAGS+=-c -o $*.o -qpic=large

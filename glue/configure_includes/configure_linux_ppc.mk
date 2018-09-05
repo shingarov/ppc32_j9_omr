@@ -186,7 +186,7 @@ ifeq (linux_ppc, $(SPEC))
     --enable-OMR_THR_YIELD_ALG \
     --enable-OMR_GC_ARRAYLETS
 
-  TEMP_TOOLS=$(XLC_TOOLS)
+  TEMP_TOOLS=$(GCC_TOOLS)
 endif
 
 CONFIGURE_ARGS += libprefix=lib exeext= solibext=.so arlibext=.a objext=.o
