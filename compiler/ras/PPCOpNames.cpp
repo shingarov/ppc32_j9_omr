@@ -247,7 +247,6 @@ const char * ppcOpCodeToNameMap[][2] =
    {"lwax", "lwax"},
    {"lwbrx", "lwbrx"},
    {"ldbrx", "ldbrx"},
-   {"lwsync", "lwsync"},
    {"lwz", "lwz"},
    {"lwzu", "lwzu"},
    {"lwzux", "lwzux"},

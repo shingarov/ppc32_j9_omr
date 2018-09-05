@@ -246,7 +246,6 @@ const TR_PPCOpCodeBinaryEntry OMR::Power::InstOpCode::binaryEncodings[PPCNumOpCo
    0x7c0002aa,  // lwax
    0x7c00042c,  // lwbrx
    0x7c000428,  // ldbrx
-   0x7c2004ac,  // lwsync
    0x80000000,  // lwz
    0x84000000,  // lwzu
    0x7c00006e,  // lwzux

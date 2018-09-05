@@ -1144,9 +1144,6 @@ PPCOpProp_AltFormat,
 PPCOpProp_IsLoad |
 PPCOpProp_AltFormat,
 
-// lwsync
-PPCOpProp_IsSync,
-
 // lwz
 PPCOpProp_IsLoad,
 

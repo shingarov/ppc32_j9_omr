@@ -135,7 +135,7 @@ tb_update_count_nanos:  .llong -1 	# systemcfg atomicity counter used for nanose
 	cmpld 0,10,8
 	bne- 0,.L_refresh_millis
 
-	lwsync     # wait for other std to complete
+	sync     # wait for other std to complete
 	std 8,tb_update_count_millis(2) # save in local copy
 
 	b .L_continue_millis
@@ -220,7 +220,7 @@ tb_update_count_nanos:  .llong -1 	# systemcfg atomicity counter used for nanose
  	cmpld 	0,10,8
  	bne- 	0,.L_refresh_nanos
 
-	lwsync     							# wait for other std to complete
+	sync     							# wait for other std to complete
 	std 8,tb_update_count_nanos(2) 		# save in local copy
 
 	b .L_continue_nanos

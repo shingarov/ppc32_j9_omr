@@ -130,13 +130,6 @@
 	 * instructions to be fetched (or refetched) and executed in the context established by previous instructions.
 	 */
 	inline void __isync() {	asm volatile ("isync");	}
-	/**
-	 * Load Word Synchronize
-	 * Ensures that all store instructions preceding the call to __lwsync complete before any new instructions can be executed
-	 * on the processor that executed the function. This allows you to synchronize between multiple processors with minimal
-	 * performance impact, as __lwsync does not wait for confirmation from each processor.
-	 */
-	inline void __lwsync() { asm volatile ("lwsync"); }
 #endif /* defined(__GNUC__) && !defined(__clang__) */
 #endif /* AIXPPC || LINUXPPC */
 #endif /* !defined(ATOMIC_SUPPORT_STUB) */
@@ -256,7 +249,7 @@ public:
 	/* Neither x86 nor S390 require a write barrier - the compiler fence is sufficient */
 #if !defined(ATOMIC_SUPPORT_STUB)
 #if defined(AIXPPC) || defined(LINUXPPC)
-		__lwsync();
+		__sync();
 #elif defined(_MSC_VER)
 		_ReadWriteBarrier();
 #elif defined(__GNUC__)
