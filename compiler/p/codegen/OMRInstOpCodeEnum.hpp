@@ -247,7 +247,6 @@
    lwax,             // Load word algebraic indexed
    lwbrx,            // Load word byte reverse indexed
    ldbrx,            // Load doubleword byte reverse indexed
-   lwsync,           // Lightweight Synchronize
    lwz,              // Load word and zero extend
    lwzu,             // Load word and zero extend with update
    lwzux,            // Load word and zero with update indexed

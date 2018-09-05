@@ -913,7 +913,7 @@ TR::Register *OMR::Power::TreeEvaluator::fstoreEvaluator(TR::Node *node, TR::Cod
    tempMR = new (cg->trHeapMemory()) TR::MemoryReference(node, 4, cg);
 
    if (needSync)
-      generateInstruction(cg, TR::InstOpCode::lwsync, node);
+      generateInstruction(cg, TR::InstOpCode::sync, node);
    generateMemSrc1Instruction(cg, TR::InstOpCode::stfs, node, tempMR, valueReg);
    if (needSync)
       {
@@ -1007,7 +1007,7 @@ TR::Register* OMR::Power::TreeEvaluator::dstoreEvaluator(TR::Node *node, TR::Cod
       // fixed for patching if it turns out to be not a volatile after all.
       tempMR = new (cg->trHeapMemory()) TR::MemoryReference(node, 8, cg);
       if (needSync)
-         generateInstruction(cg, TR::InstOpCode::lwsync, node);
+         generateInstruction(cg, TR::InstOpCode::sync, node);
       generateMemSrc1Instruction(cg, TR::InstOpCode::stfd, node, tempMR, valueReg);
       if (needSync)
          {

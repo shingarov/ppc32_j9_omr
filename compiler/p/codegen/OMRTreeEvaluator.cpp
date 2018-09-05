@@ -401,7 +401,7 @@ TR::Register *OMR::Power::TreeEvaluator::iloadEvaluator(TR::Node *node, TR::Code
 
    if (needSync)
       {
-      TR::TreeEvaluator::postSyncConditions(node, cg, tempReg, tempMR, TR::Compiler->target.cpu.id() >= TR_PPCp7 ? TR::InstOpCode::lwsync : TR::InstOpCode::isync);
+      TR::TreeEvaluator::postSyncConditions(node, cg, tempReg, tempMR, TR::InstOpCode::isync);
       }
 
    tempMR->decNodeReferenceCounts(cg);
@@ -580,7 +580,7 @@ TR::Register *OMR::Power::TreeEvaluator::aloadEvaluator(TR::Node *node, TR::Code
 
    if (needSync)
       {
-      TR::TreeEvaluator::postSyncConditions(node, cg, tempReg, tempMR, TR::Compiler->target.cpu.id() >= TR_PPCp7 ? TR::InstOpCode::lwsync : TR::InstOpCode::isync);
+      TR::TreeEvaluator::postSyncConditions(node, cg, tempReg, tempMR, TR::InstOpCode::isync);
       }
    tempMR->decNodeReferenceCounts(cg);
 
@@ -621,7 +621,7 @@ TR::Register *OMR::Power::TreeEvaluator::lloadEvaluator(TR::Node *node, TR::Code
          generateTrg1MemInstruction(cg, TR::InstOpCode::ld, node, trgReg, tempMR);
       if (needSync)
          {
-         TR::TreeEvaluator::postSyncConditions(node, cg, trgReg, tempMR, TR::Compiler->target.cpu.id() >= TR_PPCp7 ? TR::InstOpCode::lwsync : TR::InstOpCode::isync);
+	   TR::TreeEvaluator::postSyncConditions(node, cg, trgReg, tempMR, TR::InstOpCode::isync);
          }
 
       tempMR->decNodeReferenceCounts(cg);
@@ -653,7 +653,7 @@ TR::Register *OMR::Power::TreeEvaluator::lloadEvaluator(TR::Node *node, TR::Code
             {
             TR::MemoryReference *tempMRStore1 = new (cg->trHeapMemory()) TR::MemoryReference(node, location->getSymbolReference(), 8, cg);
             generateMemSrc1Instruction(cg, TR::InstOpCode::stfd, node, tempMRStore1, doubleReg);
-            generateInstruction(cg, TR::Compiler->target.cpu.id() >= TR_PPCp7 ? TR::InstOpCode::lwsync : TR::InstOpCode::isync, node);
+            generateInstruction(cg, TR::InstOpCode::isync, node);
             tempMRStore1->decNodeReferenceCounts(cg);
             }
          tempMRLoad1->forceIndexedForm(node, cg);
@@ -687,7 +687,7 @@ TR::Register *OMR::Power::TreeEvaluator::lloadEvaluator(TR::Node *node, TR::Code
                TR::MemoryReference *tempMRLoad1 = new (cg->trHeapMemory()) TR::MemoryReference(node, *tempMRStore1, 0, 4, cg);
                TR::MemoryReference *tempMRLoad2 = new (cg->trHeapMemory()) TR::MemoryReference(node, *tempMRStore1, 4, 4, cg);
                generateMemSrc1Instruction(cg, TR::InstOpCode::stfd, node, tempMRStore1, doubleReg);
-               generateInstruction(cg, TR::Compiler->target.cpu.id() >= TR_PPCp7 ? TR::InstOpCode::lwsync : TR::InstOpCode::isync, node);
+               generateInstruction(cg, TR::InstOpCode::isync, node);
                generateTrg1MemInstruction(cg, TR::InstOpCode::lwz, node, highReg, tempMRLoad1);
                generateTrg1MemInstruction(cg, TR::InstOpCode::lwz, node, lowReg, tempMRLoad2);
                cg->freeSpill(location, 8, 0);
@@ -784,7 +784,7 @@ TR::Register *OMR::Power::TreeEvaluator::commonByteLoadEvaluator(TR::Node *node,
    generateTrg1MemInstruction(cg, TR::InstOpCode::lbz, node, trgReg, tempMR);
    if (needSync)
       {
-      TR::TreeEvaluator::postSyncConditions(node, cg, trgReg, tempMR, TR::Compiler->target.cpu.id() >= TR_PPCp7 ? TR::InstOpCode::lwsync : TR::InstOpCode::isync);
+      TR::TreeEvaluator::postSyncConditions(node, cg, trgReg, tempMR, TR::InstOpCode::isync);
       }
 
    if (signExtend)
@@ -837,7 +837,7 @@ TR::Register *OMR::Power::TreeEvaluator::sloadEvaluator(TR::Node *node, TR::Code
 
    if (needSync)
       {
-      TR::TreeEvaluator::postSyncConditions(node, cg, tempReg, tempMR, TR::Compiler->target.cpu.id() >= TR_PPCp7 ? TR::InstOpCode::lwsync : TR::InstOpCode::isync);
+      TR::TreeEvaluator::postSyncConditions(node, cg, tempReg, tempMR, TR::InstOpCode::isync);
       }
 
    tempMR->decNodeReferenceCounts(cg);
@@ -860,7 +860,7 @@ TR::Register *OMR::Power::TreeEvaluator::cloadEvaluator(TR::Node *node, TR::Code
    generateTrg1MemInstruction(cg, TR::InstOpCode::lhz, node, tempReg, tempMR);
    if (needSync)
       {
-      TR::TreeEvaluator::postSyncConditions(node, cg, tempReg, tempMR, TR::Compiler->target.cpu.id() >= TR_PPCp7 ? TR::InstOpCode::lwsync : TR::InstOpCode::isync);
+      TR::TreeEvaluator::postSyncConditions(node, cg, tempReg, tempMR, TR::InstOpCode::isync);
       }
 
    tempMR->decNodeReferenceCounts(cg);
@@ -999,7 +999,7 @@ TR::Register *OMR::Power::TreeEvaluator::istoreEvaluator(TR::Node *node, TR::Cod
    // layout in order to patch if it turns out that the reference isn't really volatile.
    tempMR = new (cg->trHeapMemory()) TR::MemoryReference(node, 4, cg);
    if (needSync)
-      generateInstruction(cg, TR::InstOpCode::lwsync, node);
+      generateInstruction(cg, TR::InstOpCode::sync, node);
    if (reverseStore)
       {
       tempMR->forceIndexedForm(node, cg);
@@ -1072,7 +1072,7 @@ TR::Register *OMR::Power::TreeEvaluator::astoreEvaluator(TR::Node *node, TR::Cod
       tempMR  = new (cg->trHeapMemory()) TR::MemoryReference(node, 4, cg);
 
    if (needSync)
-      generateInstruction(cg, TR::InstOpCode::lwsync, node);
+      generateInstruction(cg, TR::InstOpCode::sync, node);
 
    // generate the store instruction appropriately
    //
@@ -1183,7 +1183,7 @@ TR::Register *OMR::Power::TreeEvaluator::lstoreEvaluator(TR::Node *node, TR::Cod
       // layout in order to patch if it turns out that the reference isn't really volatile.
       TR::MemoryReference *tempMR  = new (cg->trHeapMemory()) TR::MemoryReference(node, 8, cg);
       if (needSync)
-         generateInstruction(cg, TR::InstOpCode::lwsync, node);
+         generateInstruction(cg, TR::InstOpCode::sync, node);
       if (reverseStore)
          {
          tempMR->forceIndexedForm(node, cg);
@@ -1245,7 +1245,7 @@ TR::Register *OMR::Power::TreeEvaluator::lstoreEvaluator(TR::Node *node, TR::Cod
                TR::MemoryReference *tempMRStore2 =  new (cg->trHeapMemory()) TR::MemoryReference(node, *tempMRStore1, 4, 4, cg);
                generateMemSrc1Instruction(cg, TR::InstOpCode::stw, node, tempMRStore1, valueReg->getHighOrder());
                generateMemSrc1Instruction(cg, TR::InstOpCode::stw, node, tempMRStore2, valueReg->getLowOrder());
-               generateInstruction(cg, TR::InstOpCode::lwsync, node);
+               generateInstruction(cg, TR::InstOpCode::sync, node);
                generateTrg1MemInstruction(cg, TR::InstOpCode::lfd, node, doubleReg, new (cg->trHeapMemory()) TR::MemoryReference(node, location->getSymbolReference(), 8, cg));
                if (reverseStore)
                   {
@@ -1393,7 +1393,7 @@ TR::Register *OMR::Power::TreeEvaluator::bstoreEvaluator(TR::Node *node, TR::Cod
    // layout in order to patch if it turns out that the reference isn't really volatile.
    tempMR = new (cg->trHeapMemory()) TR::MemoryReference(node, 1, cg);
    if (needSync)
-      generateInstruction(cg, TR::InstOpCode::lwsync, node);
+      generateInstruction(cg, TR::InstOpCode::sync, node);
    generateMemSrc1Instruction(cg, TR::InstOpCode::stb, node, tempMR, valueReg);
    if (needSync)
       {
@@ -1434,7 +1434,7 @@ TR::Register *OMR::Power::TreeEvaluator::sstoreEvaluator(TR::Node *node, TR::Cod
    // layout in order to patch if it turns out that the reference isn't really volatile.
    tempMR = new (cg->trHeapMemory()) TR::MemoryReference(node, 2, cg);
    if (needSync)
-      generateInstruction(cg, TR::InstOpCode::lwsync, node);
+      generateInstruction(cg, TR::InstOpCode::sync, node);
    if (reverseStore)
       {
       tempMR->forceIndexedForm(node, cg);
@@ -1476,7 +1476,7 @@ TR::Register *OMR::Power::TreeEvaluator::cstoreEvaluator(TR::Node *node, TR::Cod
    // layout in order to patch if it turns out that the reference isn't really volatile.
    tempMR = new (cg->trHeapMemory()) TR::MemoryReference(node, 2, cg);
    if (needSync)
-      generateInstruction(cg, TR::InstOpCode::lwsync, node);
+      generateInstruction(cg, TR::InstOpCode::sync, node);
    generateMemSrc1Instruction(cg, TR::InstOpCode::sth, node, tempMR, valueReg);
    if (needSync)
       {

@@ -166,7 +166,7 @@ L_refresh_millis:
 	cmpld 0,10,8
 	bne- 0,L_refresh_millis
 
-	lwsync     # wait for other std to complete
+	sync     # wait for other std to complete
 	std 14,-8(1)						# save r14 onto stack - Allowed to use 288 bytes below the sp
 	addis 14,2,tb_update_count_millis@toc@ha  # save in local copy
  	addi 14,14,tb_update_count_millis@toc@l
@@ -268,7 +268,7 @@ L_refresh_nanos:
  	cmpld 	0,10,8
  	bne- 	0,L_refresh_nanos
 
-	lwsync     							# wait for other std to complete
+	sync     							# wait for other std to complete
 
 	std 14,-8(1)						# save r14 onto stack - Allowed to use 288 bytes below the sp
 	addis 14,2,tb_update_count_nanos@toc@ha  # save in local copy

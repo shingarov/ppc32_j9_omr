@@ -162,9 +162,9 @@ typedef struct TR_InlinedCallSite
       #if defined(__cplusplus)
       #include <builtins.h>
       #endif /* __cplusplus */
-      #define FLUSH_MEMORY(smp) if( smp ) __lwsync();
+      #define FLUSH_MEMORY(smp) if( smp ) __sync();
    #elif defined(LINUX)
-      #define FLUSH_MEMORY(smp) if( smp ) __asm__("lwsync");
+      #define FLUSH_MEMORY(smp) if( smp ) __asm__("sync");
    #endif
 #endif
 

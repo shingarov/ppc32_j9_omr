@@ -209,7 +209,7 @@ TR::Register *OMR::Power::TreeEvaluator::arraysetEvaluator(TR::Node *node, TR::C
                TR::MemoryReference *tempMRStore2 =  new (cg->trHeapMemory()) TR::MemoryReference(node, *tempMRStore1, 4, 4, cg);
                generateMemSrc1Instruction(cg, TR::InstOpCode::stw, node, tempMRStore1, valueReg->getHighOrder());
                generateMemSrc1Instruction(cg, TR::InstOpCode::stw, node, tempMRStore2, valueReg->getLowOrder());
-               generateInstruction(cg, TR::InstOpCode::lwsync, node);
+               generateInstruction(cg, TR::InstOpCode::sync, node);
                generateTrg1MemInstruction(cg, TR::InstOpCode::lfd, node, fp1Reg, new (cg->trHeapMemory()) TR::MemoryReference(node, location->getSymbolReference(), 8, cg));
                cg->freeSpill(location, 8, 0);
                }

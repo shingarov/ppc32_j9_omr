@@ -1273,21 +1273,13 @@ static void syncPeephole(TR::CodeGenerator *cg, TR::Instruction *instructionCurs
          {
          case TR::InstOpCode::isync:
             {
-            if(nextOp == TR::InstOpCode::sync || nextOp == TR::InstOpCode::lwsync || nextOp == TR::InstOpCode::isync)
+            if(nextOp == TR::InstOpCode::sync || nextOp == TR::InstOpCode::isync)
                removeFirst = true;
-            break;
-            }
-         case TR::InstOpCode::lwsync:
-            {
-            if(nextOp == TR::InstOpCode::sync)
-               removeFirst = true;
-            else if(nextOp == TR::InstOpCode::lwsync || nextOp == TR::InstOpCode::isync)
-               removeNext = true;
             break;
             }
          case TR::InstOpCode::sync:
             {
-            if(nextOp == TR::InstOpCode::sync || nextOp == TR::InstOpCode::lwsync || nextOp == TR::InstOpCode::isync)
+            if(nextOp == TR::InstOpCode::sync || nextOp == TR::InstOpCode::isync)
                removeNext = true;
             break;
             }
@@ -1569,11 +1561,6 @@ void OMR::Power::CodeGenerator::doPeephole()
                break;
                }
             case TR::InstOpCode::sync:
-               {
-               syncPeephole(self(), instructionCursor, syncPeepholeWindow);
-               break;
-               }
-            case TR::InstOpCode::lwsync:
                {
                syncPeephole(self(), instructionCursor, syncPeepholeWindow);
                break;

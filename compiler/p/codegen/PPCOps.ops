@@ -245,7 +245,6 @@ lwaux     lwaux     7c0002ea UpdateForm,IsLoad,AltFormat                        
 lwax      lwax      7c0002aa IsLoad,AltFormat                                                              // Load word algebraic indexed
 lwbrx     lwbrx     7c00042c IsLoad,AltFormat                                                              // Load word byte reverse indexed
 ldbrx     ldbrx     7c000428 IsLoad,AltFormat                                                              // Load doubleword byte reverse indexed
-lwsync    lwsync    7c2004ac IsSync                                                                        // Lightweight Synchronize
 lwz       lwz       80000000 IsLoad                                                                        // Load word and zero extend
 lwzu      lwzu      84000000 UpdateForm,IsLoad                                                             // Load word and zero extend with update
 lwzux     lwzux     7c00006e UpdateForm,IsLoad,AltFormat                                                   // Load word and zero with update indexed
