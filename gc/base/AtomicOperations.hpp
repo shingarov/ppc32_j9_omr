@@ -172,15 +172,11 @@ public:
 	 */
 	MMINLINE_DEBUG static uint64_t
 	lockCompareExchangeU64(volatile uint64_t *address, uint64_t oldValue, uint64_t newValue
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 	                       , uint32_t &lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
 	                      )
 	{
 		return VM_AtomicSupport::lockCompareExchangeU64(address, oldValue, newValue
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 		                                                , lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
 		                                               );
 	}
 
@@ -228,15 +224,11 @@ public:
 	 */
 	MMINLINE_DEBUG static uint64_t
 	addU64(volatile uint64_t *address, uint64_t addend
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 	       , uint32_t &lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
 	      )
 	{
 		return VM_AtomicSupport::addU64(address, addend
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 		                                , lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
 		                               );
 	}
 
@@ -252,15 +244,11 @@ public:
 	 */
 	MMINLINE_DEBUG static double
 	addDouble(volatile double *address, double addend
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 	          , uint32_t &lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
 	         )
 	{
 		return VM_AtomicSupport::addDouble(address, addend
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 		                                   , lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
 		                                  );
 	}
 
@@ -308,15 +296,11 @@ public:
 	 */
 	MMINLINE_DEBUG static uint64_t
 	subtractU64(volatile uint64_t *address, uint64_t value
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 	            , uint32_t &lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
                    )
 	{
 		return VM_AtomicSupport::subtractU64(address, value
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 		                                     , lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
 		                                    );
 	}
 
@@ -346,15 +330,11 @@ public:
 	 */
 	MMINLINE_DEBUG static void
 	setU64(volatile uint64_t *address, uint64_t value
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 	       , uint32_t &lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
               )
 	{
 		VM_AtomicSupport::setU64(address, value
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 		                         , lock
-#endif /* !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE) */
 		                        );
 	}
 
@@ -368,15 +348,11 @@ public:
 	 */
 	MMINLINE_DEBUG static uint64_t
 	getU64(volatile uint64_t *address
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 	       , uint32_t &lock
-#endif
 	      )
 	{
 		return VM_AtomicSupport::getU64(address
-#if !defined(OMR_ENV_DATA64) && defined(OMR_NO_64BIT_LCE)
 		                                , lock
-#endif
 		                               );
 	}
 
