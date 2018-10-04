@@ -69,9 +69,9 @@ ifeq (ppc,$(OMR_HOST_ARCH))
     endif
   endif
   ifeq (0,$(OMR_ENV_DATA64))
-    OBJECTS += cas8help$(OBJEXT)
+    #OBJECTS += cas8help$(OBJEXT)
     ifeq (linux,$(OMR_HOST_OS))
-      vpath cas8help.s unix/linux/ppc/32
+      #vpath cas8help.s unix/linux/ppc/32
     else
       vpath cas8help.s unix/aix/32
     endif
