@@ -1,0 +1,15 @@
+
+# For ARM V7
+export ARM_ARCH_FLAGS="-march=armv7-a -marm -mfpu=vfp -mfloat-abi=hard"
+ABI_PROFILE=armv7-vfp-hflt
+
+# Directory containing the cross compilation tool chain
+export OPENJ9_CC_DIR=/home/boris/work/j9arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf
+
+# Prefix for the cross compilation tools (without the trailing '-')
+export OPENJ9_CC_PREFIX=arm-linux-gnueabihf
+
+# Add the toolchain bin dir to the PATH for convenience
+export PATH=${OPENJ9_CC_DIR}/bin:${PATH}
+
+export GCCPREFIX=arm-linux-gnueabihf

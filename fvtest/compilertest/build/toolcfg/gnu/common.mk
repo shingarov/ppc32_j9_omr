@@ -128,7 +128,7 @@ ifeq ($(HOST_ARCH),x)
 endif
 
 ifeq ($(HOST_ARCH),p)
-    CX_DEFAULTOPT=-O2
+    CX_DEFAULTOPT=-O0
     
     ifeq ($(HOST_BITS),64)
         CX_DEFINES+=LINUXPPC LINUXPPC64 USING_ANSI
@@ -167,6 +167,7 @@ endif
 ifeq ($(BUILD_CONFIG),prod)
     CX_DEFINES+=$(CX_DEFINES_PROD)
     CX_FLAGS+=$(CX_FLAGS_PROD)
+    error 'Where did PROD come?'
 endif
 
 C_CMD?=$(CC_PATH)
@@ -230,6 +231,7 @@ endif
 ifeq ($(BUILD_CONFIG),prod)
     S_DEFINES+=$(S_DEFINES_PROD)
     S_FLAGS+=$(S_FLAGS_PROD)
+    error 'Where did PROD come?'
 endif
 
 S_DEFINES+=$(S_DEFINES_EXTRA)

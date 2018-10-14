@@ -19,6 +19,22 @@
 # SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
 ###############################################################################
 
+# bgs
+# DAMN this needs to be rationalized
+# force the platform
+GCCPREFIX=powerpc-linux-gnu
+AS=$(GCCPREFIX)-as
+CC=$(GCCPREFIX)-gcc
+CXX=$(GCCPREFIX)-g++
+AR=$(GCCPREFIX)-ar
+OBJCOPY=$(GCCPREFIX)-objcopy
+AS_PATH=$(AS)
+CC_PATH=$(CC)
+CXX_PATH=$(CXX)
+AR_PATH=$(AR)
+OBJCOPY_PATH=$(OBJCOPY)
+OMR_TOOLCHAIN=gcc
+
 #
 # "all" should be the first target to appear so it's the default
 #
@@ -46,7 +62,7 @@ FIXED_OBJBASE=$(subst \,/,$(JIT_OBJBASE))
 FIXED_DLL_DIR=$(subst \,/,$(JIT_DLL_DIR))
 
 # TODO - "debug" as default?
-BUILD_CONFIG?=prod
+BUILD_CONFIG?=debug
 
 #
 # This is where we setup our component dirs

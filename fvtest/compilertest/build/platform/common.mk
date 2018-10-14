@@ -19,6 +19,10 @@
 # SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
 ###############################################################################
 
+# bgs
+# DAMN, this needs to be rationalized
+PLATFORM=ppc-linux-gcc
+
 #
 # Common file for setting platform tokens
 # Mostly just guesses the platform and includes the relevant
