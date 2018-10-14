@@ -1,62 +1,147 @@
-/*******************************************************************************
- * Copyright (c) 2000, 2018 IBM Corp. and others
- *
- * This program and the accompanying materials are made available under
- * the terms of the Eclipse Public License 2.0 which accompanies this
- * distribution and is available at http://eclipse.org/legal/epl-2.0
- * or the Apache License, Version 2.0 which accompanies this distribution
- * and is available at https://www.apache.org/licenses/LICENSE-2.0.
- *
- * This Source Code may also be made available under the following Secondary
- * Licenses when the conditions for such availability set forth in the
- * Eclipse Public License, v. 2.0 are satisfied: GNU General Public License,
- * version 2 with the GNU Classpath Exception [1] and GNU General Public
- * License, version 2 with the OpenJDK Assembly Exception [2].
- *
- * [1] https://www.gnu.org/software/classpath/license.html
- * [2] http://openjdk.java.net/legal/assembly-exception.html
- *
- * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
- *******************************************************************************/
-
 #include <limits.h>
 #include <stdio.h>
 #include <stdint.h>
 #include "compile/Method.hpp"
+#include "control/CompileMethod.hpp"
+#include "compile/CompilationTypes.hpp"
 #include "il/DataTypes.hpp"
-#include "gtest/gtest.h"
-#include "OMRTestEnv.hpp"
+#include "ilgen/IlGeneratorMethodDetails_inlines.hpp"
+#include "ilgen/TypeDictionary.hpp"
+#include "ilgen/MethodBuilder.hpp"
 
-#if defined(OMR_OS_WINDOWS)
-#undef BYTE
-#include "windows.h"
-#define PATH_MAX MAXPATHLEN
-#else
-#include <dlfcn.h>
-#endif /* defined(OMR_OS_WINDOWS) */
+class IterativeFibonnaciMethod : public TR::MethodBuilder
+   {
+   public:
+   IterativeFibonnaciMethod(TR::TypeDictionary *types);
+   virtual bool buildIL();
+   };
+
+IterativeFibonnaciMethod::IterativeFibonnaciMethod(TR::TypeDictionary *types)
+   : TR::MethodBuilder(types)
+   {
+   DefineLine(LINETOSTR(__LINE__));
+   DefineFile(__FILE__);
+
+   DefineName("fib_iter");
+   DefineParameter("N", Int32);
+   DefineReturnType(Int32);
+   }
+
+bool
+IterativeFibonnaciMethod::buildIL()
+   {
+   TR::IlBuilder *returnZero = NULL;
+   IfThen(&returnZero,
+      EqualTo(
+         Load("N"),
+         ConstInt32(0)));
+   returnZero->Return(
+   returnZero->   ConstInt32(0));
+
+   TR::IlBuilder *returnOne = NULL;
+   IfThen(&returnOne,
+      EqualTo(
+         Load("N"),
+         ConstInt32(1)));
+   returnOne->Return(
+   returnOne->   ConstInt32(1));
+
+   Store("LastSum",
+      ConstInt32(0));
+
+   Store("Sum",
+      ConstInt32(1));
+
+   TR::IlBuilder *body = NULL;
+   ForLoopUp("I", &body,
+           ConstInt32(1),
+           Load("N"),
+           ConstInt32(1));
+
+   body->Store("tempSum",
+   body->   Add(
+   body->      Load("Sum"),
+   body->      Load("LastSum")));
+   body->Store("LastSum",
+   body->   Load("Sum"));
+   body->Store("Sum",
+   body->   Load("tempSum"));
+
+   Return(
+      Load("Sum"));
+
+   return true;
+   }
+
+
+
+typedef int32_t (IterativeFibFunctionType)(int32_t);
+IterativeFibFunctionType *_iterativeFibMethod;
+
+void compileTestMethods()
+{
+   int32_t rc = 0;
+   uint8_t *entry=0;
+
+   TR::TypeDictionary types;
+
+   IterativeFibonnaciMethod iterFibMethodBuilder(&types);
+
+
+   //rc = compileMethodBuilder(&iterFibMethodBuilder, &entry);
+   TR::ResolvedMethod resolvedMethod(&iterFibMethodBuilder);
+   TR::IlGeneratorMethodDetails details(&resolvedMethod);
+
+   entry = compileMethodFromDetails(NULL, details, warm, rc);
+
+
+
+
+
+   _iterativeFibMethod = (IterativeFibFunctionType *) entry;
+}
+
+int32_t iterativeFib(int32_t n)
+   {
+   if (n < 2)
+      {
+      return n;
+      }
+
+   int32_t last_sum = 1, lastlast_sum = 0;
+   for (int32_t i=1; i < n;i++)
+      {
+      int32_t temp_sum = last_sum + lastlast_sum;
+      lastlast_sum = last_sum;
+      last_sum = temp_sum;
+      }
+   return last_sum;
+   }
+
+void invokeTests()
+   {
+   for(uint32_t i = 0; i <= 20 ; i++)
+      {
+	   int32_t actual, expected;
+	   expected = iterativeFib(i);
+	   actual   = _iterativeFibMethod(i);
+	   if (actual != expected) {
+		   printf("kaboom.\n");
+	   } else {
+		 printf("fib(%d) = %d\n", i, actual);
+	   }
+      }
+   }
+
+
+extern "C" bool initializeTestJit(TR_RuntimeHelper *helperIDs, void **helperAddresses, int32_t numHelpers, char *options);
+extern "C" void shutdownJit();
 
 int main(int argc, char **argv)
    {
-   bool useOMRTestEnv = true;
-
-   /* Disable OMRTestEnv on some tests. This is needed when the test
-    * wants to initialize the JIT with special options which cannot be
-    * easily cleaned up.
-    */
-   const char *exitAssertFlag="--gtest_internal_run_death_test=";
-   for(int i = 0; i < argc; ++i)
-      {
-      if(!strncmp(argv[i], exitAssertFlag, strlen(exitAssertFlag)))
-         if(strstr(argv[i], "LimitFileTest.cpp") || strstr(argv[i], "LogFileTest.cpp"))
-            {
-            useOMRTestEnv = false;
-            }
-      }
-
-   ::testing::InitGoogleTest(&argc, argv);
-
-   if(useOMRTestEnv)
-      ::testing::AddGlobalTestEnvironment(new TestCompiler::OMRTestEnv);
-
-   return RUN_ALL_TESTS();
+	   initializeTestJit(0, 0, 0, "-Xjit:{*}(traceFull,log=LogFile)");
+	   compileTestMethods();
+	   invokeTests();
+		shutdownJit();
+   return 0;
    }

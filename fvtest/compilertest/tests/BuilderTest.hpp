@@ -31,20 +31,7 @@ namespace TestCompiler
 
 class BuilderTest;
 
-typedef int32_t (RecursiveFibFunctionType)(int32_t);
 typedef int32_t (IterativeFibFunctionType)(int32_t);
-typedef int32_t (DoWhileFibFunctionType)(int32_t);
-typedef int32_t (DoWhileFunctionType)(int32_t);
-typedef int32_t (WhileDoFibFunctionType)(int32_t);
-typedef int32_t (WhileDoFunctionType)(int32_t);
-typedef int32_t (BasicForLoopFunctionType)(int32_t, int32_t, int32_t);
-typedef int32_t (signatureCharI_I_testMethodType)(int32_t);
-typedef int32_t (IfFunctionType)(int32_t, int32_t);
-typedef int64_t (IfLongFunctionType)(int64_t, int64_t);
-typedef int32_t (LoopIfThenElseFunctionType)(int32_t, int32_t, int32_t, int32_t);
-typedef int32_t (ForLoopContinueFunctionType)(int32_t);
-typedef int32_t (ForLoopBreakFunctionType)(int32_t);
-typedef int32_t (ForLoopBreakAndContinueFunctionType)(int32_t);
 
 class BuilderTest : public TestDriver
    {
@@ -54,8 +41,6 @@ class BuilderTest : public TestDriver
    virtual void compileNestedControlFlowLoopTestMethods();
    virtual void invokeControlFlowTests();
    virtual void invokeNestedControlFlowLoopTests();
-
-   protected:
    virtual void compileTestMethods();
    virtual void invokeTests();
 
