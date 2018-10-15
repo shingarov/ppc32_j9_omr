@@ -1,5 +1,5 @@
 
 # Prefix for the cross compilation tools (without the trailing '-')
-export OPENJ9_CC_PREFIX=powerpc-linux-gnu
+export OPENJ9_CC_PREFIX=powerpc-linux-gnuspe
 
-export GCCPREFIX=powerpc-linux-gnu
+export GCCPREFIX=powerpc-linux-gnuspe
