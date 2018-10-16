@@ -139,7 +139,8 @@ extern "C" void shutdownJit();
 
 int main(int argc, char **argv)
    {
-	   initializeTestJit(0, 0, 0, "-Xjit:{*}(traceFull,log=LogFile)");
+	   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration,{*}(traceFull,log=LogFile)");
+	//   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration");
 	   compileTestMethods();
 	   invokeTests();
 		shutdownJit();
