@@ -22,8 +22,6 @@ IterativeFibonnaciMethod::IterativeFibonnaciMethod(TR::TypeDictionary *types)
    DefineLine(LINETOSTR(__LINE__));
    DefineFile(__FILE__);
 
-   DefineName("fib_iter");
-   DefineParameter("N", Int32);
    DefineReturnType(Int32);
    }
 
@@ -38,7 +36,7 @@ IterativeFibonnaciMethod::buildIL()
 
 
 
-typedef int32_t (IterativeFibFunctionType)(int32_t);
+typedef int32_t (IterativeFibFunctionType)();
 IterativeFibFunctionType *_iterativeFibMethod;
 
 void compileTestMethods()
@@ -64,32 +62,10 @@ void compileTestMethods()
    _iterativeFibMethod = (IterativeFibFunctionType *) entry;
 }
 
-int32_t iterativeFib(int32_t n)
-   {
-   if (n < 2)
-      {
-      return n;
-      }
-
-   int32_t last_sum = 1, lastlast_sum = 0;
-   for (int32_t i=1; i < n;i++)
-      {
-      int32_t temp_sum = last_sum + lastlast_sum;
-      lastlast_sum = last_sum;
-      last_sum = temp_sum;
-      }
-   return last_sum;
-   }
 
 void invokeTests()
    {
-   for(uint32_t i = 0; i <= 20 ; i++)
-      {
-	   int32_t actual, expected;
-	   expected = iterativeFib(i);
-	   actual   = _iterativeFibMethod(i);
-	   printf("fib(%d) = %d\n", i, actual);
-      }
+	   printf("fib = %d\n", _iterativeFibMethod() );
    }
 
 
