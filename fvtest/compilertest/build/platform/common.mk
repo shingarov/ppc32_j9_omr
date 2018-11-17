@@ -21,7 +21,7 @@
 
 # bgs
 # DAMN, this needs to be rationalized
-PLATFORM=ppc-linux-gcc
+# PLATFORM=ppc-linux-gcc
 
 #
 # Common file for setting platform tokens

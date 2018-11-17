@@ -22,12 +22,11 @@
 # bgs
 # DAMN this needs to be rationalized
 # force the platform
-GCCPREFIX=powerpc-linux-gnu
-AS=$(GCCPREFIX)-as
-CC=$(GCCPREFIX)-gcc
-CXX=$(GCCPREFIX)-g++
-AR=$(GCCPREFIX)-ar
-OBJCOPY=$(GCCPREFIX)-objcopy
+AS=as
+CC=gcc
+CXX=g++
+AR=ar
+OBJCOPY=objcopy
 AS_PATH=$(AS)
 CC_PATH=$(CC)
 CXX_PATH=$(CXX)

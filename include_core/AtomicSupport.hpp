@@ -467,7 +467,7 @@ public:
 	lockCompareExchange(volatile uintptr_t * address, uintptr_t oldValue, uintptr_t newValue, bool readBeforeCAS = false)
 	{
 #if defined(OMR_ENV_DATA64)
-		return (uintptr_t)lockCompareExchangeU64((volatile uint64_t *)address, (uint64_t)oldValue, (uint64_t)newValue, readBeforeCAS);
+		return (uintptr_t)0; // lockCompareExchangeU64((volatile uint64_t *)address, (uint64_t)oldValue, (uint64_t)newValue, readBeforeCAS);
 #else /* defined(OMR_ENV_DATA64) */
 		return (uintptr_t)lockCompareExchangeU32((volatile uint32_t *)address, (uint32_t)oldValue, (uint32_t)newValue, readBeforeCAS);
 #endif /* defined(OMR_ENV_DATA64) */
