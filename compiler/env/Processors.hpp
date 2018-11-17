@@ -46,10 +46,15 @@ enum Processor
       #include "x/env/X86ProcessorEnum.hpp"
    LastX86ProcessorMark,
 
+   FirstRiscvProcessorMark,
+      #include "r/env/RISCVProcessorEnum.hpp"
+   LastRiscvProcessorMark,
+
    NumARMProcessors = LastARMProcessorMark-FirstARMProcessorMark-1,
    NumPowerProcessors = LastPowerProcessorMark-FirstPowerProcessorMark-1,
    NumZProcessors = LastZProcessorMark-FirstZProcessorMark-1,
-   NumX86Processors = LastX86ProcessorMark-FirstX86ProcessorMark-1
+   NumX86Processors = LastX86ProcessorMark-FirstX86ProcessorMark-1,
+   NumRiscvProcessors = LastRiscvProcessorMark-FirstRiscvProcessorMark-1
 
    };
 
@@ -132,6 +137,11 @@ enum TR_Processor
    TR_PPCp8,
    TR_LastPPCProcessor,
    TR_PPCp9 = TR_LastPPCProcessor,
+
+   // RISC-V Processors
+   TR_FirstRISCVProcessor,
+   TR_FreedomU540,
+   TR_LastRISCVProcessor,
 
    // X86 Processors
    TR_FirstX86Processor,

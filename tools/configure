@@ -2285,6 +2285,8 @@ case $build_cpu in #(
     OMR_BUILD_ARCH=x86 ;; #(
   x86_64) :
     OMR_BUILD_ARCH=x86 ;; #(
+  riscv64) :
+    OMR_BUILD_ARCH=riscv64 ;; #(
   *) :
     as_fn_error $? "Unable to derive OMR_BUILD_ARCH from build_cpu: $build_cpu" "$LINENO" 5
 	 ;;

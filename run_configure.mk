@@ -94,6 +94,9 @@ endif
 ifneq (,$(findstring linux_ztpf_390-64,$(SPEC)))
   include $(CONFIG_INCL_DIR)/configure_linux_ztpf_390.mk
 endif
+ifneq (,$(findstring linux_riscv64,$(SPEC)))
+  include $(CONFIG_INCL_DIR)/configure_linux_riscv.mk
+endif
 endif # ifdef CONFIG_INCL_DIR
 CONFIGURE_ARGS += $(EXTRA_CONFIGURE_ARGS)
 

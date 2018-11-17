@@ -690,6 +690,7 @@ OMR_ARCH_X86
 OMR_ARCH_AARCH64
 OMR_ARCH_ARM
 OMR_ARCH_POWER
+OMR_ARCH_RISCV64
 OMR_PORT_ASYNC_HANDLER
 OMR_GC_VLHGC
 OMR_GC_STACCATO
@@ -864,6 +865,7 @@ enable_OMR_GC_STACCATO
 enable_OMR_GC_VLHGC
 enable_OMR_PORT_ASYNC_HANDLER
 enable_OMR_ARCH_POWER
+enable_OMR_ARCH_RISCV64
 enable_OMR_ARCH_ARM
 enable_OMR_ARCH_AARCH64
 enable_OMR_ARCH_X86
@@ -1636,6 +1638,7 @@ Optional Features:
   --enable-OMR_ARCH_POWER
   --enable-OMR_ARCH_ARM
   --enable-OMR_ARCH_AARCH64
+  --enable-OMR_ARCH_RISCV64
 
   --enable-OMR_ARCH_X86
   --enable-OMR_ARCH_S390
@@ -6119,6 +6122,21 @@ else
   OMR_PORT_ASYNC_HANDLER=0
 
 
+fi
+
+
+# Check whether --enable-OMR_ARCH_RISCV64 was given.
+if test "${enable_OMR_ARCH_RISCV64+set}" = set; then :
+  enableval=$enable_OMR_ARCH_RISCV64; if test "x${enableval}" = xyes; then :
+  OMR_ARCH_RISCV64=1
+
+   $as_echo "#define OMR_ARCH_RISCV64 1" >>confdefs.h
+
+else
+  OMR_ARCH_RISCV64=0
+fi
+else
+  OMR_ARCH_RISCV64=0
 fi
 
 
