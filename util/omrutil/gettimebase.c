@@ -30,6 +30,10 @@
 #include <time.h>
 #endif
 
+#if defined(LINUX) && defined(__riscv)
+#include <time.h>
+#endif
+
 uint64_t
 getTimebase(void)
 {
@@ -92,6 +96,12 @@ getTimebase(void)
 	int64_t tsc_int;
 	asm volatile("mrs %0, cntvct_el0" : "=r"(tsc_int));
 	tsc = (uint64_t)tsc_int;
+#elif defined(__riscv)
+	/* For now, use the system nano clock */
+	struct timespec ts;
+	if (0 == clock_gettime(CLOCK_MONOTONIC, &ts)) {
+		tsc = ((uint64_t)ts.tv_sec * 1000000000) + (uint64_t)ts.tv_nsec;
+	}
 #else
 #error "Unsupported platform"
 #endif
