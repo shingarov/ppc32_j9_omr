@@ -19,9 +19,4 @@
 # SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
 ###############################################################################
 
-HOST_ARCH=r
-HOST_SUBARCH=
-HOST_BITS=64
-OS=linux
-C_COMPILER=gcc
-TOOLCHAIN=gnu
+HOST_DEFINES+=TR_HOST_RISCV

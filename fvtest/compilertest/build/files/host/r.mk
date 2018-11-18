@@ -19,9 +19,8 @@
 # SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
 ###############################################################################
 
-HOST_ARCH=r
-HOST_SUBARCH=
-HOST_BITS=64
-OS=linux
-C_COMPILER=gcc
-TOOLCHAIN=gnu
+JIT_PRODUCT_SOURCE_FILES+=\
+    $(JIT_PRODUCT_DIR)/r/runtime/AsmUtil.spp \
+    $(JIT_PRODUCT_DIR)/r/runtime/CodeDispatch.spp \
+    $(JIT_PRODUCT_DIR)/r/runtime/CodeSync.cpp \
+    $(JIT_OMR_DIRTY_DIR)/r/runtime/OMRCodeCacheConfig.cpp
