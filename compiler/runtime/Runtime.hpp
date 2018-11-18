@@ -163,6 +163,12 @@ enum TR_RuntimeHelper
    TR_numRuntimeHelpers = TR_ARM64numRuntimeHelpers
 #elif defined(TR_HOST_S390)
    TR_numRuntimeHelpers = TR_S390numRuntimeHelpers
+#elif defined(TR_HOST_RISCV)
+#if defined(TR_HOST_64BIT)
+   TR_numRuntimeHelpers = TR_RISCV64numRuntimeHelpers
+#else
+   TR_numRuntimeHelpers = TR_RISCV32numRuntimeHelpers
+#endif
 #endif
 
    };

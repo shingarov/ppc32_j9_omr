@@ -730,6 +730,9 @@ SETVAL(TR_ARMnumRuntimeHelpers,TR_FSRH+111)
 
 SETVAL(TR_ARM64numRuntimeHelpers,TR_FSRH+0)
 
+SETVAL(TR_RISCV32numRuntimeHelpers,TR_FSRH+0)
+SETVAL(TR_RISCV64numRuntimeHelpers,TR_FSRH+0)
+
 SETVAL(TR_S390longDivide,TR_FSRH)
 SETVAL(TR_S390interfaceCallHelper,TR_FSRH+1)
 SETVAL(TR_S390nativeStaticHelper,TR_FSRH+2)
