@@ -272,8 +272,8 @@ ifeq ($(OMR_HOST_OS),$(filter $(OMR_HOST_OS),linux linux_ztpf))
   endif
 
   ifeq (riscv64,$(OMR_HOST_ARCH))
-    vpath % $(PORT_SRCDIR)riscv64
-    MODULE_INCLUDES += $(PORT_SRCDIR)riscv64
+    vpath % $(PORT_SRCDIR)linuxriscv64
+    MODULE_INCLUDES += $(PORT_SRCDIR)linuxriscv64
   endif
 
   ifeq (x86,$(OMR_HOST_ARCH))
