@@ -597,6 +597,11 @@ public:
    const char * getName(TR::RealRegister *, TR_RegisterSizes size = TR_WordReg);
    void print(TR::FILE *, TR::PPCHelperCallSnippet *);
 #endif
+#if defined(TR_TARGET_RISCV)
+   virtual const char * getOpCodeName(TR::InstOpCode *);
+   const char * getName(TR::RealRegister *, TR_RegisterSizes size = TR_WordReg);
+   void print(TR::FILE *, TR::PPCHelperCallSnippet *);
+#endif
 #if defined(TR_TARGET_ARM)
    virtual void printARMDelayedOffsetInstructions(TR::FILE *pOutFile, TR::ARMMemInstruction *instr);
    virtual void printARMHelperBranch(TR::SymbolReference *symRef, uint8_t *cursor, TR::FILE *outFile, const char * opcodeName = "bl");

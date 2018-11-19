@@ -2776,7 +2776,7 @@ TR_Debug::printCommonDataMiningAnnotations(TR::FILE *pOutFile, TR::Instruction *
   }
 
 
-#if !defined(TR_TARGET_POWER) && !defined(TR_TARGET_ARM)
+#if !defined(TR_TARGET_POWER) && !defined(TR_TARGET_ARM) && !defined(TR_TARGET_RISCV)
 void
 TR_Debug::print(TR::FILE *pOutFile, TR::Instruction * inst)
    {
@@ -2799,6 +2799,14 @@ TR_Debug::print(TR::FILE *pOutFile, TR::Instruction * inst, const char *title)
 #endif
 
 #if defined(TR_TARGET_POWER)
+   if (TR::Compiler->target.cpu.isPower())
+      {
+      print(pOutFile, inst);
+      return;
+      }
+#endif
+
+#if defined(TR_TARGET_RISCV)
    if (TR::Compiler->target.cpu.isPower())
       {
       print(pOutFile, inst);
