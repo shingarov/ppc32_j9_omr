@@ -47,9 +47,7 @@ FUNC_LABEL(compiledCodeDispatch):
 #else
 .compiledCodeDispatch:
 #endif
-        mr      r2, r5
-        mtctr   r4
-        bctr
+        or x0, x0, x0
 
 #if defined(LINUXPPC64)
 #if !defined(__LITTLE_ENDIAN__)
