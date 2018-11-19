@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#ifndef TR_TARGET_POWER
+#ifndef TR_TARGET_RISCV
 int jitDebugPPC;
 #else
 
@@ -54,18 +54,18 @@ int jitDebugPPC;
 #include "il/symbol/LabelSymbol.hpp"               // for LabelSymbol
 #include "infra/Assert.hpp"                        // for TR_ASSERT
 #include "infra/List.hpp"                          // for ListIterator, etc
-#include "p/codegen/PPCHelperCallSnippet.hpp"
-#include "p/codegen/PPCInstruction.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"
-#include "p/codegen/PPCOutOfLineCodeSection.hpp"
+#include "r/codegen/PPCHelperCallSnippet.hpp"
+#include "r/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"
+#include "r/codegen/PPCOutOfLineCodeSection.hpp"
 #include "codegen/Snippet.hpp"                     // for TR::PPCSnippet, etc
 #include "ras/Debug.hpp"                           // for TR_Debug
 #include "runtime/Runtime.hpp"
 
 #ifdef J9_PROJECT_SPECIFIC
-#include "p/codegen/CallSnippet.hpp"               // for TR::PPCCallSnippet, etc
-#include "p/codegen/InterfaceCastSnippet.hpp"
-#include "p/codegen/StackCheckFailureSnippet.hpp"
+#include "r/codegen/CallSnippet.hpp"               // for TR::PPCCallSnippet, etc
+#include "r/codegen/InterfaceCastSnippet.hpp"
+#include "r/codegen/StackCheckFailureSnippet.hpp"
 #endif
 
 namespace TR { class PPCForceRecompilationSnippet; }
