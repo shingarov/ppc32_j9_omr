@@ -445,12 +445,16 @@ ifeq ($(HOST_BITS),32)
     endif
 endif
 
-ifeq ($(HOST_BITS),64)
-    SOLINK_FLAGS+=-m64
-endif
+#ifeq ($(HOST_BITS),64)
+#    SOLINK_FLAGS+=-m64
+#endif
 
 ifeq ($(HOST_ARCH),p)
     SOLINK_FLAGS+=-fpic
+endif
+
+ifeq ($(HOST_ARCH),r)
+    SOLINK_FLAGS+=-fPIC
 endif
 
 ifeq ($(HOST_ARCH),z)
