@@ -942,6 +942,83 @@ public:
    uint8_t* print(TR::FILE *pOutFile, TR::PPCArrayCopyCallSnippet *snippet, uint8_t *cursor);
 
 #endif
+#ifdef TR_TARGET_RISCV
+   void printPrefix(TR::FILE *, TR::Instruction *);
+
+   void print(TR::FILE *, TR::PPCDepInstruction *);
+   void print(TR::FILE *, TR::PPCLabelInstruction *);
+   void print(TR::FILE *, TR::PPCDepLabelInstruction *);
+   void print(TR::FILE *, TR::PPCConditionalBranchInstruction *);
+   void print(TR::FILE *, TR::PPCDepConditionalBranchInstruction *);
+   void print(TR::FILE *, TR::PPCAdminInstruction *);
+   void print(TR::FILE *, TR::PPCImmInstruction *);
+   void print(TR::FILE *, TR::PPCSrc1Instruction *);
+   void print(TR::FILE *, TR::PPCDepImmInstruction *);
+   void print(TR::FILE *, TR::PPCDepImmSymInstruction *);
+   void print(TR::FILE *, TR::PPCTrg1Instruction *);
+   void print(TR::FILE *, TR::PPCTrg1Src1Instruction *);
+   void print(TR::FILE *, TR::PPCTrg1ImmInstruction *);
+   void print(TR::FILE *, TR::PPCTrg1Src1ImmInstruction *);
+   void print(TR::FILE *, TR::PPCTrg1Src1Imm2Instruction *);
+   void print(TR::FILE *, TR::PPCSrc2Instruction *);
+   void print(TR::FILE *, TR::PPCTrg1Src2Instruction *);
+   void print(TR::FILE *, TR::PPCTrg1Src2ImmInstruction *);
+   void print(TR::FILE *, TR::PPCTrg1Src3Instruction *);
+   void print(TR::FILE *, TR::PPCMemSrc1Instruction *);
+   void print(TR::FILE *, TR::PPCMemInstruction *);
+   void print(TR::FILE *, TR::PPCTrg1MemInstruction *);
+   void print(TR::FILE *, TR::PPCControlFlowInstruction *);
+#ifdef J9_PROJECT_SPECIFIC
+   void print(TR::FILE *, TR::PPCVirtualGuardNOPInstruction *);
+#endif
+
+   TR::Instruction* getOutlinedTargetIfAny(TR::Instruction *instr);
+   void printPPCOOLSequences(TR::FILE *pOutFile);
+
+   const char * getPPCRegisterName(uint32_t regNum, bool useVSR = false);
+
+   void print(TR::FILE *, TR::RealRegister *, TR_RegisterSizes size = TR_WordReg);
+   void print(TR::FILE *, TR::RegisterDependency *);
+   void print(TR::FILE *, TR::RegisterDependencyConditions *);
+   void printPPCGCRegisterMap(TR::FILE *, TR::GCRegisterMap *);
+
+   void print(TR::FILE *, TR::MemoryReference *, bool d_form = true);
+
+   uint8_t * printEmitLoadPPCHelperAddrToCtr(TR::FILE *, uint8_t*, int32_t, TR::RealRegister *);
+   uint8_t * printEmitLoadIndirectPPCHelperAddrToCtr(TR::FILE *, uint8_t*, TR::RealRegister *, TR::RealRegister *, int32_t);
+   uint8_t * printPPCArgumentsFlush(TR::FILE *, TR::Node *, uint8_t *, int32_t);
+   void printInstructionComment(TR::FILE *pOutFile, int32_t tabStops, TR::Instruction *instr);
+
+   void printp(TR::FILE *, TR::Snippet *);
+   void print(TR::FILE *, TR::PPCMonitorEnterSnippet *);
+   void print(TR::FILE *, TR::PPCMonitorExitSnippet *);
+   void print(TR::FILE *, TR::PPCReadMonitorSnippet *);
+   void print(TR::FILE *, TR::PPCHeapAllocSnippet *);
+   void print(TR::FILE *, TR::PPCAllocPrefetchSnippet *);
+
+
+   void print(TR::FILE *, TR::UnresolvedDataSnippet *);
+
+#ifdef J9_PROJECT_SPECIFIC
+   void print(TR::FILE *, TR::PPCStackCheckFailureSnippet *);
+   void print(TR::FILE *, TR::PPCInterfaceCastSnippet *);
+   void print(TR::FILE *, TR::PPCUnresolvedCallSnippet *);
+   void print(TR::FILE *, TR::PPCVirtualSnippet *);
+   void print(TR::FILE *, TR::PPCVirtualUnresolvedSnippet *);
+   void print(TR::FILE *, TR::PPCInterfaceCallSnippet *);
+   void print(TR::FILE *, TR::PPCForceRecompilationSnippet *);
+   void print(TR::FILE *, TR::PPCRecompilationSnippet *);
+   void print(TR::FILE *, TR::PPCCallSnippet *);
+#endif
+
+
+
+   void printMemoryReferenceComment(TR::FILE *pOutFile, TR::MemoryReference *mr);
+   void print(TR::FILE *, TR::PPCLockReservationEnterSnippet *);
+   void print(TR::FILE *, TR::PPCLockReservationExitSnippet *);
+   uint8_t* print(TR::FILE *pOutFile, TR::PPCArrayCopyCallSnippet *snippet, uint8_t *cursor);
+
+#endif
 #ifdef TR_TARGET_ARM
    char * fullOpCodeName(TR::Instruction *instr);
    void printPrefix(TR::FILE *, TR::Instruction *);
