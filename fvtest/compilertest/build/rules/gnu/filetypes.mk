@@ -193,6 +193,46 @@ RULE.spp=$(eval $(DEF_RULE.spp))
 endif # ($(HOST_ARCH),p) 
 ##### END PPC SPECIFIC RULES #####
 
+##### START RISC-V SPECIFIC RULES #####
+ifeq ($(HOST_ARCH),r) 
+
+#
+# Compile .ipp file into .o file
+#
+define DEF_RULE.ipp
+$(1).s: $(2) | jit_createdirs
+	$$(IPP_CMD) $$(IPP_FLAGS) 's/\!/\#/g' $$< > $$@
+
+JIT_DIR_LIST+=$(dir $(1))
+
+jit_cleanobjs::
+	rm -f $(1).s
+
+$(call RULE.s,$(1),$(1).s)
+endef # DEF_RULE.ipp
+
+RULE.ipp=$(eval $(DEF_RULE.ipp))
+
+#
+# Compile .spp file into .o file
+#
+define DEF_RULE.spp
+$(1).ipp: $(2) | jit_createdirs
+	$$(SPP_CMD) $$(SPP_FLAGS) $$(patsubst %,-D%,$$(SPP_DEFINES)) $$(patsubst %,-I'%',$$(SPP_INCLUDES)) -o $$@ -x assembler-with-cpp -E -P $$<
+
+JIT_DIR_LIST+=$(dir $(1))
+
+jit_cleanobjs::
+	rm -f $(1).ipp
+
+$(call RULE.ipp,$(1),$(1).ipp)
+endef # DEF_RULE.spp
+
+RULE.spp=$(eval $(DEF_RULE.spp))
+
+endif # ($(HOST_ARCH),r) 
+##### END RISC-V SPECIFIC RULES #####
+
 ##### START Z SPECIFIC RULES #####
 ifeq ($(HOST_ARCH),z)
 

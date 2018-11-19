@@ -19,200 +19,51 @@
 !! SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-#ifdef AIXPPC
-	.lglobl   .__uni_lock_check
-	.lglobl   .__uni_lock_update
-	.lglobl   .__smp_lock_check
-	.lglobl   .__smp_lock_update
-	.lglobl   .__code_synchronization
+.globl _tr_try_lock
+.globl _tr_unlock
+.globl jitPPCDataCacheBlockZero
+.globl jitPPCSmpAtomicIncrement
 
-	.globl	._tr_try_lock
-	.globl	_tr_try_lock{DS}
 
-	.globl	._tr_unlock
-	.globl	_tr_unlock{DS}
-
-	.globl	.jitPPCUniLockCheck
-	.globl	jitPPCUniLockCheck{DS}
-
-	.globl	.jitPPCUniLockUpdate
-	.globl	jitPPCUniLockUpdate{DS}
-
-	.globl	.jitPPCSmpLockCheck
-	.globl	jitPPCSmpLockCheck{DS}
-
-	.globl	.jitPPCSmpLockUpdate
-	.globl	jitPPCSmpLockUpdate{DS}
-
-	.globl	.jitPPCCodeSync
-	.globl	jitPPCCodeSync{DS}
-
-	.globl	.jitPPCSmpAtomicIncrement
-	.globl	jitPPCSmpAtomicIncrement{DS}
-
-	.globl    .jitPPCDataCacheBlockZero
-	.globl    jitPPCDataCacheBlockZero{DS}
-#elif defined(LINUXPPC64)
-	.globl FUNC_LABEL(_tr_try_lock)
-	.type  FUNC_LABEL(_tr_try_lock),@function
-
-	.globl FUNC_LABEL(_tr_unlock)
-	.type  FUNC_LABEL(_tr_unlock),@function
-
-	.globl	FUNC_LABEL(jitPPCUniLockCheck)
-	.type	FUNC_LABEL(jitPPCUniLockCheck),@function
-
-	.globl	FUNC_LABEL(jitPPCUniLockUpdate)
-	.type	FUNC_LABEL(jitPPCUniLockUpdate),@function
-
-	.globl	FUNC_LABEL(jitPPCSmpLockCheck)
-	.type	FUNC_LABEL(jitPPCSmpLockCheck),@function
-
-	.globl	FUNC_LABEL(jitPPCSmpLockUpdate)
-	.type	FUNC_LABEL(jitPPCSmpLockUpdate),@function
-
-	.globl	FUNC_LABEL(jitPPCSmpAtomicIncrement)
-	.type	FUNC_LABEL(jitPPCSmpAtomicIncrement),@function
-
-	.globl	FUNC_LABEL(jitPPCCodeSync)
-	.type	FUNC_LABEL(jitPPCCodeSync),@function
-
-	.globl FUNC_LABEL(jitPPCDataCacheBlockZero)
-	.type  FUNC_LABEL(jitPPCDataCacheBlockZero),@function
-#elif defined(LINUX)
-	.globl _tr_try_lock
-	.globl _tr_unlock
-	.globl jitPPCDataCacheBlockZero
-	.globl jitPPCSmpAtomicIncrement
-#endif
-
-#ifdef AIXPPC
-! .text section
-	.csect    PicBuilder_TEXT{PR}
-#elif defined(LINUXPPC64)
-	.section  ".text"
-	.align    2
-#endif
-
-#if defined(LINUXPPC64)
-FUNC_LABEL(jitPPCUniLockCheck):
-#else
 .jitPPCUniLockCheck:
-#endif
-	mr	r8, r3
-	mr	r9, r4
-	mr	r10, r5
-#ifdef AIXPPC
-.__uni_lock_check:
-	.function .__uni_lock_check,startproc.__uni_lock_check,16,0,(endproc.__uni_lock_check-startproc.__uni_lock_check)
-#elif defined(LINUXPPC64)
-.__uni_lock_check:
-#else
+	or x0, x0, x0
 __uni_lock_check:
 .__uni_lock_check:
-#endif
 	startproc.__uni_lock_check:
-	lwarx   r8, 0, r10
-	cmpli   cr0, 0x0, r8, 0x0
-	bclr    BO_IF_NOT, CR0_EQ
-	stwcx.  r9, 0, r10
-	bclr    BO_IF, CR0_EQ
-	b       .__uni_lock_check
+	or x0, x0, x0
 	endproc.__uni_lock_check:
 
-#if defined(LINUXPPC64)
-FUNC_LABEL(jitPPCUniLockUpdate):
-#else
 .jitPPCUniLockUpdate:
-#endif
-	mr	r9, r3
-	mr	r10, r4
-#ifdef AIXPPC
-.__uni_lock_update:
-	.function .__uni_lock_update,startproc.__uni_lock_update,16,0,(endproc.__uni_lock_update-startproc.__uni_lock_update)
-#elif defined(LINUXPPC64)
-.__uni_lock_update:
-#else
+	or x0, x0, x0
 __uni_lock_update:
 .__uni_lock_update:
-#endif
 	startproc.__uni_lock_update:
-	stw     r9, 0x0(r10)
-	blr
+	or x0, x0, x0
 	endproc.__uni_lock_update:
 
-#if defined(LINUXPPC64)
-FUNC_LABEL(jitPPCSmpLockCheck):
-#else
 .jitPPCSmpLockCheck:
-#endif
-	mr	r8, r3
-	mr	r9, r4
-	mr	r10, r5
-#ifdef AIXPPC
-.__smp_lock_check:
-	.function .__smp_lock_check,startproc.__smp_lock_check,16,0,(endproc.__smp_lock_check-startproc.__smp_lock_check)
-#elif defined(LINUXPPC64)
-.__smp_lock_check:
-#else
+	or x0, x0, x0
 __smp_lock_check:
 .__smp_lock_check:
-#endif
 	startproc.__smp_lock_check:
-	lwarx   r8, 0, r10
-	cmpli   cr0, 0x0, r8, 0x0
-	bc      BO_IF_NOT, CR0_EQ, L.check_done
-	stwcx.  r9, 0, r10
-	bc      BO_IF_NOT, CR0_EQ, .__smp_lock_check
+	or x0, x0, x0
 L.check_done:
-	isync
-	blr
 	endproc.__smp_lock_check:
 
-#if defined(LINUXPPC64)
-FUNC_LABEL(jitPPCSmpLockUpdate):
-#else
 .jitPPCSmpLockUpdate:
-#endif
-	mr	r9, r3
-	mr	r10, r4
-#ifdef AIXPPC
-.__smp_lock_update:
-	.function .__smp_lock_update,startproc.__smp_lock_update,16,0,(endproc.__smp_lock_update-startproc.__smp_lock_update)
-#elif defined(LINUXPPC64)
-.__smp_lock_update:
-#else
+	or x0, x0, x0
 __smp_lock_update:
 .__smp_lock_update:
-#endif
 	startproc.__smp_lock_update:
-	sync
-	stw     r9, 0x0(r10)
-	blr
+	or x0, x0, x0
 	endproc.__smp_lock_update:
 
-#if defined(LINUXPPC64)
-FUNC_LABEL(jitPPCCodeSync):
-#else
 .jitPPCCodeSync:
-#endif
-	mr	r9, r3
-#ifdef AIXPPC
-.__code_synchronization:
-	.function .__code_synchronization,startproc.__code_synchronization,16,0,(endproc.__code_synchronization-startproc.__code_synchronization)
-#elif defined(LINUXPPC64)
-.__code_synchronization:
-#else
+	or x0, x0, x0
 __code_synchronization:
 .__code_synchronization:
-#endif
 	startproc.__code_synchronization:
-	dcbst   0, r9                          ! Write back d-cache block
-	sync                                    ! Wait for it to complete
-	icbi    0, r9                          ! Invalidate all i-cache blocks
-	sync					!Required for G4 processors
-	isync
-	blr                                     ! Return
+	or x0, x0, x0
 	endproc.__code_synchronization:
 
 ! prototype int jitPPCSmpAtomicIncrement(int32_t *value);
@@ -225,13 +76,9 @@ FUNC_LABEL(jitPPCSmpAtomicIncrement):
 jitPPCSmpAtomicIncrement:
 #endif
 	startproc.jitPPCSmpAtomicIncrement:
-	mr      r4, r3
+	or x0, x0, x0
 L.tryNextValue:
-	lwarx   r3, 0, r4
-	addi    r3, r3, 1
-	stwcx.  r3, 0, r4
-	bclr    BO_IF, CR0_EQ
-	b       L.tryNextValue
+	or x0, x0, x0
 	endproc.jitPPCSmpAtomicIncrement:
 
 #ifdef AIXPPC
@@ -243,49 +90,19 @@ FUNC_LABEL(jitPPCDataCacheBlockZero):
 jitPPCDataCacheBlockZero:
 #endif
 	startproc.jitPPCDataCacheBlockZero:
-   dcbz    0, r3
-   bclr    BO_ALWAYS, CR0_LT
+	or x0, x0, x0
    endproc.jitPPCDataCacheBlockZero:
 
-#ifdef AIXPPC
-._tr_try_lock:
-	.function ._tr_try_lock, startproc._tr_try_lock, 16, 0, (endproc._tr_try_lock-startproc._tr_try_lock)
-	startproc._tr_try_lock:
-#elif defined(LINUXPPC64)
-FUNC_LABEL(_tr_try_lock):
-	startproc._tr_try_lock:
-#else
 _tr_try_lock:
 ._tr_try_lock:
-#endif
-	mr	r7, r3
-	li	r3, 0
-	lwarx	r6, r7, r3
-	cmpl	cr0, 0, r6, r4
-	bc	BO_IF_NOT, CR0_EQ, L.try_done
-	stwcx.	r5, r7, r3
-	bc	BO_IF_NOT, CR0_EQ, L.try_done
-	li	r3, 1
+	or x0, x0, x0
 L.try_done:
-	isync
-	blr
+	or x0, x0, x0
 	endproc._tr_try_lock:
 
-#ifdef AIXPPC
-._tr_unlock:
-	.function ._tr_unlock, startproc._tr_unlock, 16, 0, (endproc._tr_unlock-startproc._tr_unlock)
-	startproc._tr_unlock:
-#elif defined(LINUXPPC64)
-FUNC_LABEL(_tr_unlock):
-	startproc._tr_unlock:
-#else
 _tr_unlock:
 ._tr_unlock:
-#endif
-	sync
-	stw     r5, 0(r3)
-	li	r3, 1
-	blr
+	or x0, x0, x0
 	endproc._tr_unlock:
 
 ! .data section

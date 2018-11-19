@@ -318,6 +318,43 @@ ifeq ($(HOST_ARCH),p)
 endif
 
 #
+# Setup CPP and SED to preprocess RISC-V Assembly Files
+# 
+ifeq ($(HOST_ARCH),r)
+    IPP_CMD=$(SED_PATH)
+    
+    ifeq ($(BUILD_CONFIG),debug)
+        IPP_FLAGS+=$(IPP_FLAGS_DEBUG)
+    endif
+
+    ifeq ($(BUILD_CONFIG),prod)
+        IPP_FLAGS+=$(IPP_FLAGS_PROD)
+    endif
+    
+    IPP_FLAGS+=$(IPP_FLAGS_EXTRA)
+    
+    SPP_CMD=$(CC_PATH)
+    
+    SPP_INCLUDES=$(PRODUCT_INCLUDES)
+    
+    SPP_DEFINES+=$(CX_DEFINES)
+    SPP_FLAGS+=$(CX_FLAGS)
+    
+    ifeq ($(BUILD_CONFIG),debug)
+        SPP_DEFINES+=$(SPP_DEFINES_DEBUG)
+        SPP_FLAGS+=$(SPP_FLAGS_DEBUG)
+    endif
+
+    ifeq ($(BUILD_CONFIG),prod)
+        SPP_DEFINES+=$(SPP_DEFINES_PROD)
+        SPP_FLAGS+=$(SPP_FLAGS_PROD)
+    endif
+    
+    SPP_DEFINES+=$(SPP_DEFINES_EXTRA)
+    SPP_FLAGS+=$(SPP_FLAGS_EXTRA)
+endif
+
+#
 # Now we setup M4 to preprocess Z assembly files
 #
 ifeq ($(HOST_ARCH),z)
