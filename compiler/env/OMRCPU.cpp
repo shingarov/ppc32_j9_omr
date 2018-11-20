@@ -69,6 +69,8 @@ OMR::CPU::initializeByHostQuery()
    _majorArch = TR::arch_arm;
 #elif defined(TR_HOST_S390)
    _majorArch = TR::arch_z;
+#elif defined(TR_HOST_RISCV)
+   _majorArch = TR::arch_riscv;
 #else
    TR_ASSERT(0, "unknown host architecture");
    _majorArch = TR::arch_unknown;
