@@ -75,11 +75,11 @@
 #include "infra/Bit.hpp"                             // for intParts
 #include "infra/List.hpp"                            // for List, etc
 #include "optimizer/Structure.hpp"
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCAOTRelocation.hpp"
-#include "p/codegen/PPCHelperCallSnippet.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"               // for Op_load, etc
-#include "p/codegen/PPCTableOfConstants.hpp"         // for PTOC_FULL_INDEX, etc
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCAOTRelocation.hpp"
+#include "r/codegen/PPCHelperCallSnippet.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"               // for Op_load, etc
+#include "r/codegen/PPCTableOfConstants.hpp"         // for PTOC_FULL_INDEX, etc
 #include "runtime/Runtime.hpp"
 
 class TR_OpaqueClassBlock;
