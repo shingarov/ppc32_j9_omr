@@ -554,7 +554,7 @@ uint8_t *TR::PPCTrg1ImmInstruction::generateBinaryEncoding()
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
-//   insertTargetRegister(toPPCCursor(cursor));
+   insertTargetRegister(toPPCCursor(cursor));
 
 //   insertImmediateField(toPPCCursor(cursor));
 

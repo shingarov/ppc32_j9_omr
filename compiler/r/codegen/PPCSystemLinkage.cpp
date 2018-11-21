@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "p/codegen/PPCSystemLinkage.hpp"
+#include "r/codegen/PPCSystemLinkage.hpp"
 
 #include <stddef.h>                            // for NULL, size_t
 #include <stdint.h>                            // for uint32_t, int32_t, etc
@@ -92,11 +92,11 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
    _properties._registerFlags[TR::RealRegister::gr0]   = 0;
    _properties._registerFlags[TR::RealRegister::gr1]   = Preserved|PPC_Reserved; // system sp
    _properties._registerFlags[TR::RealRegister::gr2]   = Preserved|PPC_Reserved; // TOC/system reserved
-   _properties._registerFlags[TR::RealRegister::gr3]   = IntegerReturn|IntegerArgument;
-   _properties._registerFlags[TR::RealRegister::gr4]   = IntegerReturn|IntegerArgument;
+   _properties._registerFlags[TR::RealRegister::gr3]   = PPC_Reserved;
+   _properties._registerFlags[TR::RealRegister::gr4]   = PPC_Reserved;
 
-   _properties._registerFlags[TR::RealRegister::gr5]  = IntegerArgument;
-   _properties._registerFlags[TR::RealRegister::gr6]  = IntegerArgument;
+   _properties._registerFlags[TR::RealRegister::gr5]  = IntegerReturn;
+   _properties._registerFlags[TR::RealRegister::gr6]  = IntegerReturn;
    _properties._registerFlags[TR::RealRegister::gr7]  = IntegerArgument;
    _properties._registerFlags[TR::RealRegister::gr8]  = IntegerArgument;
    _properties._registerFlags[TR::RealRegister::gr9]  = IntegerArgument;
@@ -205,8 +205,8 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
    _properties._firstFloatReturnRegister = 2;
    _properties._firstVectorReturnRegister = 6;
 
-   _properties._returnRegisters[0]  = TR::RealRegister::gr3;
-   _properties._returnRegisters[1]  = TR::RealRegister::gr4;
+   _properties._returnRegisters[0]  = TR::RealRegister::gr5;
+   _properties._returnRegisters[1]  = TR::RealRegister::gr6;
    _properties._returnRegisters[2]  = TR::RealRegister::fp1;
    _properties._returnRegisters[3]  = TR::RealRegister::fp2;
    _properties._returnRegisters[4]  = TR::RealRegister::fp3;

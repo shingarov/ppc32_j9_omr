@@ -59,6 +59,7 @@ class OMR_EXTENSIBLE RealRegister : public OMR::RealRegister
    public:
 
    typedef enum  {
+      pos_RD     = 7,
       pos_RT     = 21,
       pos_RS     = 21,
       pos_TO     = 12,

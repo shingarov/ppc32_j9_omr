@@ -55,7 +55,11 @@ void compileTestMethods()
 
    entry = compileMethodFromDetails(NULL, details, warm, rc);
 
-
+   uint32_t *e = (uint32_t*)entry;
+   uint32_t i1 = *(e);
+   uint32_t i2 = *(e+1);
+   uint32_t i3 = *(e+2);
+   printf("Instructions: %X %X %X\n", i1, i2, i3);
 
 
 
@@ -72,12 +76,19 @@ void invokeTests()
 extern "C" bool initializeTestJit(TR_RuntimeHelper *helperIDs, void **helperAddresses, int32_t numHelpers, char *options);
 extern "C" void shutdownJit();
 
+void some() {
+        printf("Hello\n");
+}
+
+
 int main(int argc, char **argv)
    {
+	   some();
 	   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration,{*}(traceFull,log=LogFile)");
 	//   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration");
+       printf("Initialized JIT\n");
 	   compileTestMethods();
-	   invokeTests();
+//	   invokeTests();
 		shutdownJit();
    return 0;
    }

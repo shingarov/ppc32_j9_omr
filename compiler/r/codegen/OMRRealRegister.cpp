@@ -172,10 +172,10 @@ const uint8_t OMR::Power::RealRegister::fullRegBinaryEncodings[OMR::Power::RealR
 void
 OMR::Power::RealRegister::setRegisterFieldRT(uint32_t *instruction)
    {
-   if (self()->isConditionRegister())
-     *instruction |= fullRegBinaryEncodings[_registerNumber] << (pos_RT + 2);
-   else
-     *instruction |= fullRegBinaryEncodings[_registerNumber] << pos_RT;
+//   if (self()->isConditionRegister())
+//     *instruction |= fullRegBinaryEncodings[_registerNumber] << (pos_RT + 2);
+//   else
+     *instruction |= fullRegBinaryEncodings[_registerNumber] << pos_RD;
    }
 
 void
