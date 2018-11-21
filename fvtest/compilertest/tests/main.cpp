@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 	//   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration");
        printf("Initialized JIT\n");
 	   compileTestMethods();
-//	   invokeTests();
+	   invokeTests();
 		shutdownJit();
    return 0;
    }
