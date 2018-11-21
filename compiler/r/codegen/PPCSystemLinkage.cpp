@@ -95,13 +95,13 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
    _properties._registerFlags[TR::RealRegister::gr3]   = PPC_Reserved;
    _properties._registerFlags[TR::RealRegister::gr4]   = PPC_Reserved;
 
-   _properties._registerFlags[TR::RealRegister::gr5]  = IntegerReturn;
-   _properties._registerFlags[TR::RealRegister::gr6]  = IntegerReturn;
-   _properties._registerFlags[TR::RealRegister::gr7]  = IntegerArgument;
-   _properties._registerFlags[TR::RealRegister::gr8]  = IntegerArgument;
-   _properties._registerFlags[TR::RealRegister::gr9]  = IntegerArgument;
-   _properties._registerFlags[TR::RealRegister::gr10] = IntegerArgument;
-   _properties._registerFlags[TR::RealRegister::gr11] = 0;
+   _properties._registerFlags[TR::RealRegister::gr5]  = 0;
+   _properties._registerFlags[TR::RealRegister::gr6]  = 0;
+   _properties._registerFlags[TR::RealRegister::gr7]  = 0;
+   _properties._registerFlags[TR::RealRegister::gr8]  = 0;
+   _properties._registerFlags[TR::RealRegister::gr9]  = 0;
+   _properties._registerFlags[TR::RealRegister::gr10] = IntegerArgument | IntegerReturn;
+   _properties._registerFlags[TR::RealRegister::gr11] = IntegerArgument | IntegerReturn;
    _properties._registerFlags[TR::RealRegister::gr12] = 0;
    if (TR::Compiler->target.is64Bit())
       _properties._registerFlags[TR::RealRegister::gr13] = Preserved|PPC_Reserved; // system
@@ -205,8 +205,8 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
    _properties._firstFloatReturnRegister = 2;
    _properties._firstVectorReturnRegister = 6;
 
-   _properties._returnRegisters[0]  = TR::RealRegister::gr5;
-   _properties._returnRegisters[1]  = TR::RealRegister::gr6;
+   _properties._returnRegisters[0]  = TR::RealRegister::gr10;
+   _properties._returnRegisters[1]  = TR::RealRegister::gr11;
    _properties._returnRegisters[2]  = TR::RealRegister::fp1;
    _properties._returnRegisters[3]  = TR::RealRegister::fp2;
    _properties._returnRegisters[4]  = TR::RealRegister::fp3;
