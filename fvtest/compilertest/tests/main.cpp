@@ -21,6 +21,7 @@ IterativeFibonnaciMethod::IterativeFibonnaciMethod(TR::TypeDictionary *types)
    {
    DefineLine(LINETOSTR(__LINE__));
    DefineFile(__FILE__);
+   DefineName("fib");
 
    DefineReturnType(Int32);
    }
