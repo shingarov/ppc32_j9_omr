@@ -61,21 +61,8 @@ TR::ELFGenerator::initializeELFHeaderForPlatform(void)
         _header->e_ident[b] = 0;
         _header->e_ident[EI_OSABI] = ELFOSABI_LINUX; // Current support for Linux only. AIX would use the macro ELFOSABI_AIX.
     
-    if (TR::Compiler->target.cpu.isX86())
-    {
-        _header->e_machine = TR::Compiler->target.is64Bit() ? EM_X86_64 : EM_386;
-    }
-    else if (TR::Compiler->target.cpu.isPower())
-    {
-        _header->e_machine = TR::Compiler->target.is64Bit() ? EM_PPC64 : EM_PPC;
-    }
-    else if (TR::Compiler->target.cpu.isZ()){
-        _header->e_machine = EM_S390;
-    }
-    else
-    {
-        TR_ASSERT(0, "Unrecognized architecture: Failed to initialize ELF Header!");
-    }
+    // for now; BOGUS, should bring back target probing (but does it make sense?)
+        _header->e_machine = EM_RISCV;
 
     _header->e_version = EV_CURRENT;
     _header->e_flags = 0; //processor-specific flags associated with the file
