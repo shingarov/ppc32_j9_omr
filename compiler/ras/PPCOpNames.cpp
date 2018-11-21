@@ -4,7 +4,7 @@
 // file you must edit '$OMR/compiler/p/codegen/PPCOps.ops'
 // and then run 'perl $OMR/tools/compiler/p/ftops.pl'.
 
-#ifndef TR_TARGET_POWER
+#ifndef TR_TARGET_RISCV
 int ppcOpNames;
 #else
 const char * ppcOpCodeToNameMap[][2] =

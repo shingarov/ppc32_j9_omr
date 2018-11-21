@@ -235,7 +235,7 @@ const TR_PPCOpCodeBinaryEntry OMR::Power::InstOpCode::binaryEncodings[PPCNumOpCo
    0xa4000000,  // lhzu
    0x7c00026e,  // lhzux
    0x7c00022e,  // lhzx
-   0x38000000,  // li
+   0x00000013,  // li -- PATCHED
    0x3c000000,  // lis
    0xb8000000,  // lmw
    0x7c0004aa,  // lswi

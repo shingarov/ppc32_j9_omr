@@ -554,32 +554,11 @@ uint8_t *TR::PPCTrg1ImmInstruction::generateBinaryEncoding()
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
-   insertTargetRegister(toPPCCursor(cursor));
+//   insertTargetRegister(toPPCCursor(cursor));
 
-   if (getOpCodeValue() == TR::InstOpCode::mtcrf ||
-       getOpCodeValue() == TR::InstOpCode::mfocrf)
-      {
-      *((int32_t *)cursor) |= (getSourceImmediate()<<12);
-      if ((TR::Compiler->target.cpu.id() >= TR_PPCgp) &&
-          ((getSourceImmediate() & (getSourceImmediate() - 1)) == 0))
-         // convert to PPC AS single field form
-         *((int32_t *)cursor) |= 0x00100000;
-      }
-   else if (getOpCodeValue() == TR::InstOpCode::mfcr)
-      {
-      if ((TR::Compiler->target.cpu.id() >= TR_PPCgp) &&
-          ((getSourceImmediate() & (getSourceImmediate() - 1)) == 0))
-         // convert to PPC AS single field form
-         *((int32_t *)cursor) |= (getSourceImmediate()<<12) | 0x00100000;
-      else
-         TR_ASSERT(getSourceImmediate() == 0xFF, "Bad field mask on mfcr");
-      }
-   else
-      {
-      insertImmediateField(toPPCCursor(cursor));
-      }
+//   insertImmediateField(toPPCCursor(cursor));
 
-   addMetaDataForCodeAddress(cursor);
+//   addMetaDataForCodeAddress(cursor);
 
    cursor += PPC_INSTRUCTION_LENGTH;
    setBinaryLength(PPC_INSTRUCTION_LENGTH);
