@@ -90,12 +90,12 @@
 #include "optimizer/RegisterCandidate.hpp"
 #include "optimizer/Structure.hpp"
 #include "optimizer/DataFlowAnalysis.hpp"
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCHelperCallSnippet.hpp"
-#include "p/codegen/PPCInstruction.hpp"
-#include "p/codegen/PPCOutOfLineCodeSection.hpp"
-#include "p/codegen/PPCSystemLinkage.hpp"
-#include "p/codegen/PPCTableOfConstants.hpp"
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCHelperCallSnippet.hpp"
+#include "r/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCOutOfLineCodeSection.hpp"
+#include "r/codegen/PPCSystemLinkage.hpp"
+#include "r/codegen/PPCTableOfConstants.hpp"
 #include "ras/Debug.hpp"                            // for TR_DebugBase
 #include "ras/DebugCounter.hpp"
 #include "runtime/Runtime.hpp"                      // for TR_LinkageInfo, etc

@@ -57,11 +57,11 @@
 #include "il/symbol/StaticSymbol.hpp"                // for StaticSymbol
 #include "infra/Assert.hpp"                          // for TR_ASSERT
 #include "infra/List.hpp"                            // for List
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCAOTRelocation.hpp"
-#include "p/codegen/PPCInstruction.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"               // for Op_load, Op_st
-#include "p/codegen/PPCTableOfConstants.hpp"         // for PTOC_FULL_INDEX, etc
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCAOTRelocation.hpp"
+#include "r/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"               // for Op_load, Op_st
+#include "r/codegen/PPCTableOfConstants.hpp"         // for PTOC_FULL_INDEX, etc
 #include "runtime/Runtime.hpp"
 
 class TR_OpaqueClassBlock;

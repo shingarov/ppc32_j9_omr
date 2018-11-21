@@ -50,8 +50,8 @@
 #include "il/symbol/LabelSymbol.hpp"           // for generateLabelSymbol, etc
 #include "infra/Assert.hpp"                    // for TR_ASSERT
 #include "infra/Bit.hpp"                       // for intParts, etc
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCInstruction.hpp"
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCInstruction.hpp"
 #include "runtime/Runtime.hpp"                 // for TR_RuntimeHelper, etc
 
 extern TR::Register *addConstantToInteger(TR::Node * node, TR::Register *srcReg, int32_t value, TR::CodeGenerator *cg);

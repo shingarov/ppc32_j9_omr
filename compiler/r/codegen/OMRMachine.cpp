@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "p/codegen/OMRMachine.hpp"
+#include "r/codegen/OMRMachine.hpp"
 
 #include <stdint.h>                            // for uint16_t, int32_t, etc
 #include <string.h>                            // for NULL, memcpy, memset

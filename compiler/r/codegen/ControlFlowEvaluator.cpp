@@ -63,13 +63,13 @@
 #include "infra/Assert.hpp"                          // for TR_ASSERT
 #include "infra/BitVector.hpp"                       // for TR_BitVector
 #include "infra/List.hpp"                            // for List
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCAOTRelocation.hpp"
-#include "p/codegen/PPCHelperCallSnippet.hpp"
-#include "p/codegen/PPCInstruction.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"               // for Op_load, etc
-#include "p/codegen/PPCOutOfLineCodeSection.hpp"
-#include "p/codegen/PPCTableOfConstants.hpp"
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCAOTRelocation.hpp"
+#include "r/codegen/PPCHelperCallSnippet.hpp"
+#include "r/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"               // for Op_load, etc
+#include "r/codegen/PPCOutOfLineCodeSection.hpp"
+#include "r/codegen/PPCTableOfConstants.hpp"
 #include "runtime/Runtime.hpp"                       // for LO_VALUE, etc
 
 
