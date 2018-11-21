@@ -53,10 +53,10 @@
 #include "infra/Assert.hpp"                    // for TR_ASSERT
 #include "infra/BitVector.hpp"                 // for TR_BitVector
 #include "infra/List.hpp"                      // for List, ListIterator
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCCRBackingStore.hpp"     // for toPPCCRBackingStore, etc
-#include "p/codegen/PPCInstruction.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"         // for Op_load, Op_st
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCCRBackingStore.hpp"     // for toPPCCRBackingStore, etc
+#include "r/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"         // for Op_load, Op_st
 #include "ras/Debug.hpp"                       // for TR_DebugBase
 #include "env/IO.hpp"                          // for PRINTF_POINTER_FORMAT
 

@@ -44,7 +44,7 @@
 #include "il/Node.hpp"                           // for Node
 #include "il/symbol/LabelSymbol.hpp"             // for LabelSymbol
 #include "infra/Assert.hpp"                      // for TR_ASSERT
-#include "p/codegen/PPCOpsDefines.hpp"           // for PPCOpProp_NoHint
+#include "r/codegen/PPCOpsDefines.hpp"           // for PPCOpProp_NoHint
 #include "runtime/Runtime.hpp"
 
 #include "codegen/GCStackMap.hpp"
@@ -883,33 +883,11 @@ class PPCTrg1ImmInstruction : public PPCTrg1Instruction
 
    void insertImmediateField(uint32_t *instruction)
       {
-      if (!isVMX())
-         {
-         if (getOpCodeValue() == TR::InstOpCode::addpcis)
-            {
-            // populate d0, d1 and d2 fields
-            *instruction |= ((_sourceImmediate >> 6) & 0x3ff) << 6;
-            *instruction |= ((_sourceImmediate >> 1) & 0x1f) << 16;
-            *instruction |= _sourceImmediate & 0x1;
-            }
-         else if (getOpCodeValue() == TR::InstOpCode::setb ||
-                  getOpCodeValue() == TR::InstOpCode::mcrfs)
-            {
-            // populate 3-bit BFA field
-            *instruction |= (_sourceImmediate & 0x7) << 18;
-            }
-         else if (getOpCodeValue() == TR::InstOpCode::darn)
-            {
-            // populate 2-bit L field
-            *instruction |= (_sourceImmediate & 0x3) << 16;
-            }
-         else
-            {
-            *instruction |= _sourceImmediate & 0xffff;
-            }
-         }
-      else
-         *instruction |= (_sourceImmediate & 0x1f) << 16;
+              printf("Before immed: %X\n", *instruction);
+              printf("immed: %X\n", _sourceImmediate);
+
+         *instruction |= (_sourceImmediate & 0x0FFF) << 20;
+              printf("After immed: %X\n", *instruction);
       }
 
    void addMetaDataForCodeAddress(uint8_t *cursor);

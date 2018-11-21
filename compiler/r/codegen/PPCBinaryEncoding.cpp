@@ -46,9 +46,9 @@
 #include "infra/Assert.hpp"                    // for TR_ASSERT
 #include "infra/Bit.hpp"                       // for leadingZeroes, etc
 #include "infra/List.hpp"                      // for List
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCInstruction.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"
 #include "runtime/Runtime.hpp"
 
 class TR_OpaqueMethodBlock;
@@ -556,7 +556,7 @@ uint8_t *TR::PPCTrg1ImmInstruction::generateBinaryEncoding()
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
    insertTargetRegister(toPPCCursor(cursor));
 
-//   insertImmediateField(toPPCCursor(cursor));
+   insertImmediateField(toPPCCursor(cursor));
 
 //   addMetaDataForCodeAddress(cursor);
 

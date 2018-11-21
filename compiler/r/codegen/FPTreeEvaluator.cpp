@@ -54,9 +54,9 @@
 #include "il/symbol/LabelSymbol.hpp"             // for generateLabelSymbol, etc
 #include "il/symbol/MethodSymbol.hpp"            // for MethodSymbol
 #include "infra/Assert.hpp"                      // for TR_ASSERT
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCInstruction.hpp"
-#include "p/codegen/PPCTableOfConstants.hpp"     // for PTOC_FULL_INDEX
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCTableOfConstants.hpp"     // for PTOC_FULL_INDEX
 #include "runtime/Runtime.hpp"                   // for HI_VALUE, LO_VALUE, etc
 
 static void ifFloatEvaluator( TR::Node *node, TR::InstOpCode::Mnemonic branchOp1, TR::InstOpCode::Mnemonic branchOp2, TR::CodeGenerator *cg);

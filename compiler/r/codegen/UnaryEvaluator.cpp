@@ -43,8 +43,8 @@
 #include "il/Node.hpp"                         // for Node, etc
 #include "il/Node_inlines.hpp"                 // for Node::getFirstChild, etc
 #include "infra/Assert.hpp"                    // for TR_ASSERT
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"         // for Op_load
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"         // for Op_load
 
 class TR_OpaqueClassBlock;
 class TR_OpaqueMethodBlock;

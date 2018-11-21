@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "p/codegen/PPCOutOfLineCodeSection.hpp"
+#include "r/codegen/PPCOutOfLineCodeSection.hpp"
 
 #include <stddef.h>                            // for NULL
 #include "codegen/CodeGenerator.hpp"           // for CodeGenerator
@@ -32,8 +32,8 @@
 #include "il/Node.hpp"                         // for Node
 #include "il/symbol/LabelSymbol.hpp"           // for LabelSymbol
 #include "infra/Assert.hpp"                    // for TR_ASSERT
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCInstruction.hpp"
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCInstruction.hpp"
 
 namespace TR { class RegisterDependencyConditions; }
 

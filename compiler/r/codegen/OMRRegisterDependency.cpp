@@ -48,9 +48,9 @@
 #include "il/symbol/LabelSymbol.hpp"             // for LabelSymbol
 #include "infra/Assert.hpp"                      // for TR_ASSERT
 #include "infra/List.hpp"                        // for List
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCInstruction.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"           // for Op_load
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"           // for Op_load
 #include "ras/Debug.hpp"                         // for TR_DebugBase
 
 namespace TR { class SymbolReference; }

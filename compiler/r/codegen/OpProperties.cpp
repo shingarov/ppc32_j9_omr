@@ -27,7 +27,7 @@
 
 #include <stdint.h>                     // for uint32_t
 #include "codegen/InstOpCode.hpp"       // for InstOpCode, etc
-#include "p/codegen/PPCOpsDefines.hpp"  // for PPCOpProp_SyncSideEffectFree, etc
+#include "r/codegen/PPCOpsDefines.hpp"  // for PPCOpProp_SyncSideEffectFree, etc
 
 const uint32_t OMR::Power::InstOpCode::properties[PPCNumOpCodes] =
    {

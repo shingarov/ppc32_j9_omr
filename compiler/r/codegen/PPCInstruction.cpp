@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "p/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCInstruction.hpp"
 
 #include <stddef.h>                               // for NULL
 #include <stdint.h>                               // for int32_t, uint32_t, etc
@@ -44,9 +44,9 @@
 #include "il/Node.hpp"                            // for Node
 #include "il/symbol/LabelSymbol.hpp"              // for LabelSymbol
 #include "infra/Assert.hpp"                       // for TR_ASSERT
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"
-#include "p/codegen/PPCOutOfLineCodeSection.hpp"
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"
+#include "r/codegen/PPCOutOfLineCodeSection.hpp"
 
 namespace TR { class SymbolReference; }
 

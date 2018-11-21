@@ -47,8 +47,8 @@
 #include "infra/Assert.hpp"                    // for TR_ASSERT
 #include "infra/BitVector.hpp"                 // for TR_BitVector
 #include "infra/List.hpp"                      // for ListIterator, List
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"         // for Op_st, Op_load
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"         // for Op_st, Op_load
 #include "runtime/Runtime.hpp"
 
 class TR_OpaqueClassBlock;

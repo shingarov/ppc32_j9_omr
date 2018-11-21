@@ -61,8 +61,8 @@
 #include "infra/Array.hpp"                     // for TR_Array
 #include "infra/Assert.hpp"                    // for TR_ASSERT
 #include "infra/List.hpp"                      // for ListIterator, List
-#include "p/codegen/GenerateInstructions.hpp"
-#include "p/codegen/PPCOpsDefines.hpp"         // for Op_load, Op_st, etc
+#include "r/codegen/GenerateInstructions.hpp"
+#include "r/codegen/PPCOpsDefines.hpp"         // for Op_load, Op_st, etc
 #include "runtime/Runtime.hpp"
 
 uint32_t

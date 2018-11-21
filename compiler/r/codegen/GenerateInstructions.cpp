@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0 OR GPL-2.0 WITH Classpath-exception-2.0 OR LicenseRef-GPL-2.0 WITH Assembly-exception
  *******************************************************************************/
 
-#include "compiler/p/codegen/GenerateInstructions.hpp"
+#include "compiler/r/codegen/GenerateInstructions.hpp"
 
 #include <algorithm>                           // for std::max
 #include <stdint.h>                            // for int32_t, uint32_t, etc
@@ -47,7 +47,7 @@
 #include "il/TreeTop.hpp"                      // for TreeTop
 #include "il/TreeTop_inlines.hpp"
 #include "infra/Assert.hpp"                    // for TR_ASSERT
-#include "p/codegen/PPCInstruction.hpp"
+#include "r/codegen/PPCInstruction.hpp"
 #include "runtime/Runtime.hpp"
 
 class TR_VirtualGuardSite;
