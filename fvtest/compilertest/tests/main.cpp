@@ -9,6 +9,8 @@
 #include "ilgen/TypeDictionary.hpp"
 #include "ilgen/MethodBuilder.hpp"
 
+/*** Small int const ***/
+
 class IterativeFibonnaciMethod : public TR::MethodBuilder
    {
    public:
@@ -40,6 +42,87 @@ IterativeFibonnaciMethod::buildIL()
 
 typedef int32_t (IterativeFibFunctionType)();
 IterativeFibFunctionType *_iterativeFibMethod;
+
+/*** Large int const ***/
+/*
+class IterativeFibonnaciMethod : public TR::MethodBuilder
+   {
+   public:
+   IterativeFibonnaciMethod(TR::TypeDictionary *types);
+   virtual bool buildIL();
+   };
+
+IterativeFibonnaciMethod::IterativeFibonnaciMethod(TR::TypeDictionary *types)
+   : TR::MethodBuilder(types)
+   {
+   DefineLine(LINETOSTR(__LINE__));
+   DefineFile(__FILE__);
+   DefineName("fib");
+
+//   DefineParameter("n", Int32);
+
+   DefineReturnType(Int32);
+   }
+
+bool
+IterativeFibonnaciMethod::buildIL()
+{
+   Return(
+      ConstInt32(42)
+   );
+
+   return true;
+}
+
+typedef int32_t (IterativeFibFunctionType)();
+IterativeFibFunctionType *_iterativeFibMethod;
+*/
+
+
+/*** x + 1 ***/
+
+/*
+class IterativeFibonnaciMethod : public TR::MethodBuilder
+   {
+   public:
+   IterativeFibonnaciMethod(TR::TypeDictionary *types);
+   virtual bool buildIL();
+   };
+
+IterativeFibonnaciMethod::IterativeFibonnaciMethod(TR::TypeDictionary *types)
+   : TR::MethodBuilder(types)
+   {
+   DefineLine(LINETOSTR(__LINE__));
+   DefineFile(__FILE__);
+
+   DefineName("fib");
+
+   DefineParameter("x", Int32);
+
+   DefineReturnType(Int32);
+   }
+
+bool
+IterativeFibonnaciMethod::buildIL()
+   {
+   Return(
+       Add(
+         Load("x"),
+         ConstInt32(1)
+       )
+   );
+
+   return true;
+   }
+
+
+
+typedef int32_t (IterativeFibFunctionType)(int32_t);
+IterativeFibFunctionType *_iterativeFibMethod;
+
+*/
+
+
 
 /*
  // Actual Fibonacci, recursively
