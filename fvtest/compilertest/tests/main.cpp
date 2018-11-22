@@ -23,22 +23,55 @@ IterativeFibonnaciMethod::IterativeFibonnaciMethod(TR::TypeDictionary *types)
    DefineFile(__FILE__);
    DefineName("fib");
 
+//   DefineParameter("n", Int32);
+
    DefineReturnType(Int32);
    }
 
 bool
 IterativeFibonnaciMethod::buildIL()
-   {
+{
    Return(
-      ConstInt32(42));
+      ConstInt32(42)
+   );
 
    return true;
-   }
-
-
+}
 
 typedef int32_t (IterativeFibFunctionType)();
 IterativeFibFunctionType *_iterativeFibMethod;
+
+/*
+ // Actual Fibonacci, recursively
+
+   TR::IlBuilder *baseCase=NULL, *recursiveCase=NULL;
+   IfThenElse(&baseCase, &recursiveCase,
+      LessThan(
+         Load("n"),
+         ConstInt32(2)));
+
+   DefineLocal("result", Int32);
+
+   baseCase->Store("result",
+   baseCase->   Load("n"));
+   recursiveCase->Store("result",
+   recursiveCase->   Add(
+   recursiveCase->      Call("fib_recur", 1,
+   recursiveCase->         Sub(
+   recursiveCase->            Load("n"),
+   recursiveCase->            ConstInt32(1))),
+   recursiveCase->      Call("fib_recur", 1,
+   recursiveCase->         Sub(
+   recursiveCase->            Load("n"),
+   recursiveCase->            ConstInt32(2)))));
+
+   Return(
+      Load("result"));
+   return true;
+*/
+
+
+
 
 void compileTestMethods()
 {
@@ -49,8 +82,6 @@ void compileTestMethods()
 
    IterativeFibonnaciMethod iterFibMethodBuilder(&types);
 
-
-   //rc = compileMethodBuilder(&iterFibMethodBuilder, &entry);
    TR::ResolvedMethod resolvedMethod(&iterFibMethodBuilder);
    TR::IlGeneratorMethodDetails details(&resolvedMethod);
 
@@ -62,16 +93,14 @@ void compileTestMethods()
    uint32_t i3 = *(e+2);
    printf("Instructions: %X %X %X\n", i1, i2, i3);
 
-
-
    _iterativeFibMethod = (IterativeFibFunctionType *) entry;
 }
 
 
 void invokeTests()
-   {
+{
 	   printf("fib = %d\n", _iterativeFibMethod() );
-   }
+}
 
 
 extern "C" bool initializeTestJit(TR_RuntimeHelper *helperIDs, void **helperAddresses, int32_t numHelpers, char *options);
@@ -83,13 +112,14 @@ void some() {
 
 
 int main(int argc, char **argv)
-   {
-	   some();
-	   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration,{*}(traceFull,log=LogFile)");
-	//   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration");
-       printf("Initialized JIT\n");
-	   compileTestMethods();
-	   invokeTests();
-		shutdownJit();
-   return 0;
-   }
+{
+	 some();
+//   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration,{*}(traceFull,log=LogFile)");
+	 initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration");
+     printf("Initialized JIT\n");
+	 compileTestMethods();
+	 invokeTests();
+     shutdownJit();
+     return 0;
+}
+
