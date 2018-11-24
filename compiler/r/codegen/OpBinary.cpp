@@ -60,7 +60,7 @@ const TR_PPCOpCodeBinaryEntry OMR::Power::InstOpCode::binaryEncodings[PPCNumOpCo
    0x48000001,  // bl
    0x40810000,  // ble
    0x40810001,  // blel
-   0x41800000,  // blt
+   0x00000063 | (4 << 12),  // blt
    0x41800001,  // bltl
    0x48000003,  // bla
    0x00008067,  // blr

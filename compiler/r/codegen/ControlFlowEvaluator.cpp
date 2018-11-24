@@ -257,7 +257,6 @@ TR::Register *OMR::Power::TreeEvaluator::compareIntsForOrder(TR::InstOpCode::Mne
 
    TR::Register *src1Reg   = cg->evaluate(firstChild);
    TR::Register *src2Reg = cg->evaluate(secondChild);
-   generateTrg1Src2Instruction(cg, TR::InstOpCode::cmp4, node, condReg, src1Reg, src2Reg);
    generateConditionalBranchInstruction(cg, branchOp, node, dstLabel, condReg);
 
    cg->stopUsingRegister(condReg);
