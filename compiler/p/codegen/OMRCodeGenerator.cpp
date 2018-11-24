@@ -2743,7 +2743,10 @@ TR_GlobalRegisterNumber OMR::Power::CodeGenerator::getLinkageGlobalRegisterNumbe
 void OMR::Power::CodeGenerator::apply16BitLabelRelativeRelocation(int32_t * cursor, TR::LabelSymbol * label)
    {
    TR_ASSERT( label->getCodeLocation(), "Attempt to relocate to a NULL label address!" );
-
+printf("Patch jump from 0x%x to 0x%x, delta=%d\n",
+		(uintptrj_t)cursor,
+		(uintptrj_t)label->getCodeLocation(),
+		(uintptrj_t)label->getCodeLocation()-(uintptrj_t)cursor );
    *cursor |= ((uintptrj_t)label->getCodeLocation()-(uintptrj_t)cursor) & 0x0000fffc;
    }
 

@@ -251,69 +251,13 @@ uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    uint8_t        *cursor           = instructionStart;
    TR::Compilation *comp = cg()->comp();
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
-   // bclr doesn't have a label
-   if (label)
-      {
-      if (label->getCodeLocation() != NULL)
-         {
-         if (!getFarRelocation())
-            {
+printf("OPCODE: %x at cursor %p\n", *((uint32_t*)instructionStart), instructionStart);
+	   TR_ASSERT(label->getCodeLocation() == NULL, "DAMN -- dont know how to do relocations yet");
+	   TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
             insertConditionRegister((uint32_t *)cursor);
-            *(int32_t *)cursor |= ((label->getCodeLocation()-cursor) & 0xffff);
-            }
-         else // too far - need fix up
-            {
-            TR::InstOpCode::Mnemonic reversedOp;
-            bool  linkForm = reversedConditionalBranchOpCode(getOpCodeValue(), &reversedOp);
-            TR::InstOpCode reversedOpCode(reversedOp);
-            TR::InstOpCode extraOpCode(linkForm?TR::InstOpCode::bl:TR::InstOpCode::b);
-
-            cursor = reversedOpCode.copyBinaryToBuffer(cursor);
-            insertConditionRegister((uint32_t *)cursor);
-            *(int32_t *)cursor |= 0x0008;
-            cursor += 4;
-
-            cursor = extraOpCode.copyBinaryToBuffer(cursor);
-            *(int32_t *)cursor |= ((label->getCodeLocation() - cursor) & 0x03fffffc);
-            }
-         }
-      else
-         {
-         if (!getFarRelocation())
-            {
-            insertConditionRegister((uint32_t *)cursor);
-            cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label));
-            }
-         else // too far - need fix up
-            {
-            TR::InstOpCode::Mnemonic reversedOp;
-            bool  linkForm = reversedConditionalBranchOpCode(getOpCodeValue(), &reversedOp);
-            TR::InstOpCode reversedOpCode(reversedOp);
-            TR::InstOpCode extraOpCode(linkForm?TR::InstOpCode::bl:TR::InstOpCode::b);
-
-            cursor = reversedOpCode.copyBinaryToBuffer(cursor);
-            insertConditionRegister((uint32_t *)cursor);
-            *(int32_t *)cursor |= 0x0008;
-            cursor += 4;
-
-            cursor = extraOpCode.copyBinaryToBuffer(cursor);
-            cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative24BitRelocation(cursor, label));
-            }
-         }
-      }
-   else
-      insertConditionRegister((uint32_t *)cursor);
-
-   // set up prediction bits if there is any.
-   if (haveHint())
-      {
-      if (getFarRelocation())
-         reverseLikeliness();
-      if (getOpCode().setsCTR())
-         *(int32_t *)instructionStart |= (getLikeliness() ? PPCOpProp_BranchLikelyMaskCtr : PPCOpProp_BranchUnlikelyMaskCtr);
-      else
-         *(int32_t *)instructionStart |= (getLikeliness() ? PPCOpProp_BranchLikelyMask : PPCOpProp_BranchUnlikelyMask) ;
-      }
+            printf("INSERTED CR: %x\n", *((uint32_t*)instructionStart));
+            
+            cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label)); // no life without this
 
    cursor += 4;
    setBinaryLength(cursor - instructionStart);
