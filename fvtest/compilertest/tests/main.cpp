@@ -9,199 +9,221 @@
 #include "ilgen/TypeDictionary.hpp"
 #include "ilgen/MethodBuilder.hpp"
 
+extern "C" bool initializeTestJit(TR_RuntimeHelper *helperIDs, void **helperAddresses, int32_t numHelpers, char *options);
+extern "C" void shutdownJit();
+
+/*** Test Template ***/
+
+#define TestDefinition(testName,functionType,takesIntArg)     \
+class testName##Method : public TR::MethodBuilder \
+{                                                 \
+   public:                                        \
+   testName##Method(TR::TypeDictionary *types);   \
+   virtual bool buildIL();                        \
+};                                                \
+testName##Method::testName##Method(TR::TypeDictionary *types) \
+   : TR::MethodBuilder(types)                                 \
+{                                                             \
+   DefineLine(LINETOSTR(__LINE__));                           \
+   DefineFile(__FILE__);                                      \
+   if (takesIntArg) DefineParameter("x", Int32);              \
+   DefineReturnType(Int32);                                   \
+}                                                             \
+functionType *method##testName;                               \
+void compile##testName()                                      \
+{                                                             \
+   TR::TypeDictionary types;                                  \
+   testName##Method methodBuilder(&types);                    \
+   TR::ResolvedMethod resolvedMethod(&methodBuilder);         \
+   TR::IlGeneratorMethodDetails details(&resolvedMethod);     \
+   int32_t rc = 0;                                            \
+   method##testName = (functionType *)                        \
+        compileMethodFromDetails(NULL, details, warm, rc);    \
+}
+
+
+/*** Function pointer types ***/
+typedef int32_t (FType)();
+typedef int32_t (FxType)(int32_t);
+
+
+
 /*** Small int const ***/
-
-class IterativeFibonnaciMethod : public TR::MethodBuilder
-   {
-   public:
-   IterativeFibonnaciMethod(TR::TypeDictionary *types);
-   virtual bool buildIL();
-   };
-
-IterativeFibonnaciMethod::IterativeFibonnaciMethod(TR::TypeDictionary *types)
-   : TR::MethodBuilder(types)
-   {
-   DefineLine(LINETOSTR(__LINE__));
-   DefineFile(__FILE__);
-   DefineName("fib");
-
-//   DefineParameter("n", Int32);
-
-   DefineReturnType(Int32);
-   }
-
-bool
-IterativeFibonnaciMethod::buildIL()
+TestDefinition(SmallInt, FType, false)
+bool SmallIntMethod::buildIL()
 {
    Return(
       ConstInt32(42)
    );
-
    return true;
 }
 
-typedef int32_t (IterativeFibFunctionType)();
-IterativeFibFunctionType *_iterativeFibMethod;
 
 /*** Large int const ***/
-/*
-class IterativeFibonnaciMethod : public TR::MethodBuilder
-   {
-   public:
-   IterativeFibonnaciMethod(TR::TypeDictionary *types);
-   virtual bool buildIL();
-   };
-
-IterativeFibonnaciMethod::IterativeFibonnaciMethod(TR::TypeDictionary *types)
-   : TR::MethodBuilder(types)
-   {
-   DefineLine(LINETOSTR(__LINE__));
-   DefineFile(__FILE__);
-   DefineName("fib");
-
-//   DefineParameter("n", Int32);
-
-   DefineReturnType(Int32);
-   }
-
-bool
-IterativeFibonnaciMethod::buildIL()
+TestDefinition(LargeInt, FType, false)
+bool LargeIntMethod::buildIL()
 {
    Return(
-      ConstInt32(42)
+      ConstInt32(420000)
    );
-
    return true;
 }
-
-typedef int32_t (IterativeFibFunctionType)();
-IterativeFibFunctionType *_iterativeFibMethod;
-*/
 
 
 /*** x + 1 ***/
-
-/*
-class IterativeFibonnaciMethod : public TR::MethodBuilder
-   {
-   public:
-   IterativeFibonnaciMethod(TR::TypeDictionary *types);
-   virtual bool buildIL();
-   };
-
-IterativeFibonnaciMethod::IterativeFibonnaciMethod(TR::TypeDictionary *types)
-   : TR::MethodBuilder(types)
-   {
-   DefineLine(LINETOSTR(__LINE__));
-   DefineFile(__FILE__);
-
-   DefineName("fib");
-
-   DefineParameter("x", Int32);
-
-   DefineReturnType(Int32);
-   }
-
-bool
-IterativeFibonnaciMethod::buildIL()
-   {
+TestDefinition(Xplus1, FxType, true)
+bool Xplus1Method::buildIL()
+{
    Return(
        Add(
          Load("x"),
          ConstInt32(1)
        )
    );
-
    return true;
-   }
+}
+
+
+/*** Simple Branching ***/
+TestDefinition(LessThan, FxType, true)
+bool LessThanMethod::buildIL()
+{
+   TR::IlBuilder *left=NULL, *right=NULL;
+   IfThenElse(&left, &right,
+      LessThan(
+         Load("x"),
+         ConstInt32(10)));
+
+   left -> Return(left->ConstInt32(1));
+   right-> Return(right->ConstInt32(2));
+   return true;
+}
 
 
 
-typedef int32_t (IterativeFibFunctionType)(int32_t);
-IterativeFibFunctionType *_iterativeFibMethod;
-
-*/
-
-
-
-/*
- // Actual Fibonacci, recursively
-
+/*** Recursive Fibonacci ***/
+TestDefinition(RecursiveFibonacci, FxType, true)
+bool RecursiveFibonacciMethod::buildIL()
+{
    TR::IlBuilder *baseCase=NULL, *recursiveCase=NULL;
    IfThenElse(&baseCase, &recursiveCase,
       LessThan(
-         Load("n"),
+         Load("x"),
          ConstInt32(2)));
 
    DefineLocal("result", Int32);
 
    baseCase->Store("result",
-   baseCase->   Load("n"));
+   baseCase->   Load("x"));
    recursiveCase->Store("result",
    recursiveCase->   Add(
    recursiveCase->      Call("fib_recur", 1,
    recursiveCase->         Sub(
-   recursiveCase->            Load("n"),
+   recursiveCase->            Load("x"),
    recursiveCase->            ConstInt32(1))),
    recursiveCase->      Call("fib_recur", 1,
    recursiveCase->         Sub(
-   recursiveCase->            Load("n"),
+   recursiveCase->            Load("x"),
    recursiveCase->            ConstInt32(2)))));
 
    Return(
       Load("result"));
    return true;
-*/
+}
 
 
 
-
-void compileTestMethods()
+/*** Iterative Fibonacci ***/
+TestDefinition(IterativeFibonacci, FxType, true)
+bool IterativeFibonacciMethod::buildIL()
 {
-   int32_t rc = 0;
-   uint8_t *entry=0;
+   TR::IlBuilder *returnZero = NULL;
+   IfThen(&returnZero,
+      EqualTo(
+         Load("x"),
+         ConstInt32(0)));
+   returnZero->Return(
+   returnZero->   ConstInt32(0));
 
-   TR::TypeDictionary types;
+   TR::IlBuilder *returnOne = NULL;
+   IfThen(&returnOne,
+      EqualTo(
+         Load("x"),
+         ConstInt32(1)));
+   returnOne->Return(
+   returnOne->   ConstInt32(1));
 
-   IterativeFibonnaciMethod iterFibMethodBuilder(&types);
+   Store("LastSum",
+      ConstInt32(0));
 
-   TR::ResolvedMethod resolvedMethod(&iterFibMethodBuilder);
-   TR::IlGeneratorMethodDetails details(&resolvedMethod);
+   Store("Sum",
+      ConstInt32(1));
 
-   entry = compileMethodFromDetails(NULL, details, warm, rc);
+   TR::IlBuilder *body = NULL;
+   ForLoopUp("I", &body,
+           ConstInt32(1),
+           Load("x"),
+           ConstInt32(1));
 
-   uint32_t *e = (uint32_t*)entry;
-   uint32_t i1 = *(e);
-   uint32_t i2 = *(e+1);
-   uint32_t i3 = *(e+2);
-   printf("Instructions: %X %X %X\n", i1, i2, i3);
+   body->Store("tempSum",
+   body->   Add(
+   body->      Load("Sum"),
+   body->      Load("LastSum")));
+   body->Store("LastSum",
+   body->   Load("Sum"));
+   body->Store("Sum",
+   body->   Load("tempSum"));
 
-   _iterativeFibMethod = (IterativeFibFunctionType *) entry;
+   Return(
+      Load("Sum"));
+
+   return true;
 }
 
 
-void invokeTests()
-{
-	   printf("fib = %d\n", _iterativeFibMethod() );
-}
-
-
-extern "C" bool initializeTestJit(TR_RuntimeHelper *helperIDs, void **helperAddresses, int32_t numHelpers, char *options);
-extern "C" void shutdownJit();
-
-void some() {
-        printf("Hello\n");
-}
 
 
 int main(int argc, char **argv)
 {
-	 some();
-//   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration,{*}(traceFull,log=LogFile)");
-	 initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration");
+     initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration,{*}(traceFull,log=LogFile)");
+//	 initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration");
+//	 initializeTestJit(0, 0, 0, "-Xjit");
      printf("Initialized JIT\n");
-	 compileTestMethods();
-	 invokeTests();
+/*
+	 compileSmallInt();
+     printf( "42    -> %d\n", methodSmallInt() );
+
+	 compileLargeInt();
+     printf( "420000     -> %d\n", methodLargeInt() );
+
+	 compileXplus1();
+     printf( "10+1    -> %d\n", methodXplus1(10) );
+*/
+	 compileLessThan();
+     printf( "5<10? 1:2    -> %d\n", methodLessThan(5) );
+     printf( "15<10? 1:2    -> %d\n", methodLessThan(15) );
+     printf( "10<10? 1:2    -> %d\n", methodLessThan(10) );
+     printf( "1000000<10? 1:2    -> %d\n", methodLessThan(1000000) );
+     printf( "-1000000<10? 1:2    -> %d\n", methodLessThan(-1000000) );
+     printf( "-1<10? 1:2    -> %d\n", methodLessThan(-1) );
+
+/*
+	 compileFib();
+     printf( "func ptr = %p\n", &methodFib );
+     int answer = methodFib(1);
+     printf( "fib(1) = %d\n", answer );
+     
+     printf( "fib(3) = %d\n", methodFib(3) );
+     printf( "fib(4) = %d\n", methodFib(4) );
+     printf( "fib(5) = %d\n", methodFib(5) );
+*/
+
+//   compileIterativeFibonacci();
+//     for (int k=0; k<=31; k++)
+//       printf( "fib(%d)   -> %d\n", k, methodIterativeFibonacci(k) );
+
+
+     printf("Shutting down JIT...\n");
      shutdownJit();
      return 0;
 }
