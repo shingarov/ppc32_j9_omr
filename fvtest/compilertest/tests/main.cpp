@@ -200,12 +200,13 @@ int main(int argc, char **argv)
      printf( "10+1    -> %d\n", methodXplus1(10) );
 */
 	 compileLessThan();
-     printf( "5<10? 1:2    -> %d\n", methodLessThan(5) );
+/*     printf( "5<10? 1:2    -> %d\n", methodLessThan(5) );
      printf( "15<10? 1:2    -> %d\n", methodLessThan(15) );
      printf( "10<10? 1:2    -> %d\n", methodLessThan(10) );
      printf( "1000000<10? 1:2    -> %d\n", methodLessThan(1000000) );
      printf( "-1000000<10? 1:2    -> %d\n", methodLessThan(-1000000) );
      printf( "-1<10? 1:2    -> %d\n", methodLessThan(-1) );
+*/
 
 /*
 	 compileFib();
