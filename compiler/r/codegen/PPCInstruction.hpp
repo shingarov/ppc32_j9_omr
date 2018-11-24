@@ -502,6 +502,8 @@ class PPCDepLabelInstruction : public PPCLabelInstruction
 class PPCConditionalBranchInstruction : public PPCLabelInstruction
    {
    TR::Register    *_conditionRegister;
+   TR::Register    *_src1;
+   TR::Register    *_src2;
    int32_t         _estimatedBinaryLocation;
    bool            _likeliness;
    bool            _haveHint;
@@ -520,12 +522,17 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
       }
 
    PPCConditionalBranchInstruction(TR::InstOpCode::Mnemonic  op, TR::Node * n, TR::LabelSymbol *sym,
-                                      TR::Register    *cr, TR::CodeGenerator *codeGen)
+                                      TR::Register    *cr,
+									  TR::Register *src1, TR::Register *src2,
+									  TR::CodeGenerator *codeGen)
       : PPCLabelInstruction(op, n, sym, codeGen), _conditionRegister(cr),
         _estimatedBinaryLocation(0),  _farRelocation(false),_exceptBranch(false),
-        _haveHint(false), _likeliness(false)
+        _haveHint(false), _likeliness(false),
+		_src1(src1), _src2(src2)
       {
       useRegister(cr);
+      //      useRegister(src1);
+      //      useRegister(src2);
       }
 
    PPCConditionalBranchInstruction(TR::InstOpCode::Mnemonic  op, TR::Node * n, TR::LabelSymbol *sym,
@@ -616,7 +623,7 @@ class PPCDepConditionalBranchInstruction : public PPCConditionalBranchInstructio
                              TR::LabelSymbol                       *sym,
                              TR::Register                         *cr,
                              TR::RegisterDependencyConditions  *cond, TR::CodeGenerator *codeGen)
-      : PPCConditionalBranchInstruction(op, n, sym, cr, codeGen), _conditions(cond)
+      : PPCConditionalBranchInstruction(op, n, sym, cr, NULL, NULL, codeGen), _conditions(cond)
       {
       cond->bookKeepingRegisterUses(this, codeGen);
       }

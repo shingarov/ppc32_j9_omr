@@ -310,17 +310,6 @@ TR::Instruction *generateDepLabelInstruction(TR::CodeGenerator *cg, TR::InstOpCo
    return new (cg->trHeapMemory()) TR::PPCDepLabelInstruction(op, n, sym, cond, cg);
    }
 
-TR::Instruction *generateConditionalBranchInstruction(TR::CodeGenerator *cg, TR::InstOpCode::Mnemonic op, bool likeliness, TR::Node * n,
-   TR::LabelSymbol *sym, TR::Register *cr, TR::Instruction *preced)
-   {
-   if (cr->isFlippedCCR())
-      op = flipBranch(cg, op);
-
-   if (preced)
-      return new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(op, n, sym, cr, preced, cg, likeliness);
-   return new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(op, n, sym, cr, cg, likeliness);
-   }
-
 TR::Instruction *generateDepConditionalBranchInstruction(TR::CodeGenerator *cg, TR::InstOpCode::Mnemonic op,  bool likeliness, TR::Node * n,
    TR::LabelSymbol *sym, TR::Register *cr, TR::RegisterDependencyConditions *cond, TR::Instruction *preced)
    {
@@ -333,51 +322,17 @@ TR::Instruction *generateDepConditionalBranchInstruction(TR::CodeGenerator *cg, 
    }
 
 TR::Instruction *generateConditionalBranchInstruction(TR::CodeGenerator *cg, TR::InstOpCode::Mnemonic op, TR::Node * n,
-   TR::LabelSymbol *sym, TR::Register *cr, TR::Instruction *preced)
+   TR::LabelSymbol *sym, TR::Register *cr,
+   TR::Register *src1,
+   TR::Register *src2,
+   TR::Instruction *preced)
    {
-   if (cr->isFlippedCCR())
-      op = flipBranch(cg, op);
-
-   int prediction = estimateLikeliness(cg, n);
-   bool likeliness;
-   if(prediction < 0)
-      likeliness = false;
-   else if (prediction > 0)
-      likeliness = true;
-
-   if(prediction)
-      {
-      if (preced)
-         return new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(op, n, sym, cr, preced, cg, likeliness);
-      return new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(op, n, sym, cr, cg, likeliness);
-      }
-   if (preced)
-      return new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(op, n, sym, cr, preced, cg);
-   return new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(op, n, sym, cr, cg);
+   return new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(op, n, sym, cr, src1, src2, cg);
    }
 
 TR::Instruction *generateDepConditionalBranchInstruction(TR::CodeGenerator *cg, TR::InstOpCode::Mnemonic op, TR::Node * n,
    TR::LabelSymbol *sym, TR::Register *cr, TR::RegisterDependencyConditions *cond, TR::Instruction *preced)
    {
-   if (cr->isFlippedCCR())
-      op = flipBranch(cg, op);
-
-   int prediction = estimateLikeliness(cg, n);
-   bool likeliness;
-   if(prediction < 0)
-      likeliness = false;
-   else if (prediction > 0)
-      likeliness = true;
-
-   if(prediction)
-      {
-      if (preced)
-         return new (cg->trHeapMemory()) TR::PPCDepConditionalBranchInstruction(op, n, sym, cr, cond, preced, cg, likeliness);
-      return new (cg->trHeapMemory()) TR::PPCDepConditionalBranchInstruction(op, n, sym, cr, cond, cg, likeliness);
-      }
-
-   if (preced)
-      return new (cg->trHeapMemory()) TR::PPCDepConditionalBranchInstruction(op, n, sym, cr, cond, preced, cg);
    return new (cg->trHeapMemory()) TR::PPCDepConditionalBranchInstruction(op, n, sym, cr, cond, cg);
    }
 
@@ -675,3 +630,15 @@ int estimateLikeliness(TR::CodeGenerator *cg, TR::Node *n)
       }
    return 0;
    }
+
+
+TR::Instruction *generateConditionalBranchInstruction(
+                   TR::CodeGenerator      *cg,
+                   TR::InstOpCode::Mnemonic   op,
+                   TR::Node        *n,
+                   TR::LabelSymbol *sym,
+                   TR::Register    *cr,
+                   TR::Instruction                      *preced)
+{
+        return generateConditionalBranchInstruction(cg, op, n, sym, cr, NULL, NULL, NULL);
+}

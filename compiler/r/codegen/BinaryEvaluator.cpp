@@ -267,7 +267,7 @@ static bool genNullTestForCompressedPointers(TR::Node *node,
             {
             generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::cmpli8, node, condReg, src1Reg, NULLVALUE);
             }
-         generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneSkipAdd, condReg);
+         generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneSkipAdd, condReg, NULL, NULL);
          }
       return true;
       }
@@ -2025,7 +2025,7 @@ TR::Register *OMR::Power::TreeEvaluator::idivEvaluator(TR::Node *node, TR::CodeG
             condReg = cg->allocateRegister(TR_CCR);
             generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::cmpi4, node, condReg, divisorReg, -1);
             generateTrg1Src1Instruction(cg, TR::InstOpCode::neg, node, trgReg, dividendReg);
-            generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneLabel, condReg);
+            generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneLabel, condReg, NULL, NULL);
             cg->stopUsingRegister(condReg);
             }
          generateTrg1Src2Instruction(cg, TR::InstOpCode::divw, node, trgReg, dividendReg, divisorReg);
@@ -2105,7 +2105,7 @@ static TR::Register *ldiv64Evaluator(TR::Node *node, TR::CodeGenerator *cg)
             condReg = cg->allocateRegister(TR_CCR);
             generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::cmpi8, node, condReg, divisorReg, -1);
             generateTrg1Src1Instruction(cg, TR::InstOpCode::neg, node, trgReg, dividendReg);
-            generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneLabel, condReg);
+            generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneLabel, condReg, NULL,NULL);
             cg->stopUsingRegister(condReg);
             }
          generateTrg1Src2Instruction(cg, TR::InstOpCode::divd, node, trgReg, dividendReg, divisorReg);
@@ -2193,7 +2193,7 @@ strengthReducingLongDivideOrRemainder32BitMode(TR::Node *node,      TR::CodeGene
 
          generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::srawi, node, tmp1Reg, dd_l, 31);
          generateTrg1Src2Instruction(cg, TR::InstOpCode::cmpl4, node, cr0Reg, tmp1Reg, dd_h);
-         generateConditionalBranchInstruction(cg, TR::InstOpCode::bne, node, callLabel, cr0Reg);
+         generateConditionalBranchInstruction(cg, TR::InstOpCode::bne, node, callLabel, cr0Reg, NULL,NULL);
 
          signedIntegerDivisionOrRemainderAnalyser(node, cg, dd_l, drConst, isRemainder, isRemainder?dr_l:dd_l, dr_l, tmp1Reg, tmp2Reg);
          generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::srawi, node, isRemainder?dr_h:dd_h, isRemainder?dr_l:dd_l, 31);
@@ -2205,7 +2205,7 @@ strengthReducingLongDivideOrRemainder32BitMode(TR::Node *node,      TR::CodeGene
 
          generateTrg1Src2Instruction(cg, TR::InstOpCode::OR, node, tmp1Reg, dd_h, dr_h);
          generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::cmpli4, node, cr0Reg, tmp1Reg, 0);
-         generateConditionalBranchInstruction(cg, TR::InstOpCode::bne, node, callLabel, cr0Reg);
+         generateConditionalBranchInstruction(cg, TR::InstOpCode::bne, node, callLabel, cr0Reg, NULL,NULL);
 
          if (isRemainder)
             {
@@ -2338,7 +2338,7 @@ TR::Register *OMR::Power::TreeEvaluator::iremEvaluator(TR::Node *node, TR::CodeG
             condReg = cg->allocateRegister(TR_CCR);
             generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::cmpi4, node, condReg, divisorReg, -1);
             generateTrg1ImmInstruction(cg, TR::InstOpCode::li, node, trgReg, 0);
-            generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneLabel, condReg);
+            generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneLabel, condReg, NULL, NULL);
             cg->stopUsingRegister(condReg);
             }
          if(TR::Compiler->target.cpu.id() >= TR_PPCp9)
@@ -2434,7 +2434,7 @@ TR::Register *lrem64Evaluator(TR::Node *node, TR::CodeGenerator *cg)
             condReg = cg->allocateRegister(TR_CCR);
             generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::cmpi8, node, condReg, divisorReg, -1);
             generateTrg1ImmInstruction(cg, TR::InstOpCode::li, node, trgReg, 0);
-            generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneLabel, condReg);
+            generateConditionalBranchInstruction(cg, TR::InstOpCode::beq, node, doneLabel, condReg, NULL, NULL);
             cg->stopUsingRegister(condReg);
             }
          if (TR::Compiler->target.cpu.id() >= TR_PPCp9)

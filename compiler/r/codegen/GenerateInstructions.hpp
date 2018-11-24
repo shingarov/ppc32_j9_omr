@@ -174,16 +174,17 @@ TR::Instruction *generateConditionalBranchInstruction(
                    TR::Node        *n,
                    TR::LabelSymbol *sym,
                    TR::Register    *cr,
+                   TR::Register    *src1,
+                   TR::Register    *src2,
                    TR::Instruction *preced = 0);
 
 TR::Instruction *generateConditionalBranchInstruction(
                    TR::CodeGenerator      *cg,
                    TR::InstOpCode::Mnemonic   op,
-                   bool likeliness,
                    TR::Node        *n,
                    TR::LabelSymbol *sym,
                    TR::Register    *cr,
-                   TR::Instruction *preced = 0);
+                   TR::Instruction                      *preced=0);
 
 TR::Instruction *generateDepConditionalBranchInstruction(
                    TR::CodeGenerator      *cg,
