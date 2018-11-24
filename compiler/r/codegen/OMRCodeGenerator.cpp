@@ -2744,7 +2744,16 @@ void OMR::Power::CodeGenerator::apply16BitLabelRelativeRelocation(int32_t * curs
    {
    TR_ASSERT( label->getCodeLocation(), "Attempt to relocate to a NULL label address!" );
 
-   *cursor |= ((uintptrj_t)label->getCodeLocation()-(uintptrj_t)cursor) & 0x0000fffc;
+   int32_t delta = (uintptrj_t)label->getCodeLocation() - (uintptrj_t)cursor;
+
+   uint32_t part1to4 = (delta & 0x1e) << 7;
+// BOGUS, NEED OTHER PARTS OF THE OFFSET
+printf("Patch jump from %p to %p, delta=%d, part1to4=%d\n",
+               cursor,
+               label->getCodeLocation(),
+               delta,
+               part1to4);
+   *cursor |= part1to4;
    }
 
 void OMR::Power::CodeGenerator::apply24BitLabelRelativeRelocation(int32_t * cursor, TR::LabelSymbol * label)
