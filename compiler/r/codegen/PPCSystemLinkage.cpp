@@ -89,9 +89,9 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
    int i = 0;
    _properties._properties = IntegersInRegisters|FloatsInRegisters|RightToLeft;
    _properties._registerFlags[TR::RealRegister::NoReg] = 0;
-   _properties._registerFlags[TR::RealRegister::gr0]   = 0;
-   _properties._registerFlags[TR::RealRegister::gr1]   = Preserved|PPC_Reserved; // system sp
-   _properties._registerFlags[TR::RealRegister::gr2]   = Preserved|PPC_Reserved; // TOC/system reserved
+   _properties._registerFlags[TR::RealRegister::gr0]   = Preserved|PPC_Reserved; // zero
+   _properties._registerFlags[TR::RealRegister::gr1]   = Preserved|PPC_Reserved; // return address
+   _properties._registerFlags[TR::RealRegister::gr2]   = Preserved|PPC_Reserved; // sp
    _properties._registerFlags[TR::RealRegister::gr3]   = PPC_Reserved;
    _properties._registerFlags[TR::RealRegister::gr4]   = PPC_Reserved;
 
