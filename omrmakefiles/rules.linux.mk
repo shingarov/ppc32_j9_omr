@@ -156,7 +156,7 @@ endif
 ## Debugging Information
 # Indicate that GNU debug symbols are being used
 ifeq (gcc,$(OMR_TOOLCHAIN))
-  ifneq (,$(filter aarch64 arm ppc s390 x86,$(OMR_HOST_ARCH)))
+  ifneq (,$(filter aarch64 riscv64 arm ppc s390 x86,$(OMR_HOST_ARCH)))
     USE_GNU_DEBUG:=1
   endif
 endif
@@ -191,6 +191,11 @@ else ifeq (aarch64,$(OMR_HOST_ARCH))
     GLOBAL_CFLAGS+=-march=armv8-a+simd -Wno-unused-but-set-variable
     GLOBAL_CXXFLAGS+=-march=armv8-a+simd -Wno-unused-but-set-variable
     GLOBAL_CPPFLAGS+=-DJ9AARCH64 -DAARCH64GNU -DAARCH64 -DFIXUP_UNALIGNED -Wno-unused-but-set-variable
+
+else ifeq (riscv64,$(OMR_HOST_ARCH))
+    GLOBAL_CFLAGS+=-Wno-unused-but-set-variable
+    GLOBAL_CXXFLAGS+=-Wno-unused-but-set-variable
+    GLOBAL_CPPFLAGS+=-Wno-unused-but-set-variable
 
 else
     ifeq (arm,$(OMR_HOST_ARCH))
@@ -245,7 +250,7 @@ endif
 ifneq (,$(findstring executable,$(ARTIFACT_TYPE)))
   ifeq (1,$(OMR_ENV_DATA64))
   else
-    GLOBAL_LDFLAGS+=-m32
+#    GLOBAL_LDFLAGS+=-m32
   endif
 
   ## Default Libraries
