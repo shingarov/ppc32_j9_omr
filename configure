@@ -3017,6 +3017,8 @@ if test "x$OMR_HOST_ARCH" = "x"; then :
     OMR_HOST_ARCH=aarch64 ;; #(
   powerpc*) :
     OMR_HOST_ARCH=ppc ;; #(
+  riscv64*) :
+    OMR_HOST_ARCH=riscv64 ;; #(
   i370) :
     OMR_HOST_ARCH=s390 ;; #(
   s390) :
