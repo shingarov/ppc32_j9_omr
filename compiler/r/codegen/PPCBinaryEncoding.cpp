@@ -492,23 +492,60 @@ TR::PPCTrg1ImmInstruction::addMetaDataForCodeAddress(uint8_t *cursor)
    }
 
 
+
 uint8_t *TR::PPCTrg1ImmInstruction::generateBinaryEncoding()
    {
+   TR_ASSERT(!isVSX(), "What VSX??");
+   TR_ASSERT(   (getOpCodeValue() == TR::InstOpCode::li)  ||
+                (getOpCodeValue() == TR::InstOpCode::lis),
+           "Please implement other Trg1Imm beyond li");
 
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
+   uint32_t *iPtr = (uint32_t*)instructionStart;
    uint8_t *cursor           = instructionStart;
+
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
-   insertTargetRegister(toPPCCursor(cursor));
 
-   insertImmediateField(toPPCCursor(cursor));
+   TR::RealRegister *target = toRealRegister(getTrg1Register());
+   if (target->isConditionRegister())
+     *iPtr |= target->binaryRegCode() << (21 /*pos_RT*/ + 2);
+   else
+     *iPtr |= target->binaryRegCode() << 21 /*pos_RT*/;
+//   target->setRegisterFieldRT((uint32_t*)instructionStart);
 
-//   addMetaDataForCodeAddress(cursor);
+/*   if (getOpCodeValue() == TR::InstOpCode::mtcrf ||
+       getOpCodeValue() == TR::InstOpCode::mfocrf)
+      {
+      *((int32_t *)cursor) |= (getSourceImmediate()<<12);
+      if ((TR::Compiler->target.cpu.id() >= TR_PPCgp) &&
+          ((getSourceImmediate() & (getSourceImmediate() - 1)) == 0))
+         // convert to PPC AS single field form
+         *((int32_t *)cursor) |= 0x00100000;
+      }
+   else if (getOpCodeValue() == TR::InstOpCode::mfcr)
+      {
+      if ((TR::Compiler->target.cpu.id() >= TR_PPCgp) &&
+          ((getSourceImmediate() & (getSourceImmediate() - 1)) == 0))
+         // convert to PPC AS single field form
+         *((int32_t *)cursor) |= (getSourceImmediate()<<12) | 0x00100000;
+      else
+         TR_ASSERT(getSourceImmediate() == 0xFF, "Bad field mask on mfcr");
+      }
+   else
+      */
+
+   *iPtr |= _sourceImmediate & 0xffff;
+   // insertImmediateField(toPPCCursor(cursor));
+
+
+   addMetaDataForCodeAddress(cursor);
 
    cursor += PPC_INSTRUCTION_LENGTH;
    setBinaryLength(PPC_INSTRUCTION_LENGTH);
    setBinaryEncoding(instructionStart);
    return cursor;
    }
+
 
 
 void
@@ -786,20 +823,21 @@ int32_t TR::PPCMemSrc1Instruction::estimateBinaryLength(int32_t currentEstimate)
 
 uint8_t *TR::PPCTrg1MemInstruction::generateBinaryEncoding()
    {
+    TR_ASSERT(   (getOpCodeValue() == TR::InstOpCode::lwz)  ,
+               "Please implement other Trg1IMem beyond lwz");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
+   uint32_t *iPtr = (uint32_t*) instructionStart;
    uint8_t *cursor           = instructionStart;
 
    getMemoryReference()->mapOpCode(this);
 
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
 
-   insertTargetRegister(toPPCCursor(cursor));
-   // Set hint bit if there is any
-   // The control for the different values is done through asserts in the constructor
-   if (haveHint())
-   {
-      *(int32_t *)instructionStart |=  getHint();
-   }
+   //insertTargetRegister(toPPCCursor(cursor));
+   TR::RealRegister *target = toRealRegister(getTrg1Register());
+   target->setRegisterFieldRT(iPtr);
+
+
 
    cursor = getMemoryReference()->generateBinaryEncoding(this, cursor, cg());
    setBinaryLength(cursor-instructionStart);
@@ -807,6 +845,7 @@ uint8_t *TR::PPCTrg1MemInstruction::generateBinaryEncoding()
    cg()->addAccumulatedInstructionLengthError(getEstimatedBinaryLength() - getBinaryLength());
    return cursor;
    }
+
 
 int32_t TR::PPCTrg1MemInstruction::estimateBinaryLength(int32_t currentEstimate)
    {
