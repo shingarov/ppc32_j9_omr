@@ -91,6 +91,7 @@ class OMR_EXTENSIBLE RealRegister : public OMR::RealRegister
       CRCC_FU = CRCC_SO // floating-point unordered
    };
 
+   uint8_t binaryRegCode() { return fullRegBinaryEncodings[_registerNumber]; }
    bool getUseVSR() { return _useVSR; }
    void setUseVSR(bool value) { _useVSR = value; }
    bool isNewVSR() { return _registerNumber >= vsr32 && _registerNumber <= LastVSR; }
