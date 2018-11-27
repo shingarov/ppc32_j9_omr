@@ -826,11 +826,9 @@ class PPCTrg1Instruction : public TR::Instruction
 
    void insertTargetRegister(uint32_t *instruction)
       {
-      TR::RealRegister *target = toRealRegister(_target1Register);
-      if (isVSX())
-         target->setRegisterFieldXT(instruction);
-      else
-         target->setRegisterFieldRT(instruction);
+       TR::RealRegister *target = toRealRegister(_target1Register);
+       target->setRegisterFieldRT(instruction);
+       /* !!!!!! */
       }
 
    virtual uint8_t *generateBinaryEncoding();
@@ -890,11 +888,33 @@ class PPCTrg1ImmInstruction : public PPCTrg1Instruction
 
    void insertImmediateField(uint32_t *instruction)
       {
-              printf("Before immed: %X\n", *instruction);
-              printf("immed: %X\n", _sourceImmediate);
+      TR_ASSERT(!isVMX(), "VMX????");
 
-         *instruction |= (_sourceImmediate & 0x0FFF) << 20;
-              printf("After immed: %X\n", *instruction);
+         if (getOpCodeValue() == TR::InstOpCode::addpcis)
+            {
+            // populate d0, d1 and d2 fields
+            *instruction |= ((_sourceImmediate >> 6) & 0x3ff) << 6;
+            *instruction |= ((_sourceImmediate >> 1) & 0x1f) << 16;
+            *instruction |= _sourceImmediate & 0x1;
+            }
+         else if (getOpCodeValue() == TR::InstOpCode::setb ||
+                  getOpCodeValue() == TR::InstOpCode::mcrfs)
+            {
+            // populate 3-bit BFA field
+            *instruction |= (_sourceImmediate & 0x7) << 18;
+            }
+         else if (getOpCodeValue() == TR::InstOpCode::darn)
+            {
+            // populate 2-bit L field
+            *instruction |= (_sourceImmediate & 0x3) << 16;
+            }
+         else
+            {
+            *instruction |= _sourceImmediate & 0xffff;
+            /* BOGUS, FIXMENOW!!! */
+            }
+
+
       }
 
    void addMetaDataForCodeAddress(uint8_t *cursor);
