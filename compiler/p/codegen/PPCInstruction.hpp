@@ -819,11 +819,9 @@ class PPCTrg1Instruction : public TR::Instruction
 
    void insertTargetRegister(uint32_t *instruction)
       {
-      TR::RealRegister *target = toRealRegister(_target1Register);
-      if (isVSX())
-         target->setRegisterFieldXT(instruction);
-      else
-         target->setRegisterFieldRT(instruction);
+	   TR::RealRegister *target = toRealRegister(_target1Register);
+	   target->setRegisterFieldRT(instruction);
+	   /* !!!!!! */
       }
 
    virtual uint8_t *generateBinaryEncoding();
@@ -883,8 +881,8 @@ class PPCTrg1ImmInstruction : public PPCTrg1Instruction
 
    void insertImmediateField(uint32_t *instruction)
       {
-      if (!isVMX())
-         {
+      TR_ASSERT(!isVMX(), "VMX????");
+         
          if (getOpCodeValue() == TR::InstOpCode::addpcis)
             {
             // populate d0, d1 and d2 fields
@@ -907,9 +905,8 @@ class PPCTrg1ImmInstruction : public PPCTrg1Instruction
             {
             *instruction |= _sourceImmediate & 0xffff;
             }
-         }
-      else
-         *instruction |= (_sourceImmediate & 0x1f) << 16;
+         
+ 
       }
 
    void addMetaDataForCodeAddress(uint8_t *cursor);
