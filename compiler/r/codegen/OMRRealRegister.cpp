@@ -175,7 +175,7 @@ OMR::Power::RealRegister::setRegisterFieldRT(uint32_t *instruction)
 //   if (self()->isConditionRegister())
 //     *instruction |= fullRegBinaryEncodings[_registerNumber] << (pos_RT + 2);
 //   else
-     *instruction |= fullRegBinaryEncodings[_registerNumber] << pos_RD;
+     *instruction |= binaryRegCode() << pos_RD;  /*FIXMENOW!!!!!!*/
    }
 
 void
