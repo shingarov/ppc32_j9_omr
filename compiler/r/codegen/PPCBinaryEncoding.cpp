@@ -22,6 +22,7 @@
 #include <stdint.h>                            // for uint8_t, int32_t, etc
 #include <stdio.h>                             // for NULL, printf
 #include <algorithm>                           // for std::find
+#include <riscv.h>                         
 #include "codegen/CodeGenerator.hpp"           // for CodeGenerator, etc
 #include "codegen/FrontEnd.hpp"                // for TR_FrontEnd
 #include "codegen/InstOpCode.hpp"              // for InstOpCode, etc
@@ -504,13 +505,16 @@ uint8_t *TR::PPCTrg1ImmInstruction::generateBinaryEncoding()
    uint32_t *iPtr = (uint32_t*)instructionStart;
    uint8_t *cursor           = instructionStart;
 
-   cursor = getOpCode().copyBinaryToBuffer(instructionStart);
+//   cursor = getOpCode().copyBinaryToBuffer(instructionStart);
 
    TR::RealRegister *target = toRealRegister(getTrg1Register());
-   if (target->isConditionRegister())
-     *iPtr |= target->binaryRegCode() << (21 /*pos_RT*/ + 2);
-   else
-     *iPtr |= target->binaryRegCode() << 21 /*pos_RT*/;
+
+   *iPtr = RISCV_ITYPE (ADDI, target->binaryRegCode(), 0, _sourceImmediate & 0x0fff);
+
+//   if (target->isConditionRegister())
+//     *iPtr |= target->binaryRegCode() << (21 /*pos_RT*/ + 2);
+//   else
+//     *iPtr |= target->binaryRegCode() << 21 /*pos_RT*/;
 //   target->setRegisterFieldRT((uint32_t*)instructionStart);
 
 /*   if (getOpCodeValue() == TR::InstOpCode::mtcrf ||
@@ -534,7 +538,7 @@ uint8_t *TR::PPCTrg1ImmInstruction::generateBinaryEncoding()
    else
       */
 
-   *iPtr |= _sourceImmediate & 0xffff;
+//   *iPtr |= _sourceImmediate & 0xffff;
    // insertImmediateField(toPPCCursor(cursor));
 
 
