@@ -22,6 +22,7 @@
 #include <stdint.h>                                  // for int32_t, etc
 #include <stdio.h>                                   // for NULL, fprintf, etc
 #include <string.h>                                  // for strstr
+#include <riscv.h>                                  
 #include "codegen/AheadOfTimeCompile.hpp"           // for AheadOfTimeCompile
 #include "codegen/BackingStore.hpp"                  // for TR_BackingStore
 #include "codegen/CodeGenerator.hpp"                 // for CodeGenerator
@@ -148,28 +149,26 @@ TR::Instruction *loadActualConstant(TR::CodeGenerator *cg, TR::Node * node, intp
 TR::Instruction *loadConstant(TR::CodeGenerator *cg, TR::Node * node, int32_t value, TR::Register *trgReg, TR::Instruction *cursor, bool isPicSite)
    {
    TR::Compilation *comp = cg->comp();
-   intParts localVal(value);
    int32_t ulit, llit;
    TR::Instruction *temp = cursor;
 
    if (cursor == NULL)
       cursor = cg->getAppendInstruction();
-
-   if ((LOWER_IMMED <= localVal.getValue()) && (localVal.getValue() <= UPPER_IMMED))
+   if ((LOWER_IMMED <= value && value <= UPPER_IMMED))
       {
-      cursor = generateTrg1ImmInstruction(cg, TR::InstOpCode::li, node, trgReg, localVal.getValue(), cursor);
+      cursor = generateTrg1ImmInstruction(cg, TR::InstOpCode::li, node, trgReg, value, cursor);
       }
    else
       {
-      ulit = localVal.getHighBits();
-      llit = localVal.getLowBits();
+      ulit = RISCV_CONST_HIGH_PART(value) & 0xfffff;
+      llit = RISCV_CONST_LOW_PART(value) & 0x0fff;
       cursor = generateTrg1ImmInstruction(cg, TR::InstOpCode::lis, node, trgReg, ulit, cursor);
       if (llit != 0 || isPicSite)
          {
-         if (isPicSite)
-            cursor = generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::ori, node, trgReg, trgReg, value, cursor);
-         else
-            cursor = generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::ori, node, trgReg, trgReg, llit, cursor);
+//         if (isPicSite)
+//            cursor = generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::ori, node, trgReg, trgReg, value, cursor);
+//         else
+            cursor = generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::addi, node, trgReg, trgReg, llit, cursor);
          }
       }
 

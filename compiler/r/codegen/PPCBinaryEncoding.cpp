@@ -509,38 +509,13 @@ uint8_t *TR::PPCTrg1ImmInstruction::generateBinaryEncoding()
 
    TR::RealRegister *target = toRealRegister(getTrg1Register());
 
-   *iPtr = RISCV_ITYPE (ADDI, target->binaryRegCode(), 0, _sourceImmediate & 0x0fff);
-
-//   if (target->isConditionRegister())
-//     *iPtr |= target->binaryRegCode() << (21 /*pos_RT*/ + 2);
-//   else
-//     *iPtr |= target->binaryRegCode() << 21 /*pos_RT*/;
-//   target->setRegisterFieldRT((uint32_t*)instructionStart);
-
-/*   if (getOpCodeValue() == TR::InstOpCode::mtcrf ||
-       getOpCodeValue() == TR::InstOpCode::mfocrf)
-      {
-      *((int32_t *)cursor) |= (getSourceImmediate()<<12);
-      if ((TR::Compiler->target.cpu.id() >= TR_PPCgp) &&
-          ((getSourceImmediate() & (getSourceImmediate() - 1)) == 0))
-         // convert to PPC AS single field form
-         *((int32_t *)cursor) |= 0x00100000;
-      }
-   else if (getOpCodeValue() == TR::InstOpCode::mfcr)
-      {
-      if ((TR::Compiler->target.cpu.id() >= TR_PPCgp) &&
-          ((getSourceImmediate() & (getSourceImmediate() - 1)) == 0))
-         // convert to PPC AS single field form
-         *((int32_t *)cursor) |= (getSourceImmediate()<<12) | 0x00100000;
-      else
-         TR_ASSERT(getSourceImmediate() == 0xFF, "Bad field mask on mfcr");
-      }
-   else
-      */
-
-//   *iPtr |= _sourceImmediate & 0xffff;
-   // insertImmediateField(toPPCCursor(cursor));
-
+   // Temporary, experimental code.
+   // This will be replaced by one class per instruction,
+   // inheriting from instruction formats
+   if (getOpCodeValue() == TR::InstOpCode::li)
+           *iPtr = RISCV_ITYPE (ADDI, target->binaryRegCode(), 0, _sourceImmediate & 0xfff); // BOGUS, investigate if this & is needed
+   if (getOpCodeValue() == TR::InstOpCode::lis)
+           *iPtr = RISCV_UTYPE (LUI, target->binaryRegCode(), _sourceImmediate & 0xfffff); // BOGUS, investigate if this & is needed
 
    addMetaDataForCodeAddress(cursor);
 
@@ -570,7 +545,29 @@ TR::PPCTrg1Src1ImmInstruction::addMetaDataForCodeAddress(uint8_t *cursor)
 
 uint8_t *TR::PPCTrg1Src1ImmInstruction::generateBinaryEncoding()
    {
+   TR_ASSERT(   (getOpCodeValue() == TR::InstOpCode::addi),
+           "Please implement other Trg1Src1Imm beyond addi");
 
+   uint8_t *instructionStart = cg()->getBinaryBufferCursor();
+   uint32_t *iPtr = (uint32_t*)instructionStart;
+   uint8_t *cursor           = instructionStart;
+
+   TR::RealRegister *t = toRealRegister(getTrg1Register());
+   TR::RealRegister *s = toRealRegister(getSource1Register());
+
+   // Temporary, experimental code.
+   // This will be replaced by one class per instruction,
+   // inheriting from instruction formats
+   if (getOpCodeValue() == TR::InstOpCode::addi)
+           *iPtr = RISCV_ITYPE (ADDI, t->binaryRegCode(), s->binaryRegCode(), getSourceImmediate() & 0xfff); // BOGUS, investigate if this & is needed
+
+   addMetaDataForCodeAddress(cursor);
+
+   cursor += PPC_INSTRUCTION_LENGTH;
+   setBinaryLength(PPC_INSTRUCTION_LENGTH);
+   setBinaryEncoding(instructionStart);
+   return cursor;
+/* *** original
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
@@ -597,7 +594,7 @@ uint8_t *TR::PPCTrg1Src1ImmInstruction::generateBinaryEncoding()
    cursor += PPC_INSTRUCTION_LENGTH;
    setBinaryLength(PPC_INSTRUCTION_LENGTH);
    setBinaryEncoding(instructionStart);
-   return cursor;
+   return cursor;*/
    }
 
 

@@ -43,10 +43,21 @@ class intParts  {
       intParts()                      { intVal = 0; }
       int32_t getValue()              { return intVal; }
       int32_t setValue(int32_t value) { return intVal=value; }
+#ifdef __riscv
+      /* This whole story is bogus.
+       * We don't use these, and if we do then we should remove those uses:
+       * the riscv.h header already has everything.
+       */
+      int32_t getHighBits()           { return (uint32_t)intVal >> 12; }
+      int32_t getLowBits()            { return (uint32_t)intVal & 0x0fff; }
+      int32_t getLowSign()            { return ((uint32_t)intVal >> 15) & 0x1; } /* BOGUS */
+      int32_t getHighSign()           { return (uint32_t)intVal >> 31; } /* BOGUS */
+#else
       int32_t getHighBits()           { return (uint32_t)intVal >> 16; }
       int32_t getLowBits()            { return (uint32_t)intVal & 0xffff; }
       int32_t getLowSign()            { return ((uint32_t)intVal >> 15) & 0x1; }
       int32_t getHighSign()           { return (uint32_t)intVal >> 31; }
+#endif
       int32_t getByte3()              { return (uint32_t)intVal >> 24; }
       int32_t getByte2()              { return ((uint32_t)intVal >> 16) & 0xff; }
       int32_t getByte1()              { return ((uint32_t)intVal >> 8) & 0xff; }
