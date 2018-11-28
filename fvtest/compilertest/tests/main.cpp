@@ -45,6 +45,7 @@ void compile##testName()                                      \
 /*** Function pointer types ***/
 typedef int32_t (FType)();
 typedef int32_t (FxType)(int32_t);
+typedef int32_t (FxyType)(int32_t,int32_t);
 
 
 
@@ -84,15 +85,58 @@ bool Xplus1Method::buildIL()
 }
 
 
-/*** Simple Branching ***/
-TestDefinition(LessThan, FxType, true)
-bool LessThanMethod::buildIL()
+/*** Simple Branching: x < const ***/
+TestDefinition(LessThanConst, FxType, true)
+bool LessThanConstMethod::buildIL()
 {
    TR::IlBuilder *left=NULL, *right=NULL;
    IfThenElse(&left, &right,
       LessThan(
          Load("x"),
          ConstInt32(10)));
+
+   left -> Return(left->ConstInt32(1));
+   right-> Return(right->ConstInt32(2));
+   return true;
+}
+
+/*** Simple Branching: x < y ***/
+// -- TestDefinition(LessThan, FxyType, NotABool)
+// -- FROM HERE
+class LessThanMethod : public TR::MethodBuilder
+{
+   public:
+   LessThanMethod(TR::TypeDictionary *types);
+   virtual bool buildIL();
+};
+LessThanMethod::LessThanMethod(TR::TypeDictionary *types)
+   : TR::MethodBuilder(types)
+{
+   DefineLine(LINETOSTR(__LINE__));
+   DefineFile(__FILE__);
+   DefineParameter("x", Int32);
+   DefineParameter("y", Int32); // culprit
+   DefineReturnType(Int32);
+}
+FxyType *methodLessThan;
+void compileLessThan()
+{
+   TR::TypeDictionary types;
+   LessThanMethod methodBuilder(&types);
+   TR::ResolvedMethod resolvedMethod(&methodBuilder);
+   TR::IlGeneratorMethodDetails details(&resolvedMethod);
+   int32_t rc = 0;
+   methodLessThan = (FxyType *)
+        compileMethodFromDetails(NULL, details, warm, rc);
+}
+// -- TO HERE
+bool LessThanMethod::buildIL()
+{
+   TR::IlBuilder *left=NULL, *right=NULL;
+   IfThenElse(&left, &right,
+      LessThan(
+         Load("x"),
+         Load("y")));
 
    left -> Return(left->ConstInt32(1));
    right-> Return(right->ConstInt32(2));
