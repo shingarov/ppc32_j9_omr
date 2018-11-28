@@ -22,6 +22,7 @@
 #include <stdint.h>                                 // for int32_t, etc
 #include <stdio.h>                                  // for NULL
 #include <stdlib.h>                                 // for abs, atoi
+#include <riscv.h>                            
 #include "codegen/AheadOfTimeCompile.hpp"           // for AheadOfTimeCompile
 #include "codegen/BackingStore.hpp"                 // for TR_BackingStore
 #include "codegen/CodeGenPhase.hpp"                 // for CodeGenPhase, etc
@@ -2745,15 +2746,7 @@ void OMR::Power::CodeGenerator::apply16BitLabelRelativeRelocation(int32_t * curs
    TR_ASSERT( label->getCodeLocation(), "Attempt to relocate to a NULL label address!" );
 
    int32_t delta = (uintptrj_t)label->getCodeLocation() - (uintptrj_t)cursor;
-
-   uint32_t part1to4 = (delta & 0x1e) << 7;
-// BOGUS, NEED OTHER PARTS OF THE OFFSET
-printf("Patch jump from %p to %p, delta=%d, part1to4=%d\n",
-               cursor,
-               label->getCodeLocation(),
-               delta,
-               part1to4);
-   *cursor |= part1to4;
+   *cursor |= ENCODE_SBTYPE_IMM(delta);
    }
 
 void OMR::Power::CodeGenerator::apply24BitLabelRelativeRelocation(int32_t * cursor, TR::LabelSymbol * label)

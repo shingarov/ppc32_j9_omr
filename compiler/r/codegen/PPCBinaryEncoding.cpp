@@ -247,17 +247,25 @@ int32_t TR::PPCAlignedLabelInstruction::estimateBinaryLength(int32_t currentEsti
 
 uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    {
+   TR_ASSERT(   (getOpCodeValue() == TR::InstOpCode::blt),
+                   "Please implement conditionals beyond BLT");
+
    uint8_t        *instructionStart = cg()->getBinaryBufferCursor();
-   TR::LabelSymbol *label            = getLabelSymbol();
    uint8_t        *cursor           = instructionStart;
-   TR::Compilation *comp = cg()->comp();
+   uint32_t *iPtr = (uint32_t*)instructionStart;
+
+   TR::LabelSymbol *label            = getLabelSymbol();
+   TR_ASSERT(label->getCodeLocation() == NULL, "DAMN -- dont know how to do relocations yet");
+   TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
+
+    *iPtr = RISCV_SBTYPE (BLT, 30, 31, 0);
+/*
+           TR::Compilation *comp = cg()->comp();
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
 printf("OPCODE: %x at cursor %p\n", *((uint32_t*)instructionStart), instructionStart);
-          TR_ASSERT(label->getCodeLocation() == NULL, "DAMN -- dont know how to do relocations yet");
-          TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
             insertConditionRegister((uint32_t *)cursor);
 printf("INSERTED CR: %x\n", *((uint32_t*)instructionStart));
-            
+  */          
             cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label)); // no life without this
 
    cursor += 4;
