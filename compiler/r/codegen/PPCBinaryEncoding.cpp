@@ -831,17 +831,19 @@ uint8_t *TR::PPCTrg1MemInstruction::generateBinaryEncoding()
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint32_t *iPtr = (uint32_t*) instructionStart;
    uint8_t *cursor           = instructionStart;
+   TR::Compilation *comp = cg()->comp();
 
    getMemoryReference()->mapOpCode(this);
 printf("generateBinary from lwz\n");
 
 OMR::Power::MemoryReference *ref = getMemoryReference()->self();
 TR::Register *baseReg = ref->getBaseRegister();
+int32_t offset = ref->getOffset(*comp);
 TR_ASSERT(baseReg!=NULL, "please implement lwz relative to R0");
 printf("base: %d\n", toRealRegister(baseReg)->binaryRegCode());
 printf("rd: %d\n", toRealRegister(getTrg1Register())->binaryRegCode());
+printf("offset: %d\n", offset);
 
-int32_t offset = 24;
 
    *iPtr = RISCV_ITYPE (LD,
                          toRealRegister(getTrg1Register())->binaryRegCode(),
