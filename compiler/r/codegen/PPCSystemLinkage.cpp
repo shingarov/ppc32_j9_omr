@@ -92,8 +92,8 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
    _properties._registerFlags[TR::RealRegister::gr0]   = Preserved|PPC_Reserved; // zero
    _properties._registerFlags[TR::RealRegister::gr1]   = Preserved|PPC_Reserved; // return address
    _properties._registerFlags[TR::RealRegister::gr2]   = Preserved|PPC_Reserved; // sp
-   _properties._registerFlags[TR::RealRegister::gr3]   = PPC_Reserved;
-   _properties._registerFlags[TR::RealRegister::gr4]   = PPC_Reserved;
+   _properties._registerFlags[TR::RealRegister::gr3]   = Preserved|PPC_Reserved; // gp
+   _properties._registerFlags[TR::RealRegister::gr4]   = Preserved|PPC_Reserved; // tp
 
    _properties._registerFlags[TR::RealRegister::gr5]  = 0;
    _properties._registerFlags[TR::RealRegister::gr6]  = 0;
@@ -169,14 +169,14 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
    _properties._numVectorArgumentRegisters    = 1;  // TODO: finish vector linkage
    _properties._firstVectorArgumentRegister   = 22;
 
-   _properties._argumentRegisters[0]  = TR::RealRegister::gr3;
-   _properties._argumentRegisters[1]  = TR::RealRegister::gr4;
-   _properties._argumentRegisters[2]  = TR::RealRegister::gr5;
-   _properties._argumentRegisters[3]  = TR::RealRegister::gr6;
-   _properties._argumentRegisters[4]  = TR::RealRegister::gr7;
-   _properties._argumentRegisters[5]  = TR::RealRegister::gr8;
-   _properties._argumentRegisters[6]  = TR::RealRegister::gr9;
-   _properties._argumentRegisters[7]  = TR::RealRegister::gr10;
+   _properties._argumentRegisters[0]  = TR::RealRegister::gr10;
+   _properties._argumentRegisters[1]  = TR::RealRegister::gr11;
+   _properties._argumentRegisters[2]  = TR::RealRegister::gr12;
+   _properties._argumentRegisters[3]  = TR::RealRegister::gr13;
+   _properties._argumentRegisters[4]  = TR::RealRegister::gr14;
+   _properties._argumentRegisters[5]  = TR::RealRegister::gr15;
+   _properties._argumentRegisters[6]  = TR::RealRegister::gr16;
+   _properties._argumentRegisters[7]  = TR::RealRegister::gr17;
    // We use a somewhat hacky convention to set the linkageRegisterIndex
    // of the GPR containing the environment pointer....we set it
    // to just past the number of integer argument registers.  That's
@@ -201,7 +201,7 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
        }
    _properties._argumentRegisters[22] = TR::RealRegister::vsr34;
 
-   _properties._firstIntegerReturnRegister = 0;
+   _properties._firstIntegerReturnRegister = 10;
    _properties._firstFloatReturnRegister = 2;
    _properties._firstVectorReturnRegister = 6;
 
@@ -226,26 +226,20 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
       _properties._lastAllocatableFloatVolatileRegister    = 43; // 32
       }
 
-   if (TR::Compiler->target.is32Bit() && TR::Compiler->target.isAIX())
-      _properties._firstAllocatableIntegerArgumentRegister = 9;  // aix 32 only
-   else
-      _properties._firstAllocatableIntegerArgumentRegister = 8;
+      _properties._firstAllocatableIntegerArgumentRegister = 12;
 
-   _properties._lastAllocatableIntegerVolatileRegister  = 10;
+   _properties._lastAllocatableIntegerVolatileRegister  = 13;
    _properties._numAllocatableFloatRegisters            = 32;
    _properties._numAllocatableCCRegisters               = 8;
 
    i = 0;
    _properties._allocationOrder[i++] = TR::RealRegister::gr12;
 
-   if (TR::Compiler->target.is32Bit() && TR::Compiler->target.isAIX())
-      _properties._allocationOrder[i++] = TR::RealRegister::gr11;
-
-   _properties._allocationOrder[i++] = TR::RealRegister::gr10;
-   _properties._allocationOrder[i++] = TR::RealRegister::gr9;
-   _properties._allocationOrder[i++] = TR::RealRegister::gr8;
-   _properties._allocationOrder[i++] = TR::RealRegister::gr7;
-   _properties._allocationOrder[i++] = TR::RealRegister::gr6;
+   _properties._allocationOrder[i++] = TR::RealRegister::gr13;
+   _properties._allocationOrder[i++] = TR::RealRegister::gr14;
+   _properties._allocationOrder[i++] = TR::RealRegister::gr15;
+   _properties._allocationOrder[i++] = TR::RealRegister::gr16;
+   _properties._allocationOrder[i++] = TR::RealRegister::gr17;
    _properties._allocationOrder[i++] = TR::RealRegister::gr5;
    _properties._allocationOrder[i++] = TR::RealRegister::gr4;
    _properties._allocationOrder[i++] = TR::RealRegister::gr3;
@@ -319,9 +313,9 @@ TR::PPCSystemLinkage::PPCSystemLinkage(TR::CodeGenerator *cg)
 
    _properties._preservedRegisterMapForGC     = 0x60007fff;
    _properties._methodMetaDataRegister        = TR::RealRegister::NoReg;
-   _properties._normalStackPointerRegister    = TR::RealRegister::gr1;
+   _properties._normalStackPointerRegister    = TR::RealRegister::gr2;
    _properties._alternateStackPointerRegister = TR::RealRegister::gr31;
-   _properties._TOCBaseRegister               = TR::RealRegister::gr2;
+   _properties._TOCBaseRegister               = TR::RealRegister::gr3;
    _properties._vtableIndexArgumentRegister   = TR::RealRegister::NoReg;
    _properties._j9methodArgumentRegister      = TR::RealRegister::NoReg;
 
