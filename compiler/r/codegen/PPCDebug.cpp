@@ -303,12 +303,13 @@ TR_Debug::print(TR::FILE *pOutFile, TR::PPCConditionalBranchInstruction * instr)
    {
    printPrefix(pOutFile, instr);
    trfprintf(pOutFile, "%s \t", getOpCodeName(&instr->getOpCode()));
-   print(pOutFile, instr->getConditionRegister(), TR_WordReg);
+   // BOGUS, need to implement debug printing on RISC-V
+/*   print(pOutFile, instr->getConditionRegister(), TR_WordReg);
    trfprintf(pOutFile, ", ");
    print(pOutFile, instr->getLabelSymbol());
    if ( instr -> haveHint() )
       trfprintf(pOutFile, " # with prediction hints: %s", instr->getLikeliness() ? "Likely" : "Unlikely" );
-   trfflush(_comp->getOutFile());
+   trfflush(_comp->getOutFile());*/
    }
 
 void

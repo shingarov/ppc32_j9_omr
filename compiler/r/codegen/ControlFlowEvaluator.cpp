@@ -262,8 +262,8 @@ printf("1\n");
    generateConditionalBranchInstruction(cg, branchOp, node, dstLabel, NULL, src1Reg, src2Reg, NULL);
 printf("2\n");
 
-//   cg->decReferenceCount(firstChild);
-//   cg->decReferenceCount(secondChild);
+   cg->decReferenceCount(firstChild);
+   cg->decReferenceCount(secondChild);
    return NULL;
    }
 

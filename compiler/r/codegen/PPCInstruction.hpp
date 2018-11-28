@@ -501,7 +501,6 @@ class PPCDepLabelInstruction : public PPCLabelInstruction
 
 class PPCConditionalBranchInstruction : public PPCLabelInstruction
    {
-   TR::Register    *_conditionRegister;
    TR::Register    *_src1;
    TR::Register    *_src2;
    int32_t         _estimatedBinaryLocation;
@@ -514,7 +513,7 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
 
    PPCConditionalBranchInstruction(TR::InstOpCode::Mnemonic  op, TR::Node * n, TR::LabelSymbol *sym,
                                       TR::Register    *cr, TR::CodeGenerator *codeGen, bool likeliness)
-      : PPCLabelInstruction(op, n, sym, codeGen), _conditionRegister(cr),
+      : PPCLabelInstruction(op, n, sym, codeGen),
         _estimatedBinaryLocation(0),  _farRelocation(false),_exceptBranch(false),
         _haveHint(true),  _likeliness(likeliness)
       {
@@ -528,7 +527,7 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
                                       TR::Register    *cr,
 									  TR::Register *src1, TR::Register *src2,
 									  TR::CodeGenerator *codeGen)
-      : PPCLabelInstruction(op, n, sym, codeGen), _conditionRegister(cr),
+      : PPCLabelInstruction(op, n, sym, codeGen),
         _estimatedBinaryLocation(0),  _farRelocation(false),_exceptBranch(false),
         _haveHint(false), _likeliness(false),
 		_src1(src1), _src2(src2)
@@ -543,7 +542,7 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
                                       TR::Register    *cr,
                                       TR::Instruction *precedingInstruction, TR::CodeGenerator *codeGen, bool likeliness)
       : PPCLabelInstruction(op, n, sym, precedingInstruction, codeGen),
-        _conditionRegister(cr), _estimatedBinaryLocation(0),_exceptBranch(false),
+        _estimatedBinaryLocation(0),_exceptBranch(false),
         _farRelocation(false), _haveHint(true), _likeliness(likeliness)
       {
       TR_ASSERT(false, "Incorrect constructor");
@@ -553,7 +552,7 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
                                       TR::Register    *cr,
                                       TR::Instruction *precedingInstruction, TR::CodeGenerator *codeGen)
       : PPCLabelInstruction(op, n, sym, precedingInstruction, codeGen),
-        _conditionRegister(cr), _estimatedBinaryLocation(0),_exceptBranch(false),
+        _estimatedBinaryLocation(0),_exceptBranch(false),
         _farRelocation(false), _haveHint(false), _likeliness(false)
       {
       TR_ASSERT(false, "Incorrect constructor");
@@ -563,10 +562,10 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
 
 
 
-   TR::Register    *getConditionRegister()              {return _conditionRegister;}
-   TR::Register    *setConditionRegister(TR::Register *cr) {return (_conditionRegister = cr);}
+   TR::Register    *getConditionRegister()              {TR_ASSERT(false, "boom\n"); return NULL;}
+   TR::Register    *setConditionRegister(TR::Register *cr) {TR_ASSERT(false, "trahhh\n"); return NULL;}
 
-   virtual TR::Register *getSourceRegister(uint32_t i) {if (i==0) return _conditionRegister; return NULL;}
+   virtual TR::Register *getSourceRegister(uint32_t i) {TR_ASSERT(false, "tarabah\n");  return NULL;}
 
    int32_t getEstimatedBinaryLocation() {return _estimatedBinaryLocation;}
    int32_t setEstimatedBinaryLocation(int32_t l) {return (_estimatedBinaryLocation = l);}
@@ -583,8 +582,9 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
 
    void insertConditionRegister(uint32_t *instruction)
       {
-      TR::RealRegister *condRegister = toRealRegister(_conditionRegister);
-      condRegister->setRegisterFieldBI(instruction);
+              TR_ASSERT(false, "poom\n");
+//      TR::RealRegister *condRegister = toRealRegister(_conditionRegister);
+//      condRegister->setRegisterFieldBI(instruction);
       }
 
    virtual PPCConditionalBranchInstruction *getPPCConditionalBranchInstruction();

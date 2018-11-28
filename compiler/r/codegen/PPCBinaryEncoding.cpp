@@ -259,8 +259,8 @@ uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
 
    *iPtr = RISCV_SBTYPE (BLT,
-                         30,
-                         31,
+                         toRealRegister(_src1)->binaryRegCode(),
+                         toRealRegister(_src2)->binaryRegCode(),
                          0 /* to fix up in the future */ );
    cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label)); // no life without this
 

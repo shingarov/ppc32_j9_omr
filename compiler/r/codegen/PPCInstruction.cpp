@@ -207,40 +207,54 @@ TR::PPCConditionalBranchInstruction::getPPCConditionalBranchInstruction()
 
 void TR::PPCConditionalBranchInstruction::assignRegisters(TR_RegisterKinds kindToBeAssigned)
    {
-   TR::Register           *virtualRegister = getConditionRegister();
-   TR::RealRegister       *assignedRegister = virtualRegister->getAssignedRealRegister();
+           printf("In assignRegisters()\n");
    TR::Machine *machine = cg()->machine();
+TR::Instruction::assignRegisters( kindToBeAssigned );
+
+           printf("Let's see about src1 first.\n");
+
+           _src2->block();
+           printf("Blocked 2.\n");
+
+
+   TR::Register           *virtualRegister = _src1;
+   TR::RealRegister       *assignedRegister = virtualRegister->getAssignedRealRegister();
 
    if (assignedRegister == NULL)
       {
-      assignedRegister = machine->assignOneRegister(this, virtualRegister, false);
+           printf("Not yet assigned.\n");
+      assignedRegister = machine->assignOneRegister(this, virtualRegister, true);
+      } else {
+              printf("Assigned.\n");
+              TR_ASSERT(false, "I dont know what to do.\n");
       }
-
    machine->decFutureUseCountAndUnlatch(virtualRegister);
+   _src1 = assignedRegister;
+   _src2->unblock();
 
-   setConditionRegister(assignedRegister);
+   printf("Ok, now src2.\n");
+   _src1->block();
+   printf("Blocked 1.\n");
 
-   if (getLabelSymbol()->isStartOfColdInstructionStream())
+
+
+   virtualRegister = _src2;
+   assignedRegister = virtualRegister->getAssignedRealRegister();
+
+   if (assignedRegister == NULL)
       {
-      // Switch to the outlined instruction stream and assign registers.
-      //
-      TR_PPCOutOfLineCodeSection *oi = cg()->findOutLinedInstructionsFromLabel(getLabelSymbol());
-      TR_ASSERT(oi, "Could not find PPCOutOfLineCodeSection stream from label.  instr=%p, label=%p\n", this, getLabelSymbol());
-      if (!oi->hasBeenRegisterAssigned())
-         oi->assignRegisters(kindToBeAssigned);
-      if (cg()->getDebug())
-            cg()->traceRegisterAssignment("OOL: Finished register assignment in OOL section\n");
-
-      // Unlock the free spill list.
-      //
-      cg()->unlockFreeSpillList();
-
-      // Disassociate backing storage that was previously reserved for a spilled virtual if
-      // virtual is no longer spilled. This occurs because the the free spill list was
-      // locked.
-      //
-      machine->disassociateUnspilledBackingStorage();
+           printf("Not yet assigned.\n");
+      assignedRegister = machine->assignOneRegister(this, virtualRegister, true);
+      } else {
+              printf("Assigned.\n");
+              TR_ASSERT(false, "I dont know what to do.\n");
       }
+   _src1->unblock();
+   machine->decFutureUseCountAndUnlatch(virtualRegister);
+   _src2 = assignedRegister;
+
+printf("Exiting assignRegisters()\n");
+
    }
 
 bool TR::PPCConditionalBranchInstruction::refsRegister(TR::Register *reg)
