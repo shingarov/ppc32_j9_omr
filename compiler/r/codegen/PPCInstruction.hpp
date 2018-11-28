@@ -518,7 +518,10 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
         _estimatedBinaryLocation(0),  _farRelocation(false),_exceptBranch(false),
         _haveHint(true),  _likeliness(likeliness)
       {
-      useRegister(cr);
+      // useRegister(cr);
+   printf("frutarrrr2\n");
+      useRegister(_src1);
+      useRegister(_src2);
       }
 
    PPCConditionalBranchInstruction(TR::InstOpCode::Mnemonic  op, TR::Node * n, TR::LabelSymbol *sym,
@@ -530,9 +533,10 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
         _haveHint(false), _likeliness(false),
 		_src1(src1), _src2(src2)
       {
-      useRegister(cr);
-      //      useRegister(src1);
-      //      useRegister(src2);
+      // useRegister(cr);
+   printf("frutarrrr\n");
+      useRegister(_src1);
+      useRegister(_src2);
       }
 
    PPCConditionalBranchInstruction(TR::InstOpCode::Mnemonic  op, TR::Node * n, TR::LabelSymbol *sym,
@@ -542,7 +546,7 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
         _conditionRegister(cr), _estimatedBinaryLocation(0),_exceptBranch(false),
         _farRelocation(false), _haveHint(true), _likeliness(likeliness)
       {
-      useRegister(cr);
+      TR_ASSERT(false, "Incorrect constructor");
       }
 
    PPCConditionalBranchInstruction(TR::InstOpCode::Mnemonic  op, TR::Node * n, TR::LabelSymbol *sym,
@@ -552,7 +556,7 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
         _conditionRegister(cr), _estimatedBinaryLocation(0),_exceptBranch(false),
         _farRelocation(false), _haveHint(false), _likeliness(false)
       {
-      useRegister(cr);
+      TR_ASSERT(false, "Incorrect constructor");
       }
 
    virtual Kind getKind() { return IsConditionalBranch; }

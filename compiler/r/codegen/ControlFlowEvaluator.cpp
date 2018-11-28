@@ -251,17 +251,19 @@ TR::Register *computeCC_compareUnsigned(TR::Node *node,
 
 TR::Register *OMR::Power::TreeEvaluator::compareIntsForOrder(TR::InstOpCode::Mnemonic branchOp, TR::LabelSymbol *dstLabel, TR::Node *node, TR::CodeGenerator *cg, bool isSigned, bool isHint, bool likeliness)
    {
-   TR::Register *condReg = cg->allocateRegister(TR_CCR);
    TR::Node     *secondChild = node->getSecondChild();
    TR::Node     *firstChild = node->getFirstChild();
 
    TR::Register *src1Reg   = cg->evaluate(firstChild);
+printf("Created src1 = %p\n", src1Reg);
    TR::Register *src2Reg = cg->evaluate(secondChild);
-   generateConditionalBranchInstruction(cg, branchOp, node, dstLabel, condReg);
+printf("Created src2 = %p\n", src2Reg);
+printf("1\n");
+   generateConditionalBranchInstruction(cg, branchOp, node, dstLabel, NULL, src1Reg, src2Reg, NULL);
+printf("2\n");
 
-   cg->stopUsingRegister(condReg);
-   cg->decReferenceCount(firstChild);
-   cg->decReferenceCount(secondChild);
+//   cg->decReferenceCount(firstChild);
+//   cg->decReferenceCount(secondChild);
    return NULL;
    }
 
