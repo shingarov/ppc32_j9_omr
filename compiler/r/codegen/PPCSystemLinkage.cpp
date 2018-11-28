@@ -373,6 +373,14 @@ TR::PPCSystemLinkage::initPPCRealRegisterLinkage()
    machine->getPPCRealRegister((TR::RealRegister::RegNum)icount)->setState(TR::RealRegister::Locked);
    machine->getPPCRealRegister((TR::RealRegister::RegNum)icount)->setAssignedRegister(machine->getPPCRealRegister((TR::RealRegister::RegNum)icount));
 
+   icount = TR::RealRegister::gr3;
+   machine->getPPCRealRegister((TR::RealRegister::RegNum)icount)->setState(TR::RealRegister::Locked);
+   machine->getPPCRealRegister((TR::RealRegister::RegNum)icount)->setAssignedRegister(machine->getPPCRealRegister((TR::RealRegister::RegNum)icount));
+
+   icount = TR::RealRegister::gr4;
+   machine->getPPCRealRegister((TR::RealRegister::RegNum)icount)->setState(TR::RealRegister::Locked);
+   machine->getPPCRealRegister((TR::RealRegister::RegNum)icount)->setAssignedRegister(machine->getPPCRealRegister((TR::RealRegister::RegNum)icount));
+
    icount = TR::RealRegister::gr13;
    machine->getPPCRealRegister((TR::RealRegister::RegNum)icount)->setState(TR::RealRegister::Locked);
    machine->getPPCRealRegister((TR::RealRegister::RegNum)icount)->setAssignedRegister(machine->getPPCRealRegister((TR::RealRegister::RegNum)icount));
@@ -408,7 +416,7 @@ TR::PPCSystemLinkage::initPPCRealRegisterLinkage()
          machine->getPPCRealRegister((TR::RealRegister::RegNum)icount)->setWeight(icount);
          }
 
-   machine->setNumberOfLockedRegisters(TR_GPR, 3);
+   machine->setNumberOfLockedRegisters(TR_GPR, 5);
    machine->setNumberOfLockedRegisters(TR_FPR, 0);
    machine->setNumberOfLockedRegisters(TR_VRF, 0);
    }
