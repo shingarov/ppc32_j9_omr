@@ -258,15 +258,11 @@ uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    TR_ASSERT(label->getCodeLocation() == NULL, "DAMN -- dont know how to do relocations yet");
    TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
 
-    *iPtr = RISCV_SBTYPE (BLT, 30, 31, 0);
-/*
-           TR::Compilation *comp = cg()->comp();
-   cursor = getOpCode().copyBinaryToBuffer(instructionStart);
-printf("OPCODE: %x at cursor %p\n", *((uint32_t*)instructionStart), instructionStart);
-            insertConditionRegister((uint32_t *)cursor);
-printf("INSERTED CR: %x\n", *((uint32_t*)instructionStart));
-  */          
-            cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label)); // no life without this
+   *iPtr = RISCV_SBTYPE (BLT,
+                         30,
+                         31,
+                         0 /* to fix up in the future */ );
+   cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label)); // no life without this
 
    cursor += 4;
    setBinaryLength(cursor - instructionStart);
