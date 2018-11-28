@@ -509,8 +509,6 @@ uint8_t *TR::PPCTrg1ImmInstruction::generateBinaryEncoding()
    uint32_t *iPtr = (uint32_t*)instructionStart;
    uint8_t *cursor           = instructionStart;
 
-//   cursor = getOpCode().copyBinaryToBuffer(instructionStart);
-
    TR::RealRegister *target = toRealRegister(getTrg1Register());
 
    // Temporary, experimental code.
