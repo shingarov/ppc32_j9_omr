@@ -791,6 +791,37 @@ uint8_t *TR::PPCSrc2Instruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCMemSrc1Instruction::generateBinaryEncoding()
    {
+    TR_ASSERT(   (getOpCodeValue() == TR::InstOpCode::stw)  ,
+               "Please implement other Trg1IMem beyond stw");
+   uint8_t *instructionStart = cg()->getBinaryBufferCursor();
+   uint32_t *iPtr = (uint32_t*) instructionStart;
+   uint8_t *cursor           = instructionStart;
+   TR::Compilation *comp = cg()->comp();
+
+   getMemoryReference()->mapOpCode(this);
+printf("generateBinary from stw\n");
+
+OMR::Power::MemoryReference *ref = getMemoryReference()->self();
+TR::Register *baseReg = ref->getBaseRegister();
+int32_t offset = ref->getOffset(*comp);
+TR_ASSERT(baseReg!=NULL, "please implement stw relative to R0");
+printf("base: %d\n", toRealRegister(baseReg)->binaryRegCode());
+printf("rd: %d\n", toRealRegister(_sourceRegister)->binaryRegCode());
+printf("offset: %d\n", offset);
+
+
+   *iPtr = RISCV_STYPE (SD,
+                         toRealRegister(_sourceRegister)->binaryRegCode(),
+                         toRealRegister(baseReg)->binaryRegCode(),
+                         offset);
+
+   cursor += PPC_INSTRUCTION_LENGTH;
+   setBinaryLength(cursor-instructionStart);
+   setBinaryEncoding(instructionStart);
+   cg()->addAccumulatedInstructionLengthError(getEstimatedBinaryLength() - getBinaryLength());
+   return cursor;
+           // ORIGINAL
+/*
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
 
@@ -804,6 +835,7 @@ uint8_t *TR::PPCMemSrc1Instruction::generateBinaryEncoding()
    setBinaryEncoding(instructionStart);
    cg()->addAccumulatedInstructionLengthError(getEstimatedBinaryLength() - getBinaryLength());
    return cursor;
+   */
    }
 
 uint8_t *TR::PPCMemInstruction::generateBinaryEncoding()
