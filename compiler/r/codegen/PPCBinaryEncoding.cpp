@@ -848,6 +848,7 @@ int32_t offset = 24;
                          toRealRegister(baseReg)->binaryRegCode(),
                          offset);
 
+   cursor += PPC_INSTRUCTION_LENGTH;
    setBinaryLength(cursor-instructionStart);
    setBinaryEncoding(instructionStart);
    cg()->addAccumulatedInstructionLengthError(getEstimatedBinaryLength() - getBinaryLength());
