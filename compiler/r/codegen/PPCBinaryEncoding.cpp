@@ -99,13 +99,13 @@ OMR::Power::Instruction::estimateBinaryLength(int32_t currentEstimate)
 
 uint8_t *TR::PPCLabelInstruction::generateBinaryEncoding()
    {
-   TR_ASSERT(false, "Obviously BAD.\n");
    uint8_t        *instructionStart = cg()->getBinaryBufferCursor();
    TR::LabelSymbol *label            = getLabelSymbol();
    uint8_t        *cursor           = instructionStart;
 
    if (getOpCode().isBranchOp())
       {
+TR_ASSERT(false, "Obviously BAD.\n");
           cursor = getOpCode().copyBinaryToBuffer(instructionStart);
           if (label->getCodeLocation() != NULL)
              {
@@ -210,6 +210,7 @@ static bool reversedConditionalBranchOpCode(TR::InstOpCode::Mnemonic op, TR::Ins
 
 uint8_t *TR::PPCAlignedLabelInstruction::generateBinaryEncoding()
    {
+   TR_ASSERT(false, "Obviously BAD.\n");
    uint8_t        *instructionStart = cg()->getBinaryBufferCursor();
    TR::LabelSymbol *label            = getLabelSymbol();
    uint8_t        *cursor           = instructionStart;
@@ -397,6 +398,7 @@ TR::PPCImmInstruction::addMetaDataForCodeAddress(uint8_t *cursor)
 
 uint8_t *TR::PPCImmInstruction::generateBinaryEncoding()
    {
+   TR_ASSERT(false, "Unimplemented PPCImmInstruction.\n");
    TR::Compilation *comp = cg()->comp();
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
