@@ -225,8 +225,8 @@ TR::Instruction::assignRegisters( kindToBeAssigned );
            printf("Not yet assigned.\n");
       assignedRegister = machine->assignOneRegister(this, virtualRegister, true);
       } else {
-              printf("Assigned.\n");
-              TR_ASSERT(false, "I dont know what to do.\n");
+              printf("ALREADY Assigned.\n");
+//              TR_ASSERT(false, "I dont know what to do.\n");
       }
    machine->decFutureUseCountAndUnlatch(virtualRegister);
    _src1 = assignedRegister;
@@ -246,8 +246,8 @@ TR::Instruction::assignRegisters( kindToBeAssigned );
            printf("Not yet assigned.\n");
       assignedRegister = machine->assignOneRegister(this, virtualRegister, true);
       } else {
-              printf("Assigned.\n");
-              TR_ASSERT(false, "I dont know what to do.\n");
+              printf("ALREADY Assigned.\n");
+//              TR_ASSERT(false, "I dont know what to do.\n");
       }
    _src1->unblock();
    machine->decFutureUseCountAndUnlatch(virtualRegister);
