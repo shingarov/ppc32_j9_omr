@@ -1981,6 +1981,7 @@ void OMR::Power::CodeGenerator::doBinaryEncoding()
    bool skipOneReturn = false;
    while (data.cursorInstruction)
       {
+printf("One-cycle, half-1\n");
       if (data.cursorInstruction->getOpCodeValue() == TR::InstOpCode::ret)
          {
          if (skipOneReturn == false)
@@ -2027,6 +2028,7 @@ void OMR::Power::CodeGenerator::doBinaryEncoding()
 
    while (data.cursorInstruction)
       {
+printf("One-cycle, half-2\n");
       if(data.cursorInstruction->isLabel())
          {
          if ((data.cursorInstruction)->isNopCandidate())
