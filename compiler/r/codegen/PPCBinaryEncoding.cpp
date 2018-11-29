@@ -99,6 +99,7 @@ OMR::Power::Instruction::estimateBinaryLength(int32_t currentEstimate)
 
 uint8_t *TR::PPCLabelInstruction::generateBinaryEncoding()
    {
+   TR_ASSERT(false, "Obviously BAD.\n");
    uint8_t        *instructionStart = cg()->getBinaryBufferCursor();
    TR::LabelSymbol *label            = getLabelSymbol();
    uint8_t        *cursor           = instructionStart;
