@@ -536,6 +536,7 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
    printf("frutarrrr\n");
       useRegister(_src1);
       useRegister(_src2);
+   printf("used them\n");
       }
 
    PPCConditionalBranchInstruction(TR::InstOpCode::Mnemonic  op, TR::Node * n, TR::LabelSymbol *sym,

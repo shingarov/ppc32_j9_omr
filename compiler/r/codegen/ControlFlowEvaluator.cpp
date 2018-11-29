@@ -805,13 +805,23 @@ TR::Register *OMR::Power::TreeEvaluator::compareIntsForEquality(TR::InstOpCode::
 printf("compareIntsForEquality()\n");
    if (virtualGuardHelper(node, cg))
       return NULL;
-   TR::Compilation *comp = cg->comp();
-   TR::Register *src1Reg, *condReg;
    TR::Node     *firstChild = node->getFirstChild();
    TR::Node     *secondChild = node->getSecondChild();
 TR_ASSERT(branchOp == OMR::InstOpCode::bne, "Please implement compareForEquality beyond bne");
-printf("a\n");
 
+   TR::Register *src1Reg   = cg->evaluate(firstChild);
+printf("Created src1 = %p\n", src1Reg);
+   TR::Register *src2Reg = cg->evaluate(secondChild);
+printf("Created src2 = %p\n", src2Reg);
+printf("1\n");
+   generateConditionalBranchInstruction(cg, branchOp, node, dstLabel, NULL, src1Reg, src2Reg, NULL);
+printf("2\n");
+
+   cg->decReferenceCount(firstChild);
+   cg->decReferenceCount(secondChild);
+   return NULL;
+/*
+// --ORIGINAL
    if (firstChild->getOpCodeValue() == TR::b2i &&
        firstChild->getOpCodeValue() == secondChild->getOpCodeValue() &&
        // Children of b2i don't necessarily have high bits cleared
@@ -820,7 +830,7 @@ printf("a\n");
        firstChild->getFirstChild()->getOpCode().isLoad() &&
        firstChild->getFirstChild()->getOpCodeValue() == secondChild->getFirstChild()->getOpCodeValue())
       {
-      /*
+      *
        * Catches the following:
        * ificmpeq/ificmpne
        *   b2i
@@ -830,7 +840,7 @@ printf("a\n");
        *
        * Does the compare against the children of the b2i nodes, since eq/ne is not affected by sign extension
        * Skips evaluating b2i if it is unused (i.e. refcount == 1, which is usually the case)
-       */
+       *
       if (firstChild->getReferenceCount() > 1)
          cg->evaluate(firstChild);
       else
@@ -1037,6 +1047,7 @@ printf("a\n");
    cg->decReferenceCount(secondChild);
    cg->stopUsingRegister(condReg);
    return NULL;
+*/
    }
 
 // also handles ificmpne, and ifacmpeq and ifacmpne in 32-bit mode
