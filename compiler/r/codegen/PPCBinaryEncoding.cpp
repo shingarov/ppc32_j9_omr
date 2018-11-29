@@ -416,6 +416,7 @@ uint8_t *TR::PPCImmInstruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCImm2Instruction::generateBinaryEncoding()
    {
+   TR_ASSERT(false, "Unimplemented PPCImm2Instruction.\n");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
@@ -430,6 +431,7 @@ uint8_t *TR::PPCImm2Instruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCSrc1Instruction::generateBinaryEncoding()
    {
+   TR_ASSERT(false, "Unimplemented PPCSrc1Instruction.\n");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
@@ -453,6 +455,7 @@ uint8_t *TR::PPCSrc1Instruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCDepImmInstruction::generateBinaryEncoding()
    {
+   TR_ASSERT(false, "Unimplemented PPCDepImmInstruction.\n");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
@@ -465,6 +468,7 @@ uint8_t *TR::PPCDepImmInstruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCTrg1Instruction::generateBinaryEncoding()
    {
+   TR_ASSERT(false, "Unimplemented PPCTrg1Instruction.\n");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
@@ -477,6 +481,7 @@ uint8_t *TR::PPCTrg1Instruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCTrg1Src1Instruction::generateBinaryEncoding()
    {
+   TR_ASSERT(false, "Unimplemented PPCTrg1Src1Instruction.\n");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
 
@@ -599,39 +604,12 @@ uint8_t *TR::PPCTrg1Src1ImmInstruction::generateBinaryEncoding()
    setBinaryLength(PPC_INSTRUCTION_LENGTH);
    setBinaryEncoding(instructionStart);
    return cursor;
-/* *** original
-   uint8_t *instructionStart = cg()->getBinaryBufferCursor();
-   uint8_t *cursor           = instructionStart;
-   cursor = getOpCode().copyBinaryToBuffer(instructionStart);
-   insertTargetRegister(toPPCCursor(cursor));
-   insertSource1Register(toPPCCursor(cursor));
-   if (getOpCodeValue() == TR::InstOpCode::srawi || getOpCodeValue() == TR::InstOpCode::srawi_r ||
-       getOpCodeValue() == TR::InstOpCode::sradi || getOpCodeValue() == TR::InstOpCode::sradi_r ||
-       getOpCodeValue() == TR::InstOpCode::extswsli)
-      {
-      insertShiftAmount(toPPCCursor(cursor));
-      }
-   else if (getOpCodeValue() == TR::InstOpCode::dtstdg)
-      {
-      setSourceImmediate(getSourceImmediate() << 10);
-      insertImmediateField(toPPCCursor(cursor));
-      }
-   else
-      {
-      insertImmediateField(toPPCCursor(cursor));
-      }
-
-   addMetaDataForCodeAddress(cursor);
-
-   cursor += PPC_INSTRUCTION_LENGTH;
-   setBinaryLength(PPC_INSTRUCTION_LENGTH);
-   setBinaryEncoding(instructionStart);
-   return cursor;*/
    }
 
 
 static void insertMaskField(uint32_t *instruction, TR::InstOpCode::Mnemonic op, int64_t lmask)
    {
+           TR_ASSERT(false, "Please implement insertMaskField");
    int32_t encoding;
    // A mask is is a string of 1 bits surrounded by a string of 0 bits.
    // For word instructions it is specified through its start and stop bit
@@ -744,6 +722,7 @@ static void insertMaskField(uint32_t *instruction, TR::InstOpCode::Mnemonic op, 
 
 uint8_t *TR::PPCTrg1Src1Imm2Instruction::generateBinaryEncoding()
    {
+           TR_ASSERT(false, "Unimplemented PPCTrg1Src1Imm2Instruction");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
@@ -760,6 +739,7 @@ uint8_t *TR::PPCTrg1Src1Imm2Instruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCTrg1Src2Instruction::generateBinaryEncoding()
    {
+           TR_ASSERT(false, "Unimplemented PPCTrg1Src2Instruction");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
 
@@ -775,6 +755,7 @@ uint8_t *TR::PPCTrg1Src2Instruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCTrg1Src2ImmInstruction::generateBinaryEncoding()
    {
+           TR_ASSERT(false, "Unimplemented PPCTrg1Src2ImmInstruction");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
@@ -791,6 +772,7 @@ uint8_t *TR::PPCTrg1Src2ImmInstruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCTrg1Src3Instruction::generateBinaryEncoding()
    {
+           TR_ASSERT(false, "Unimplemented PPCTrg1Src3Instruction");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
@@ -806,6 +788,7 @@ uint8_t *TR::PPCTrg1Src3Instruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCSrc2Instruction::generateBinaryEncoding()
    {
+           TR_ASSERT(false, "Unimplemented PPCSrc2Instruction");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    cursor = getOpCode().copyBinaryToBuffer(instructionStart);
@@ -850,26 +833,11 @@ printf("offset: %d\n", offset);
    setBinaryEncoding(instructionStart);
    cg()->addAccumulatedInstructionLengthError(getEstimatedBinaryLength() - getBinaryLength());
    return cursor;
-           // ORIGINAL
-/*
-   uint8_t *instructionStart = cg()->getBinaryBufferCursor();
-   uint8_t *cursor           = instructionStart;
-
-   getMemoryReference()->mapOpCode(this);
-
-   cursor = getOpCode().copyBinaryToBuffer(instructionStart);
-
-   insertSourceRegister(toPPCCursor(cursor));
-   cursor = getMemoryReference()->generateBinaryEncoding(this, cursor, cg());
-   setBinaryLength(cursor-instructionStart);
-   setBinaryEncoding(instructionStart);
-   cg()->addAccumulatedInstructionLengthError(getEstimatedBinaryLength() - getBinaryLength());
-   return cursor;
-   */
    }
 
 uint8_t *TR::PPCMemInstruction::generateBinaryEncoding()
    {
+           TR_ASSERT(false, "Unimplemented PPCMemInstruction");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
    getMemoryReference()->mapOpCode(this);
