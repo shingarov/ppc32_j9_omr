@@ -254,7 +254,6 @@ printf("op=%d (ble=%d, blt=%d, bne=%d)\n", getOpCodeValue(),  TR::InstOpCode::bl
    uint32_t *iPtr = (uint32_t*)instructionStart;
 
    TR::LabelSymbol *label            = getLabelSymbol();
-   TR_ASSERT(label->getCodeLocation() == NULL, "DAMN -- dont know how to do relocations yet");
    TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
 
    switch(getOpCodeValue()) {
@@ -280,7 +279,17 @@ printf("op=%d (ble=%d, blt=%d, bne=%d)\n", getOpCodeValue(),  TR::InstOpCode::bl
       TR_ASSERT(   ((getOpCodeValue() == TR::InstOpCode::blt) || (getOpCodeValue() == TR::InstOpCode::bne)),
                    "Please implement conditionals beyond BLT/BNE");
    } // switch
-   cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label)); // no life without this
+
+   if (label->getCodeLocation() != NULL) {
+           // we already know the address
+           int32_t delta = label->getCodeLocation() - cursor;
+printf("Already known jump offset %d\n", delta);
+           int32_t delta = delta & 0x0fff;
+printf("truncates to %d\n", delta);
+           *(int32_t *)cursor |= ENCODE_SBTYPE_IMM(delta);
+   } else {
+           cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label));
+   }
 
    cursor += 4;
    setBinaryLength(cursor - instructionStart);
