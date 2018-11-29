@@ -739,14 +739,19 @@ uint8_t *TR::PPCTrg1Src1Imm2Instruction::generateBinaryEncoding()
 
 uint8_t *TR::PPCTrg1Src2Instruction::generateBinaryEncoding()
    {
-           TR_ASSERT(false, "Unimplemented PPCTrg1Src2Instruction");
+           TR_ASSERT(getOpCodeValue() == TR::InstOpCode::add, "Please implement Trg1Src2 beyond add");
    uint8_t *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t *cursor           = instructionStart;
+   uint32_t *iPtr = (uint32_t*)instructionStart;
 
-   cursor = getOpCode().copyBinaryToBuffer(instructionStart);
-   insertTargetRegister(toPPCCursor(cursor));
-   insertSource1Register(toPPCCursor(cursor));
-   insertSource2Register(toPPCCursor(cursor));
+   TR::RealRegister *dest = toRealRegister(getTrg1Register());
+   TR::RealRegister *src1 = toRealRegister(getSource1Register());
+   TR::RealRegister *src2 = toRealRegister(getSource2Register());
+
+   *iPtr = RISCV_RTYPE (ADDI,
+                        dest->binaryRegCode(),
+                        src1->binaryRegCode(),
+                        src2->binaryRegCode());
    cursor += PPC_INSTRUCTION_LENGTH;
    setBinaryLength(PPC_INSTRUCTION_LENGTH);
    setBinaryEncoding(instructionStart);
