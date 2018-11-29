@@ -653,6 +653,8 @@ TR::PPCSystemLinkage::createPrologue(
    
 printf("Creating PROLOGUE.\n");
 cursor = generateTrg1Src1ImmInstruction(cg(), TR::InstOpCode::addi, firstNode, sp, sp, -256, cursor);
+cursor = saveArguments(cursor, false, true, parmList);
+
 if (1<2) return;
 
 
