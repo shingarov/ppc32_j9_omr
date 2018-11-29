@@ -118,10 +118,19 @@ printf("Saving args...\n");
 
    for (paramCursor=paramIterator.getFirst(); paramCursor!=NULL; paramCursor=paramIterator.getNext())
       {
-printf("One arg.\n");
+printf("One arg: ");
 
       int32_t lri = paramCursor->getLinkageRegisterIndex();
 printf("lri = %d\n", lri);
+
+ TR::RealRegister::RegNum regNum = OMR::RealRegister::gr10;
+
+ cursor = generateMemSrc1Instruction(self()->cg(), TR::InstOpCode::stw, firstNode,
+                           new (self()->trHeapMemory()) TR::MemoryReference(REAL_REGISTER(regNum), 64, 4, self()->cg()),
+                           stackPtr, cursor);
+
+
+
 /*
       TR::DataType type = paramCursor->getType();
 
