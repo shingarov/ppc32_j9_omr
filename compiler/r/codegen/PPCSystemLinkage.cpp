@@ -487,8 +487,7 @@ TR::PPCSystemLinkage::mapParameters(
    TR::ParameterSymbol              *parmCursor = parameterIterator.getFirst();
    const TR::PPCLinkageProperties&    linkage           = getProperties();
    int32_t                          offsetToFirstParm = linkage.getOffsetToFirstParm();
-   int32_t offset_from_top = 0;
-   int32_t slot_size = sizeof(uintptrj_t);
+   int32_t offset_from_top = 64; // magic smoke
 #ifdef __LITTLE_ENDIAN__
    // XXX: This hack fixes ppc64le by saving params in the current stack frame, rather than the caller's parameter save area, which may not exist
    //      This code needs to be refactored to accomodate ABIs that don't guarantee a parameter save area
@@ -497,39 +496,15 @@ TR::PPCSystemLinkage::mapParameters(
 #else
    const bool saveParmsInLocalArea = false;
 #endif
-
-   if (linkage.getRightToLeft())
-      {
       while (parmCursor != NULL)
          {
-                 printf("--- offs_from_top: %d, stackIndex: %d first: %d S=%d\n",
-                                 offset_from_top, stackIndex, offsetToFirstParm,
-                                 offset_from_top + offsetToFirstParm + stackIndex
-                                 );
-         if (saveParmsInLocalArea)
-            parmCursor->setParameterOffset(offset_from_top + stackIndex);
-         else
-            parmCursor->setParameterOffset(offset_from_top + offsetToFirstParm + stackIndex);
-         offset_from_top += (parmCursor->getSize() + slot_size - 1) & (~(slot_size - 1));
+         printf("--- offs_from_top: %d\n", offset_from_top);
+         parmCursor->setParameterOffset(offset_from_top);
+         offset_from_top += 8; // magic smoke
          parmCursor = parameterIterator.getNext();
          }
       if (saveParmsInLocalArea)
          method->setLocalMappingCursor(offset_from_top + stackIndex);
-      }
-   else
-      {
-      uint32_t sizeOfParameterArea = method->getNumParameterSlots() << 2;
-      while (parmCursor != NULL)
-         {
-         parmCursor->setParameterOffset(sizeOfParameterArea -
-                                        offset_from_top -
-                                        parmCursor->getSize() + stackIndex +
-                                        offsetToFirstParm);
-         offset_from_top += (parmCursor->getSize() + slot_size - 1) & (~(slot_size - 1));
-         parmCursor = parameterIterator.getNext();
-         }
-      }
-
    }
 
 
