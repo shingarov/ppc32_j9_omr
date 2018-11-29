@@ -2060,7 +2060,7 @@ printf("One-cycle, half-2\n");
             skipLabel = false;
             }
          }
-
+printf("About to generateBinaryEncoding(%d)\n", data.cursorInstruction->getOpCodeValue());
       self()->setBinaryBufferCursor(data.cursorInstruction->generateBinaryEncoding());
 
       self()->addToAtlas(data.cursorInstruction);
