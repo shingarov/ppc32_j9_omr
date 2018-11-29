@@ -284,7 +284,7 @@ printf("op=%d (ble=%d, blt=%d, bne=%d)\n", getOpCodeValue(),  TR::InstOpCode::bl
            // we already know the address
            int32_t delta = label->getCodeLocation() - cursor;
 printf("Already known jump offset %d\n", delta);
-           int32_t delta = delta & 0x0fff;
+           delta &= 0x0fff;
 printf("truncates to %d\n", delta);
            *(int32_t *)cursor |= ENCODE_SBTYPE_IMM(delta);
    } else {
