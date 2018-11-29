@@ -748,7 +748,7 @@ uint8_t *TR::PPCTrg1Src2Instruction::generateBinaryEncoding()
    TR::RealRegister *src1 = toRealRegister(getSource1Register());
    TR::RealRegister *src2 = toRealRegister(getSource2Register());
 
-   *iPtr = RISCV_RTYPE (ADDI,
+   *iPtr = RISCV_RTYPE (ADD,
                         dest->binaryRegCode(),
                         src1->binaryRegCode(),
                         src2->binaryRegCode());
