@@ -2061,6 +2061,88 @@ printf("One-cycle, half-2\n");
             }
          }
 printf("About to generateBinaryEncoding(%d)\n", data.cursorInstruction->getOpCodeValue());
+
+
+   switch (data.cursorInstruction->getKind())
+      {
+      case OMR::Instruction::IsImm:
+         printf("TR::PPCImmInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsImm2:
+         printf("TR::PPCImm2Instruction *)instr\n");
+         break;
+      case OMR::Instruction::IsSrc1:
+         printf("TR::PPCSrc1Instruction *)instr\n");
+         break;
+      case OMR::Instruction::IsDep:
+         printf("TR::PPCDepInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsDepImm:
+         printf("TR::PPCDepImmInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsDepImmSym:
+         printf("TR::PPCDepImmSymInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsLabel:
+      case OMR::Instruction::IsAlignedLabel:
+         printf("TR::PPCLabelInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsDepLabel:
+         printf("TR::PPCDepLabelInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsConditionalBranch:
+         printf("TR::PPCConditionalBranchInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsDepConditionalBranch:
+         printf("TR::PPCDepConditionalBranchInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsAdmin:
+         printf("TR::PPCAdminInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsTrg1:
+         printf("TR::PPCTrg1Instruction *)instr\n");
+         break;
+      case OMR::Instruction::IsTrg1Imm:
+         printf("TR::PPCTrg1ImmInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsTrg1Src1:
+         printf("TR::PPCTrg1Src1Instruction *)instr\n");
+         break;
+      case OMR::Instruction::IsTrg1Src1Imm:
+         printf("TR::PPCTrg1Src1ImmInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsTrg1Src1Imm2:
+         printf("TR::PPCTrg1Src1Imm2Instruction *)instr\n");
+         break;
+      case OMR::Instruction::IsTrg1Src2:
+         printf("TR::PPCTrg1Src2Instruction *)instr\n");
+         break;
+      case OMR::Instruction::IsTrg1Src2Imm:
+         printf("TR::PPCTrg1Src2ImmInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsTrg1Src3:
+         printf("TR::PPCTrg1Src3Instruction *)instr\n");
+         break;
+      case OMR::Instruction::IsTrg1Mem:
+         printf("TR::PPCTrg1MemInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsSrc2:
+         printf("TR::PPCSrc2Instruction *)instr\n");
+         break;
+      case OMR::Instruction::IsMem:
+         printf("TR::PPCMemInstruction *)instr\n");
+         break;
+      case OMR::Instruction::IsMemSrc1:
+         printf("TR::PPCMemSrc1Instruction *)instr\n");
+         break;
+      case OMR::Instruction::IsControlFlow:
+         printf("TR::PPCControlFlowInstruction *)instr\n");
+         break;
+      default:
+         TR_ASSERT( 0, "unexpected instruction kind");
+      }
+
+
       self()->setBinaryBufferCursor(data.cursorInstruction->generateBinaryEncoding());
 
       self()->addToAtlas(data.cursorInstruction);
