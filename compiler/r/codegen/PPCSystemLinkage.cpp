@@ -502,10 +502,14 @@ TR::PPCSystemLinkage::mapParameters(
       {
       while (parmCursor != NULL)
          {
+                 printf("--- offs_from_top: %d, stackIndex: %d first: %d S=%d\n",
+                                 offset_from_top, stackIndex, offsetToFirstParm,
+                                 offset_from_top + offsetToFirstParm + stackIndex
+                                 );
          if (saveParmsInLocalArea)
-            parmCursor->setParameterOffset(calculateActualParameterOffset(offset_from_top + stackIndex, *parmCursor));
+            parmCursor->setParameterOffset(offset_from_top + stackIndex);
          else
-            parmCursor->setParameterOffset(calculateActualParameterOffset(offset_from_top + offsetToFirstParm + stackIndex, *parmCursor));
+            parmCursor->setParameterOffset(offset_from_top + offsetToFirstParm + stackIndex);
          offset_from_top += (parmCursor->getSize() + slot_size - 1) & (~(slot_size - 1));
          parmCursor = parameterIterator.getNext();
          }
