@@ -84,6 +84,16 @@ bool Xplus1Method::buildIL()
    return true;
 }
 
+/*** Store var ***/
+TestDefinition(StoreLoad, FType, false)
+bool StoreLoadMethod::buildIL()
+{
+   Store( "x", ConstInt32(1) );
+   Return( Load("x") );
+   return true;
+}
+
+
 
 /*** Simple Branching: x < const ***/
 TestDefinition(LessThanConst, FxType, true)
