@@ -258,7 +258,13 @@ uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    TR_ASSERT(label->getCodeLocation() == NULL, "DAMN -- dont know how to do relocations yet");
    TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
 
-   *iPtr = RISCV_SBTYPE ((getOpCodeValue() == TR::InstOpCode::blt)? BLT:BNE,
+   if (  getOpCodeValue() == TR::InstOpCode::blt        )
+     *iPtr = RISCV_SBTYPE (BLT,
+                         toRealRegister(_src1)->binaryRegCode(),
+                         toRealRegister(_src2)->binaryRegCode(),
+                         0 /* to fix up in the future */ );
+   else
+     *iPtr = RISCV_SBTYPE (BNE,
                          toRealRegister(_src1)->binaryRegCode(),
                          toRealRegister(_src2)->binaryRegCode(),
                          0 /* to fix up in the future */ );
