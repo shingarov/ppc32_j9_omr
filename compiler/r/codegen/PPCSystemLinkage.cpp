@@ -498,7 +498,6 @@ TR::PPCSystemLinkage::mapParameters(
 #endif
       while (parmCursor != NULL)
          {
-         printf("--- offs_from_top: %d\n", offset_from_top);
          parmCursor->setParameterOffset(offset_from_top);
          offset_from_top += 8; // magic smoke
          parmCursor = parameterIterator.getNext();
@@ -630,7 +629,6 @@ TR::PPCSystemLinkage::createPrologue(
    int32_t                    argSize;
     
    
-printf("Creating PROLOGUE.\n");
 cursor = generateTrg1Src1ImmInstruction(cg(), TR::InstOpCode::addi, firstNode, sp, sp, -256, cursor);
 cursor = saveArguments(cursor, false, true, parmList);
 
@@ -762,8 +760,8 @@ TR::PPCSystemLinkage::createEpilogue(TR::Instruction *cursor)
    TR::Instruction *tempCursor = cursor;
    TR::RealRegister::RegNum savedFirst=TR::RealRegister::fp14;
    TR::RealRegister::RegNum regIndex;
-printf("Creating EPILOGUE.\n");
-cursor = generateTrg1Src1ImmInstruction(cg(), TR::InstOpCode::addi, currentNode, sp, sp, 256, cursor);
+   cursor = generateTrg1Src1ImmInstruction(cg(), TR::InstOpCode::addi, currentNode, sp, sp, 256, cursor);
+
 if (1<2) return;
 
    if (!bodySymbol->isEHAware())
