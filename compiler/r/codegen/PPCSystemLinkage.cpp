@@ -651,6 +651,12 @@ TR::PPCSystemLinkage::createPrologue(
    int32_t                    argSize;
     
    
+printf("Creating PROLOGUE.\n");
+cursor = generateTrg1Src1ImmInstruction(cg(), TR::InstOpCode::addi, firstNode, sp, sp, -256, cursor);
+if (1<2) return;
+
+
+
 #ifdef __LITTLE_ENDIAN__
    //Move TOCBase into r2
    cursor = loadConstant(cg(), firstNode, (int64_t)(cg()->getTOCBase()), gr2, cursor, false, false);
@@ -722,6 +728,7 @@ TR::PPCSystemLinkage::createPrologue(
 
    if ( size > properties.getOffsetToFirstParm()  - argSize)
       {
+              printf("PROLOGUE: Non-leaf\n");
       if (size > (-LOWER_IMMED))
          {
          cursor = loadConstant(cg(), firstNode, -size, gr11, cursor);
@@ -734,6 +741,7 @@ TR::PPCSystemLinkage::createPrologue(
       }
    else   // leaf routine
       {
+              printf("PROLOGUE: Leaf\n");
       ListIterator<TR::ParameterSymbol> parameterIterator(&parmList);
       TR::ParameterSymbol              *parmCursor = parameterIterator.getFirst();
       while (parmCursor != NULL)
@@ -773,6 +781,9 @@ TR::PPCSystemLinkage::createEpilogue(TR::Instruction *cursor)
    TR::Instruction *tempCursor = cursor;
    TR::RealRegister::RegNum savedFirst=TR::RealRegister::fp14;
    TR::RealRegister::RegNum regIndex;
+printf("Creating EPILOGUE.\n");
+cursor = generateTrg1Src1ImmInstruction(cg(), TR::InstOpCode::addi, currentNode, sp, sp, 256, cursor);
+if (1<2) return;
 
    if (!bodySymbol->isEHAware())
       {
