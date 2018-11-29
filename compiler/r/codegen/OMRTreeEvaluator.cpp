@@ -4812,27 +4812,10 @@ TR::Register *OMR::Power::TreeEvaluator::treetopEvaluator(TR::Node *node, TR::Co
 
 TR::Register *addConstantToInteger(TR::Node * node, TR::Register *trgReg, TR::Register *srcReg, int32_t value, TR::CodeGenerator *cg)
    {
-   intParts localVal(value);
-
-   if (localVal.getValue() >= LOWER_IMMED && localVal.getValue() <= UPPER_IMMED)
-      {
-      generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::addi2, node, trgReg, srcReg, localVal.getValue());
-      }
-   else
-      {
-      int32_t upperLit = localVal.getHighBits();
-      int32_t lowerLit = localVal.getLowBits();
-      if (localVal.getLowSign())
-         {
-         upperLit++;
-         lowerLit += 0xffff0000;
-         }
-      generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::addis, node, trgReg, srcReg, upperLit);
-      if (lowerLit != 0)
-         {
-         generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::addi2, node, trgReg, trgReg, lowerLit);
-         }
-      }
+   // BOGUS, should use RISC-V
+   TR_ASSERT (value >= LOWER_IMMED && value <= UPPER_IMMED,
+                   "Please implement big immediates in addi");
+   generateTrg1Src1ImmInstruction(cg, TR::InstOpCode::addi, node, trgReg, srcReg, value);
    return trgReg;
    }
 
