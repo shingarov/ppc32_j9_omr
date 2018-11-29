@@ -247,8 +247,7 @@ int32_t TR::PPCAlignedLabelInstruction::estimateBinaryLength(int32_t currentEsti
 
 uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    {
-   TR_ASSERT(   ((getOpCodeValue() == TR::InstOpCode::blt) || (getOpCodeValue() == TR::InstOpCode::bne)),
-                   "Please implement conditionals beyond BLT/BNE");
+printf("op=%d (ble=%d, blt=%d, bne=%d)\n", getOpCodeValue(),  TR::InstOpCode::ble, TR::InstOpCode::blt, TR::InstOpCode::bne);
 
    uint8_t        *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t        *cursor           = instructionStart;
@@ -258,16 +257,29 @@ uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    TR_ASSERT(label->getCodeLocation() == NULL, "DAMN -- dont know how to do relocations yet");
    TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
 
-   if (  getOpCodeValue() == TR::InstOpCode::blt        )
+   switch(getOpCodeValue()) {
+     case TR::InstOpCode::blt:
      *iPtr = RISCV_SBTYPE (BLT,
                          toRealRegister(_src1)->binaryRegCode(),
                          toRealRegister(_src2)->binaryRegCode(),
                          0 /* to fix up in the future */ );
-   else
+     break;
+     case TR::InstOpCode::ble:
+     *iPtr = RISCV_SBTYPE (BGE,
+                         toRealRegister(_src2)->binaryRegCode(),
+                         toRealRegister(_src1)->binaryRegCode(),
+                         0 /* to fix up in the future */ );
+     break;
+     case TR::InstOpCode::bne:
      *iPtr = RISCV_SBTYPE (BNE,
                          toRealRegister(_src1)->binaryRegCode(),
                          toRealRegister(_src2)->binaryRegCode(),
                          0 /* to fix up in the future */ );
+     break;
+     default:
+      TR_ASSERT(   ((getOpCodeValue() == TR::InstOpCode::blt) || (getOpCodeValue() == TR::InstOpCode::bne)),
+                   "Please implement conditionals beyond BLT/BNE");
+   } // switch
    cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label)); // no life without this
 
    cursor += 4;
