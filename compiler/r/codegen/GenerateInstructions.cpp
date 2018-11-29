@@ -327,7 +327,6 @@ TR::Instruction *generateConditionalBranchInstruction(TR::CodeGenerator *cg, TR:
    TR::Register *src2,
    TR::Instruction *preced)
    {
-           printf("parolaccia\n");
    return new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(op, n, sym, cr, src1, src2, cg);
    }
 

@@ -517,8 +517,6 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
         _estimatedBinaryLocation(0),  _farRelocation(false),_exceptBranch(false),
         _haveHint(true),  _likeliness(likeliness)
       {
-      // useRegister(cr);
-   printf("frutarrrr2\n");
       useRegister(_src1);
       useRegister(_src2);
       }
@@ -532,11 +530,8 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
         _haveHint(false), _likeliness(false),
 		_src1(src1), _src2(src2)
       {
-      // useRegister(cr);
-   printf("frutarrrr\n");
       useRegister(_src1);
       useRegister(_src2);
-   printf("used them\n");
       }
 
    PPCConditionalBranchInstruction(TR::InstOpCode::Mnemonic  op, TR::Node * n, TR::LabelSymbol *sym,
