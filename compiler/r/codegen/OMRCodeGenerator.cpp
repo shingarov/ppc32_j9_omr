@@ -1981,7 +1981,6 @@ void OMR::Power::CodeGenerator::doBinaryEncoding()
    bool skipOneReturn = false;
    while (data.cursorInstruction)
       {
-printf("One-cycle, half-1\n");
       if (data.cursorInstruction->getOpCodeValue() == TR::InstOpCode::ret)
          {
          if (skipOneReturn == false)
@@ -2028,7 +2027,6 @@ printf("One-cycle, half-1\n");
 
    while (data.cursorInstruction)
       {
-printf("One-cycle, half-2\n");
       if(data.cursorInstruction->isLabel())
          {
          if ((data.cursorInstruction)->isNopCandidate())
@@ -2142,22 +2140,17 @@ printf("About to generateBinaryEncoding(%d)\n", data.cursorInstruction->getOpCod
          printf("Unknown kind %d\n", data.cursorInstruction->getKind());
       }
 
-printf("Xxx1\n");
       self()->setBinaryBufferCursor(data.cursorInstruction->generateBinaryEncoding());
-printf("Xxx2\n");
 
       self()->addToAtlas(data.cursorInstruction);
-printf("Xxx3\n");
 
       if (data.cursorInstruction == data.preProcInstruction)
          {
          self()->setPrePrologueSize(self()->getBinaryBufferCursor() - self()->getBinaryBufferStart() - self()->getJitMethodEntryPaddingSize());
          self()->comp()->getSymRefTab()->findOrCreateStartPCSymbolRef()->getSymbol()->getStaticSymbol()->setStaticAddress(self()->getBinaryBufferCursor());
          }
-printf("Xxx4\n");
 
       data.cursorInstruction = data.cursorInstruction->getNext();
-printf("Xxx5\n");
 
       if (isPrivateLinkage && data.cursorInstruction==data.jitTojitStart)
          {
@@ -2167,11 +2160,7 @@ printf("Xxx5\n");
 
          toPPCImmInstruction(data.preProcInstruction)->setSourceImmediate(*(uint32_t *)(data.preProcInstruction->getBinaryEncoding()));
          }
-
-printf("Xxx6\n");
-
       }
-printf("Xxx7, presumably already out of cycle?\n");
 
    // We late-processing TOC entries here: obviously cannot deal with snippet labels.
    // If needed, we should move this step to common code around relocation processing.
