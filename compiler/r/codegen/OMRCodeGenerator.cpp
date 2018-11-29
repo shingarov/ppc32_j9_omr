@@ -2139,21 +2139,25 @@ printf("About to generateBinaryEncoding(%d)\n", data.cursorInstruction->getOpCod
          printf("TR::PPCControlFlowInstruction *)instr\n");
          break;
       default:
-         TR_ASSERT( 0, "unexpected instruction kind");
+         printf("Unknown kind %d\n", data.cursorInstruction->getKind());
       }
 
-
+printf("Xxx1\n");
       self()->setBinaryBufferCursor(data.cursorInstruction->generateBinaryEncoding());
+printf("Xxx2\n");
 
       self()->addToAtlas(data.cursorInstruction);
+printf("Xxx3\n");
 
       if (data.cursorInstruction == data.preProcInstruction)
          {
          self()->setPrePrologueSize(self()->getBinaryBufferCursor() - self()->getBinaryBufferStart() - self()->getJitMethodEntryPaddingSize());
          self()->comp()->getSymRefTab()->findOrCreateStartPCSymbolRef()->getSymbol()->getStaticSymbol()->setStaticAddress(self()->getBinaryBufferCursor());
          }
+printf("Xxx4\n");
 
       data.cursorInstruction = data.cursorInstruction->getNext();
+printf("Xxx5\n");
 
       if (isPrivateLinkage && data.cursorInstruction==data.jitTojitStart)
          {
@@ -2161,20 +2165,13 @@ printf("About to generateBinaryEncoding(%d)\n", data.cursorInstruction->getOpCod
 
          *(uint32_t *)(data.preProcInstruction->getBinaryEncoding()) = magicWord;
 
-#ifdef J9_PROJECT_SPECIFIC
-         if (data.recomp!=NULL && data.recomp->couldBeCompiledAgain())
-            {
-            TR_LinkageInfo *lkInfo = TR_LinkageInfo::get(self()->getCodeStart());
-            if (data.recomp->useSampling())
-               lkInfo->setSamplingMethodBody();
-            else
-               lkInfo->setCountingMethodBody();
-            }
-#endif
-
          toPPCImmInstruction(data.preProcInstruction)->setSourceImmediate(*(uint32_t *)(data.preProcInstruction->getBinaryEncoding()));
          }
+
+printf("Xxx6\n");
+
       }
+printf("Xxx7, presumably already out of cycle?\n");
 
    // We late-processing TOC entries here: obviously cannot deal with snippet labels.
    // If needed, we should move this step to common code around relocation processing.
