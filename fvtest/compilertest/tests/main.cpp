@@ -88,7 +88,7 @@ bool Xplus1Method::buildIL()
 TestDefinition(StoreLoad, FType, false)
 bool StoreLoadMethod::buildIL()
 {
-   Store( "x", ConstInt32(1) );
+   Store( "x", ConstInt32(123) );
    Return( Load("x") );
    return true;
 }
