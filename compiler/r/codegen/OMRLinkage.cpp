@@ -114,27 +114,15 @@ TR::Instruction *OMR::Power::Linkage::saveArguments(TR::Instruction *cursor, boo
    int32_t                  busyMoves[3][64];
    int32_t                  busyIndex = 0, i1;
 
+printf("Saving args...\n");
 
-   bool all_saved  = false;
-
-   // the freeScratchable structure will not be used when saveOnly == true
-   // no additional conditions were added with the intention of keeping the code easier to read
-   // and not full of if conditions
-
-   freeScratchable.init(TR::RealRegister::LastFPR + 1, self()->trMemory());
-
-   // first, consider all argument registers free
-   for (i1=TR::RealRegister::FirstGPR; i1<=TR::RealRegister::LastFPR; i1++)
-      {
-      if (!properties.getReserved(REGNUM(i1)))
-         {
-         freeScratchable.set(i1);
-         }
-      }
-   // second, go through all parameters and reset registers that are actually used
    for (paramCursor=paramIterator.getFirst(); paramCursor!=NULL; paramCursor=paramIterator.getNext())
       {
+printf("One arg.\n");
+
       int32_t lri = paramCursor->getLinkageRegisterIndex();
+printf("lri = %d\n", lri);
+/*
       TR::DataType type = paramCursor->getType();
 
       if (lri >= 0)
@@ -157,8 +145,10 @@ TR::Instruction *OMR::Power::Linkage::saveArguments(TR::Instruction *cursor, boo
                if (paramCursor->isReferencedParameter()) freeScratchable.reset(regNum+1);
             }
          }
+      */
       }
-
+printf("doh.\n");
+/*
    for (paramCursor=paramIterator.getFirst(); paramCursor!=NULL; paramCursor=paramIterator.getNext())
       {
       int32_t lri = paramCursor->getLinkageRegisterIndex();
@@ -473,7 +463,7 @@ TR::Instruction *OMR::Power::Linkage::saveArguments(TR::Instruction *cursor, boo
 
       TR_ASSERT(numMoves<=0, "Circular argument register dependency can and should be avoided.");
       }
-
+*/
    return(cursor);
    }
 
