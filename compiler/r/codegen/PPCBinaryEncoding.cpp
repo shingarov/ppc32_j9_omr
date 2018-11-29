@@ -247,8 +247,8 @@ int32_t TR::PPCAlignedLabelInstruction::estimateBinaryLength(int32_t currentEsti
 
 uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    {
-   TR_ASSERT(   (getOpCodeValue() == TR::InstOpCode::blt),
-                   "Please implement conditionals beyond BLT");
+   TR_ASSERT(   ((getOpCodeValue() == TR::InstOpCode::blt) || (getOpCodeValue() == TR::InstOpCode::bne)),
+                   "Please implement conditionals beyond BLT/BNE");
 
    uint8_t        *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t        *cursor           = instructionStart;
@@ -258,7 +258,7 @@ uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    TR_ASSERT(label->getCodeLocation() == NULL, "DAMN -- dont know how to do relocations yet");
    TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
 
-   *iPtr = RISCV_SBTYPE (BLT,
+   *iPtr = RISCV_SBTYPE ((getOpCodeValue() == TR::InstOpCode::blt)? BLT:BNE,
                          toRealRegister(_src1)->binaryRegCode(),
                          toRealRegister(_src2)->binaryRegCode(),
                          0 /* to fix up in the future */ );
