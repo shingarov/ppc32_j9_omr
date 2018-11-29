@@ -285,9 +285,6 @@ printf("op=%d (ble=%d, blt=%d, bne=%d)\n", getOpCodeValue(),  TR::InstOpCode::bl
    if (label->getCodeLocation() != NULL) {
            // we already know the address
            int32_t delta = label->getCodeLocation() - cursor;
-printf("Already known jump offset %d\n", delta);
-           delta &= 0x0fff;
-printf("truncates to %d\n", delta);
            *(int32_t *)cursor |= ENCODE_SBTYPE_IMM(delta);
    } else {
            cg()->addRelocation(new (cg()->trHeapMemory()) TR::LabelRelative16BitRelocation(cursor, label));
