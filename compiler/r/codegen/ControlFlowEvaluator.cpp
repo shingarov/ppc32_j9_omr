@@ -255,12 +255,8 @@ TR::Register *OMR::Power::TreeEvaluator::compareIntsForOrder(TR::InstOpCode::Mne
    TR::Node     *firstChild = node->getFirstChild();
 
    TR::Register *src1Reg   = cg->evaluate(firstChild);
-printf("Created src1 = %p\n", src1Reg);
    TR::Register *src2Reg = cg->evaluate(secondChild);
-printf("Created src2 = %p\n", src2Reg);
-printf("1\n");
    generateConditionalBranchInstruction(cg, branchOp, node, dstLabel, NULL, src1Reg, src2Reg, NULL);
-printf("2\n");
 
    cg->decReferenceCount(firstChild);
    cg->decReferenceCount(secondChild);
