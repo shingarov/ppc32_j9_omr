@@ -239,11 +239,11 @@ bool IterativeFibonacciMethod::buildIL()
 
 int main(int argc, char **argv)
 {
-     initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration,{*}(traceFull,log=LogFile)");
-//	 initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration");
+//   initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration,{*}(traceFull,log=LogFile)");
+	 initializeTestJit(0, 0, 0, "-Xjit:enableRelocatableELFGeneration");
 //	 initializeTestJit(0, 0, 0, "-Xjit");
      printf("Initialized JIT\n");
-/*
+
 	 compileSmallInt();
      printf( "42    -> %d\n", methodSmallInt() );
 
@@ -252,34 +252,24 @@ int main(int argc, char **argv)
 
 	 compileXplus1();
      printf( "10+1    -> %d\n", methodXplus1(10) );
-*/
+
      compileStoreLoad();
      printf("123  -> %d\n", methodStoreLoad());
 
 
-/*   compileLessThan();
-     printf( "5<10? 1:2    -> %d\n", methodLessThan(5) );
-     printf( "15<10? 1:2    -> %d\n", methodLessThan(15) );
-     printf( "10<10? 1:2    -> %d\n", methodLessThan(10) );
-     printf( "1000000<10? 1:2    -> %d\n", methodLessThan(1000000) );
-     printf( "-1000000<10? 1:2    -> %d\n", methodLessThan(-1000000) );
-     printf( "-1<10? 1:2    -> %d\n", methodLessThan(-1) );
-*/
+   compileLessThan();
+     printf( "5<10? 1:2    -> %d\n", methodLessThan(5, 10) );
+     printf( "15<10? 1:2    -> %d\n", methodLessThan(15, 10) );
+     printf( "10<10? 1:2    -> %d\n", methodLessThan(10, 10) );
+     printf( "1000000<10? 1:2    -> %d\n", methodLessThan(1000000, 10) );
+     printf( "-1000000<10? 1:2    -> %d\n", methodLessThan(-1000000, 10) );
+     printf( "-1<10? 1:2    -> %d\n", methodLessThan(-1, 10) );
 
-/*
-	 compileFib();
-     printf( "func ptr = %p\n", &methodFib );
-     int answer = methodFib(1);
-     printf( "fib(1) = %d\n", answer );
-     
-     printf( "fib(3) = %d\n", methodFib(3) );
-     printf( "fib(4) = %d\n", methodFib(4) );
-     printf( "fib(5) = %d\n", methodFib(5) );
-*/
 
-//   compileIterativeFibonacci();
-//     for (int k=0; k<=31; k++)
-//       printf( "fib(%d)   -> %d\n", k, methodIterativeFibonacci(k) );
+   compileIterativeFibonacci();
+//   for (int k=0; k<=31; k++)
+     for (int k=0; k<=1; k++)
+       printf( "fib(%d)   -> %d\n", k, methodIterativeFibonacci(k) );
 
 
      printf("Shutting down JIT...\n");
