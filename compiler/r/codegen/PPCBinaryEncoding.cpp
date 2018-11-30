@@ -249,8 +249,6 @@ int32_t TR::PPCAlignedLabelInstruction::estimateBinaryLength(int32_t currentEsti
 
 uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    {
-printf("op=%d (ble=%d, blt=%d, bne=%d)\n", getOpCodeValue(),  TR::InstOpCode::ble, TR::InstOpCode::blt, TR::InstOpCode::bne);
-
    uint8_t        *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t        *cursor           = instructionStart;
    uint32_t *iPtr = (uint32_t*)instructionStart;
@@ -861,16 +859,11 @@ uint8_t *TR::PPCTrg1MemInstruction::generateBinaryEncoding()
    TR::Compilation *comp = cg()->comp();
 
    getMemoryReference()->mapOpCode(this);
-printf("generateBinary from lwz\n");
 
 OMR::Power::MemoryReference *ref = getMemoryReference()->self();
 TR::Register *baseReg = ref->getBaseRegister();
 int32_t offset = ref->getOffset(*comp);
 TR_ASSERT(baseReg!=NULL, "please implement lwz relative to R0");
-printf("base: %d\n", toRealRegister(baseReg)->binaryRegCode());
-printf("rd: %d\n", toRealRegister(getTrg1Register())->binaryRegCode());
-printf("offset: %d\n", offset);
-
 
    *iPtr = RISCV_ITYPE (LD,
                          toRealRegister(getTrg1Register())->binaryRegCode(),
