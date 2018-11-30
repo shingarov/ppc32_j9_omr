@@ -207,54 +207,38 @@ TR::PPCConditionalBranchInstruction::getPPCConditionalBranchInstruction()
 
 void TR::PPCConditionalBranchInstruction::assignRegisters(TR_RegisterKinds kindToBeAssigned)
    {
-           printf("In assignRegisters()\n");
    TR::Machine *machine = cg()->machine();
 TR::Instruction::assignRegisters( kindToBeAssigned );
 
-           printf("Let's see about src1 first.\n");
-
            _src2->block();
-           printf("Blocked 2.\n");
-
 
    TR::Register           *virtualRegister = _src1;
    TR::RealRegister       *assignedRegister = virtualRegister->getAssignedRealRegister();
 
    if (assignedRegister == NULL)
       {
-           printf("Not yet assigned.\n");
       assignedRegister = machine->assignOneRegister(this, virtualRegister, true);
       } else {
-              printf("ALREADY Assigned.\n");
 //              TR_ASSERT(false, "I dont know what to do.\n");
       }
    machine->decFutureUseCountAndUnlatch(virtualRegister);
    _src1 = assignedRegister;
    _src2->unblock();
 
-   printf("Ok, now src2.\n");
    _src1->block();
-   printf("Blocked 1.\n");
-
-
 
    virtualRegister = _src2;
    assignedRegister = virtualRegister->getAssignedRealRegister();
 
    if (assignedRegister == NULL)
       {
-           printf("Not yet assigned.\n");
       assignedRegister = machine->assignOneRegister(this, virtualRegister, true);
       } else {
-              printf("ALREADY Assigned.\n");
 //              TR_ASSERT(false, "I dont know what to do.\n");
       }
    _src1->unblock();
    machine->decFutureUseCountAndUnlatch(virtualRegister);
    _src2 = assignedRegister;
-
-printf("Exiting assignRegisters()\n");
-
    }
 
 bool TR::PPCConditionalBranchInstruction::refsRegister(TR::Register *reg)

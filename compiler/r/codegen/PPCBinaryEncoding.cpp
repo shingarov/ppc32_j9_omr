@@ -814,16 +814,11 @@ uint8_t *TR::PPCMemSrc1Instruction::generateBinaryEncoding()
    TR::Compilation *comp = cg()->comp();
 
    getMemoryReference()->mapOpCode(this);
-printf("generateBinary from stw\n");
 
 OMR::Power::MemoryReference *ref = getMemoryReference()->self();
 TR::Register *baseReg = ref->getBaseRegister();
 int32_t offset = ref->getOffset(*comp);
 TR_ASSERT(baseReg!=NULL, "please implement stw relative to R0");
-printf("base: %d\n", toRealRegister(baseReg)->binaryRegCode());
-printf("rd: %d\n", toRealRegister(_sourceRegister)->binaryRegCode());
-printf("offset: %d\n", offset);
-
 
    *iPtr = RISCV_STYPE (SD,
                          toRealRegister(_sourceRegister)->binaryRegCode(),
