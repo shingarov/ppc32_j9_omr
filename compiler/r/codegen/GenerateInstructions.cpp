@@ -640,5 +640,5 @@ TR::Instruction *generateConditionalBranchInstruction(
                    TR::Register    *cr,
                    TR::Instruction                      *preced)
 {
-        return generateConditionalBranchInstruction(cg, op, n, sym, cr, NULL, NULL, NULL);
+        return NULL;
 }

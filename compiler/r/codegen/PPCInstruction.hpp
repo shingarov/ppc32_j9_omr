@@ -600,6 +600,10 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
    virtual int32_t estimateBinaryLength(int32_t currentEstimate);
    };
 
+class SBTYPE : public PPCConditionalBranchInstruction
+   {
+   };
+
 class PPCDepConditionalBranchInstruction : public PPCConditionalBranchInstruction
    {
    TR::RegisterDependencyConditions *_conditions;
