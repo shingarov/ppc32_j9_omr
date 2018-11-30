@@ -256,7 +256,6 @@ TR::Register *OMR::Power::TreeEvaluator::compareIntsForOrder(TR::InstOpCode::Mne
 
    TR::Register *src1Reg   = cg->evaluate(firstChild);
    TR::Register *src2Reg = cg->evaluate(secondChild);
-//   generateConditionalBranchInstruction(cg, branchOp, node, dstLabel, NULL, src1Reg, src2Reg, NULL);
    new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(branchOp, node, dstLabel, NULL, src1Reg, src2Reg, cg);
 
    cg->decReferenceCount(firstChild);
@@ -807,7 +806,7 @@ TR_ASSERT(branchOp == OMR::InstOpCode::bne, "Please implement compareForEquality
 
    TR::Register *src1Reg   = cg->evaluate(firstChild);
    TR::Register *src2Reg = cg->evaluate(secondChild);
-   generateConditionalBranchInstruction(cg, branchOp, node, dstLabel, NULL, src1Reg, src2Reg, NULL);
+   new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(branchOp, node, dstLabel, NULL, src1Reg, src2Reg, cg);
 
    cg->decReferenceCount(firstChild);
    cg->decReferenceCount(secondChild);
