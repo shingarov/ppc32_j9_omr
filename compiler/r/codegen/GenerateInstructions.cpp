@@ -640,5 +640,6 @@ TR::Instruction *generateConditionalBranchInstruction(
                    TR::Register    *cr,
                    TR::Instruction                      *preced)
 {
-        return NULL;
+  TR_ASSERT(false, "Please use the new stuff");
+  return NULL;
 }
