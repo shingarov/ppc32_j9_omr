@@ -602,6 +602,18 @@ class PPCConditionalBranchInstruction : public PPCLabelInstruction
 
 class SBTYPE : public PPCConditionalBranchInstruction
    {
+   public:
+     SBTYPE(
+       TR::InstOpCode::Mnemonic op,
+       TR::Node                 *n,
+       TR::LabelSymbol          *sym,
+       TR::Register             *src1,
+       TR::Register             *src2,
+       TR::CodeGenerator        *cg
+       )
+     : PPCConditionalBranchInstruction(op, n, sym, NULL, src1, src2, cg)
+     {
+     }
    };
 
 class PPCDepConditionalBranchInstruction : public PPCConditionalBranchInstruction
