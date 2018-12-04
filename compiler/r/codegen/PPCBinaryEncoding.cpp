@@ -249,6 +249,37 @@ int32_t TR::PPCAlignedLabelInstruction::estimateBinaryLength(int32_t currentEsti
 
 uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    {
+           TR_ASSERT(false, "Use new stuff");
+   }
+
+
+
+void TR::BLTInstruction::generateOpcode(uint32_t *iPtr)
+   {
+     *iPtr = RISCV_SBTYPE (BLT,
+                         toRealRegister(_src1)->binaryRegCode(),
+                         toRealRegister(_src2)->binaryRegCode(),
+                         0 /* to fix up in the future */ );
+   }
+
+void TR::BGEInstruction::generateOpcode(uint32_t *iPtr)
+   {
+     *iPtr = RISCV_SBTYPE (BGE,
+                         toRealRegister(_src1)->binaryRegCode(),
+                         toRealRegister(_src2)->binaryRegCode(),
+                         0 /* to fix up in the future */ );
+   }
+
+void TR::BNEInstruction::generateOpcode(uint32_t *iPtr)
+   {
+     *iPtr = RISCV_SBTYPE (BNE,
+                         toRealRegister(_src1)->binaryRegCode(),
+                         toRealRegister(_src2)->binaryRegCode(),
+                         0 /* to fix up in the future */ );
+   }
+
+uint8_t *TR::SBTYPE::generateBinaryEncoding()
+   {
    uint8_t        *instructionStart = cg()->getBinaryBufferCursor();
    uint8_t        *cursor           = instructionStart;
    uint32_t *iPtr = (uint32_t*)instructionStart;
@@ -256,30 +287,7 @@ uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    TR::LabelSymbol *label            = getLabelSymbol();
    TR_ASSERT(!getFarRelocation(), "Dont know how to fix up far jumps yet");
 
-   switch(getOpCodeValue()) {
-     case TR::InstOpCode::blt:
-     *iPtr = RISCV_SBTYPE (BLT,
-                         toRealRegister(_src1)->binaryRegCode(),
-                         toRealRegister(_src2)->binaryRegCode(),
-                         0 /* to fix up in the future */ );
-     break;
-     case TR::InstOpCode::ble:
-     *iPtr = RISCV_SBTYPE (BGE,
-                         toRealRegister(_src2)->binaryRegCode(),
-                         toRealRegister(_src1)->binaryRegCode(),
-                         0 /* to fix up in the future */ );
-     break;
-     case TR::InstOpCode::bne:
-     *iPtr = RISCV_SBTYPE (BNE,
-                         toRealRegister(_src1)->binaryRegCode(),
-                         toRealRegister(_src2)->binaryRegCode(),
-                         0 /* to fix up in the future */ );
-     break;
-     default:
-      TR_ASSERT(   ((getOpCodeValue() == TR::InstOpCode::blt) || (getOpCodeValue() == TR::InstOpCode::bne)),
-                   "Please implement conditionals beyond BLT/BNE");
-   } // switch
-
+   generateOpcode(iPtr);
    if (label->getCodeLocation() != NULL) {
            // we already know the address
            int32_t delta = label->getCodeLocation() - cursor;
@@ -294,6 +302,7 @@ uint8_t *TR::PPCConditionalBranchInstruction::generateBinaryEncoding()
    setBinaryEncoding(instructionStart);
    return cursor;
    }
+
 
 int32_t TR::PPCConditionalBranchInstruction::estimateBinaryLength(int32_t currentEstimate)
    {

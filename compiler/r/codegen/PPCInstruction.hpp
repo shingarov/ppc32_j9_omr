@@ -501,6 +501,8 @@ class PPCDepLabelInstruction : public PPCLabelInstruction
 
 class PPCConditionalBranchInstruction : public PPCLabelInstruction
    {
+   protected:
+
    TR::Register    *_src1;
    TR::Register    *_src2;
    int32_t         _estimatedBinaryLocation;
@@ -604,16 +606,65 @@ class SBTYPE : public PPCConditionalBranchInstruction
    {
    public:
      SBTYPE(
-       TR::InstOpCode::Mnemonic op,
        TR::Node                 *n,
        TR::LabelSymbol          *sym,
        TR::Register             *src1,
        TR::Register             *src2,
        TR::CodeGenerator        *cg
        )
-     : PPCConditionalBranchInstruction(op, n, sym, NULL, src1, src2, cg)
+     : PPCConditionalBranchInstruction(TR::InstOpCode::Mnemonic::bad, n, sym, NULL, src1, src2, cg)
      {
      }
+   virtual void generateOpcode(uint32_t*) = 0;
+   virtual uint8_t *generateBinaryEncoding();
+   };
+
+class BLTInstruction : public SBTYPE
+   {
+   public:
+     BLTInstruction(
+       TR::Node                 *n,
+       TR::LabelSymbol          *sym,
+       TR::Register             *src1,
+       TR::Register             *src2,
+       TR::CodeGenerator        *cg
+       )
+     : SBTYPE(n, sym, src1, src2, cg)
+     {
+     }
+   virtual void generateOpcode(uint32_t*);
+   };
+
+class BGEInstruction : public SBTYPE
+   {
+   public:
+     BGEInstruction(
+       TR::Node                 *n,
+       TR::LabelSymbol          *sym,
+       TR::Register             *src1,
+       TR::Register             *src2,
+       TR::CodeGenerator        *cg
+       )
+     : SBTYPE(n, sym, src1, src2, cg)
+     {
+     }
+   virtual void generateOpcode(uint32_t*);
+   };
+
+class BNEInstruction : public SBTYPE
+   {
+   public:
+     BNEInstruction(
+       TR::Node                 *n,
+       TR::LabelSymbol          *sym,
+       TR::Register             *src1,
+       TR::Register             *src2,
+       TR::CodeGenerator        *cg
+       )
+     : SBTYPE(n, sym, src1, src2, cg)
+     {
+     }
+   virtual void generateOpcode(uint32_t*);
    };
 
 class PPCDepConditionalBranchInstruction : public PPCConditionalBranchInstruction

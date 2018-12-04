@@ -256,7 +256,24 @@ TR::Register *OMR::Power::TreeEvaluator::compareIntsForOrder(TR::InstOpCode::Mne
 
    TR::Register *src1Reg   = cg->evaluate(firstChild);
    TR::Register *src2Reg = cg->evaluate(secondChild);
-   new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(branchOp, node, dstLabel, NULL, src1Reg, src2Reg, cg);
+printf("%d   / bge=%d blt=%d\n", branchOp, TR::InstOpCode::bge, TR::InstOpCode::blt);
+   switch(branchOp) {
+     case TR::InstOpCode::ble:
+       new (cg->trHeapMemory())
+       TR::BGEInstruction(node, dstLabel, src2Reg, src1Reg, cg);
+       break;
+     case TR::InstOpCode::blt:
+       new (cg->trHeapMemory())
+       TR::BLTInstruction(node, dstLabel, src1Reg, src2Reg, cg);
+       break;
+     default:
+       /*
+        * This is a brain-dead way to program.
+        * The notation itself must make the following impossible.
+        */
+       TR_ASSERT(false, "Assorted animal parts");
+   }
+
 
    cg->decReferenceCount(firstChild);
    cg->decReferenceCount(secondChild);
@@ -806,7 +823,18 @@ TR_ASSERT(branchOp == OMR::InstOpCode::bne, "Please implement compareForEquality
 
    TR::Register *src1Reg   = cg->evaluate(firstChild);
    TR::Register *src2Reg = cg->evaluate(secondChild);
-   new (cg->trHeapMemory()) TR::PPCConditionalBranchInstruction(branchOp, node, dstLabel, NULL, src1Reg, src2Reg, cg);
+   switch(branchOp) {
+     case TR::InstOpCode::bne:
+       new (cg->trHeapMemory())
+       TR::BNEInstruction(node, dstLabel, src1Reg, src2Reg, cg);
+       break;
+     default:
+       /*
+        * This is a brain-dead way to program.
+        * The notation itself must make the following impossible.
+        */
+       TR_ASSERT(false, "Assorted animal parts");
+   }
 
    cg->decReferenceCount(firstChild);
    cg->decReferenceCount(secondChild);
